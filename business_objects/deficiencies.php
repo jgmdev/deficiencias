@@ -6,33 +6,38 @@
 class Deficiencies {
     /**
      * @Id @Column(type="integer") @GeneratedValue
-     * @var int
      */
     protected $id;
     
     /**
      * @Column(type="string")
-     * @var string
      */
     protected $username;
     
     /**
      * @Column(type="string")
-     * @var string
      */
     protected $latitude;
     
     /**
      * @Column(type="string")
-     * @var string
      */
-    protected $longitud;
+    protected $longitude;
     
     /**
      * @Column(type="string")
-     * @var string
      */
     protected $photo;
+    
+    /**
+     * @Column(type="string")
+     */
+    protected $status;
+    
+    /**
+     * @Column(type="last_update")
+     */
+    protected $last_update;
 }
 
 
