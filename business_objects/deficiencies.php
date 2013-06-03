@@ -3,7 +3,7 @@
 /**
  * @Entity(repositoryClass="Deficiencias") @Table(name="deficiencias")
  */
-class Deficiencias {
+class Deficiencies {
     /**
      * @Id @Column(type="integer") @GeneratedValue
      * @var int
@@ -16,13 +16,13 @@ class Deficiencias {
      */
     protected $username;
     
-        /**
+    /**
      * @Column(type="string")
      * @var string
      */
     protected $latitud;
     
-        /**
+    /**
      * @Column(type="string")
      * @var string
      */
