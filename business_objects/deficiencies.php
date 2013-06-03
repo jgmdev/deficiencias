@@ -20,7 +20,7 @@ class Deficiencies {
      * @Column(type="string")
      * @var string
      */
-    protected $latitud;
+    protected $latitude;
     
     /**
      * @Column(type="string")
