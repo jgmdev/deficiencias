@@ -27,5 +27,8 @@ function t($text)
 	return $language_object->Translate($text);
 }
 
+//Set directory where all the site data is stored as pages, users, groups, etc...
+Cms\System::SetDataPath("data");
+
 //Here we should add uri handler etc...
 ?>
