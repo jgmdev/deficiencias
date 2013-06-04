@@ -46,12 +46,17 @@ class Deficiency {
     protected $comments;
     
     /**
+     * @Column(type="integer")
+     */
+    protected $reports_count;
+    
+    /**
      * @Column(type="string")
      */
     protected $status;
     
     /**
-     * @Column(type="last_update")
+     * @Column(type="datetime")
      */
     protected $last_update;
 }
