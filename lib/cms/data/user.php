@@ -56,25 +56,15 @@ class User
      */
     public $picture;
     
-    function GetPicturePath()
-    {
-        
-    }
-
-    function GetPictureUrl()
-    {
-        
-    }
     
-    function GetStatus()
+    public function GetPicturePath()
     {
-        $status = array();
+        
+    }
 
-        $status[t("Active")] = "1";
-        $status[t("Pending Approval")] = "0";
-        $status[t("Blocked")] = "2";
-
-        return $status;
+    public function GetPictureUrl()
+    {
+        
     }
 }
 

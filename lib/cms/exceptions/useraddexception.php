@@ -4,11 +4,11 @@
  * @license MIT
 */
 
-namespace Cms;
+namespace Cms\Exceptions;
 
 /**
  * Used when user exception arises.
  */
-class UserAddException extends Exception {}
+class UserAddException extends \Exception {}
 
 ?>

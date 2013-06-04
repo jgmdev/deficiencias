@@ -28,7 +28,9 @@ function t($text)
 }
 
 //Set directory where all the site data is stored as pages, users, groups, etc...
-Cms\System::SetDataPath("data");
+Cms\System::SetHomePage("inicio");
 
-//Here we should add uri handler etc...
+$page = new Page(Cms\PathHandler::GetCurrent());
+
+Themes::Render($page);
 ?>
