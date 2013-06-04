@@ -155,6 +155,68 @@ class FileSystem
 
 		return mkdir($directory, $mode, $recursive);
 	}
+    
+    /**
+     * Moves a directory and its content by renaming it to another directory even
+     * if already exist, mergin the content of the source directory to the target
+     * directory and replacing files.
+     * @param string $source The dirctory to rename.
+     * @param string $target The target path of the source directory.
+     * @return bool true on success or false on fail.
+     */
+    function RecursiveMoveDir($source, $target)
+    {
+        $source_dir = opendir($source);
+
+        while(($item = readdir($source_dir)) !== false)
+        {
+            $source_full_path = $source . "/" . $item;
+            $target_full_path = $target . "/" . $item;
+
+            if($item != "." && $item != "..")
+            {
+                //Replace any existing file with source one
+                if(is_file($source_full_path))
+                {
+                    //Replace existing target file with source file
+                    if(file_exists($target_full_path))
+                    {
+                        //Remove target file before replacing
+                        if(!unlink($target_full_path))
+                        {
+                            return false;
+                        }
+                    }
+
+                    //Move source file to target path
+                    if(!rename($source_full_path, $target_full_path))
+                    {
+                        return false;
+                    }
+                }
+                else if(is_dir($source_full_path))
+                {
+                    //If directory already exist just replace its content
+                    if(file_exists($target_full_path))
+                    {
+                        self::RecursiveMoveDir($source_full_path, $target_full_path);
+                    }
+                    else
+                    {
+                        //If directory doesnt exist just move source directory to target path
+                        if(!rename($source_full_path, $target_full_path))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        closedir($source_dir);
+
+        return true;
+    }
 
 	/**
 	 * Copy a directory and its content to another directory replacing any file

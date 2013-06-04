@@ -1,18 +1,21 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/** 
+ * @author Jefferson González
+ * @license MIT
+*/
 
 /**
- * Description of pages
- *
- * @author jgm
+ * Functions to handle pages
  */
 class Pages
 {
+    //Disable constructor
+    private function __construct() {}
     
+    public static function Load($path)
+    {
+        
+    }
 }
 
 ?>

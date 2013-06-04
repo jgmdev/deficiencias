@@ -155,7 +155,10 @@ class Data
 
             foreach($fields as $name => $value)
             {
-                $value = str_replace(array("\n", "field;"), array("\n\t\t", "\\field;"), $value);
+                if(!is_string($value))
+                    $value = serialize($value);
+                else
+                    $value = str_replace(array("\n", "field;"), array("\n\t\t", "\\field;"), $value);
 
                 $content .= "\tfield: $name\n";
                 $content .= "\t\t" . trim($value);
