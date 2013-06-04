@@ -1,13 +1,24 @@
 <?php
 
 /**
- * @Entity(repositoryClass="Deficiencias") @Table(name="deficiencias")
+ * @Entity(repositoryClass="Deficiency") @Table(name="deficiency")
  */
-class Deficiencies {
+class Deficiency {
     /**
      * @Id @Column(type="integer") @GeneratedValue
      */
     protected $id;
+    
+    /**
+     * @Column(type="integer")
+     */
+    protected $type;
+    
+    /**
+     * @OneToOne(targetEntity="Address")
+     * @JoinColumn(name="address_id", referencedColumnName="id")
+     **/
+    protected $address;
     
     /**
      * @Column(type="string")
@@ -28,6 +39,11 @@ class Deficiencies {
      * @Column(type="string")
      */
     protected $photo;
+    
+    /**
+     * @Column(type="string")
+     */
+    protected $comments;
     
     /**
      * @Column(type="string")
