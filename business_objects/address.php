@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @author Omar Soto <omarpr@gmail.com>
+ * @license http://opensource.org/licenses/MIT MIT
+ */
+
+/**
  * @Entity(repositoryClass="Address") @Table(name="address")
  */
 class Address {

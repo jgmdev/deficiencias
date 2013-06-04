@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author Omar Soto <omarpr@gmail.com>
+ * @license http://opensource.org/licenses/MIT MIT
+ */
+
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
