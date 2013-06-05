@@ -29,7 +29,7 @@ class Page
     
     public $keywords;
     
-    public $type;
+    public $http_status_code;
     
     /**
      * Groups that can view this page.
@@ -40,6 +40,8 @@ class Page
     public function __construct()
     {
         $this->groups = array();
+        
+        $this->http_status_code = \Cms\Enumerations\HTTPStatusCode::OK;
     }
     
     /**

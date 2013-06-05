@@ -1,9 +1,8 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/** 
+ * @author Jefferson González
+ * @license MIT
+*/
 
 namespace Cms;
 
@@ -15,11 +14,16 @@ namespace Cms;
 class Uri
 {
     /**
+     * Disable constructor
+     */
+    private function __construct() {}
+    
+    /**
      * Gets the current uri.
      * 
      * @return string home page if $_REQUEST['p'] is null or the $_REQUEST['p'] value.
      */
-    public static function Get()
+    public static function GetCurrent()
     {
         static $page;
 
@@ -56,7 +60,7 @@ class Uri
      * Example of clean url: mydomain.com/page?argument=value.
      * Without clean url mydomain.com/?p=page&argument=value
      */
-    function GetUrl($uri, $arguments = array())
+    public static function GetUrl($uri, $arguments = array())
     {
         $url = "";
 
@@ -97,7 +101,7 @@ class Uri
      *
      * @return string uri ready to use
      */
-    function TextToPath($string, $allow_slashes=false)
+    public static function TextToPath($string, $allow_slashes=false)
     {   
         $uri = $string;
 

@@ -8,7 +8,7 @@
  * @link http://github.com/wxphp/peg Source code.
 */
 
-namespace Localization;
+namespace Cms;
 
 /**
  * For translating strings into other languages.
@@ -16,7 +16,7 @@ namespace Localization;
 class Language
 {
 	/**
-	 * One of the language codes from \Localization\LanguageCode
+	 * One of the language codes @see \Cms\Enumerations\LanguageCode
 	 * @var string
 	 */
 	private $language;
@@ -36,13 +36,13 @@ class Language
 	/**
 	 * Initialize the language class for translating strings.
 	 * @param string $directory Path to directory that holds po files.
-	 * @param string $language The language code from \Localization\LanguageCode
+	 * @param string $language The language code @see \Cms\Enumerations\LanguageCode
 	 * @throws Exception If language directory doesn't exists.
 	 */
 	public function __construct($directory, $language=null)
 	{
 		if(!file_exists($directory))
-			throw new \Exception("Languages directory not found.");
+			throw new \Exception('Languages directory not found.');
 		
 		$this->translations = null;
 		
@@ -53,7 +53,7 @@ class Language
 	
 	/**
 	 * Current language used for translation output.
-	 * @return string One of the values from \Localization\LanguageCode
+	 * @return string Language code @see \Cms\Enumerations\LanguageCode
 	 */
 	public function GetLanguage()
 	{
@@ -62,12 +62,12 @@ class Language
 	
 	/**
 	 * Gets the current system language.
-	 * @return string One of the values from \Localization\LanguageCode
+	 * @return string Language code @see \Cms\Enumerations\LanguageCode
 	 */
 	public function GetSystemLangauge()
 	{
 		//TODO: Implement also for microsoft windows
-		$language_parts = explode(":", $_SERVER["LANGUAGE"]);
+		$language_parts = explode(':', $_SERVER['LANGUAGE']);
 		
 		return $language_parts[0];
 	}
@@ -75,7 +75,7 @@ class Language
 	/**
 	 * Assings the language for translation output. If no language is given
 	 * the system one is assigned.
-	 * @param string $language One of the values from \Localization\LanguageCode
+	 * @param string $language Language code @see \Cms\Enumerations\LanguageCode
 	 */
 	public function SetLanguage($language=null)
 	{
@@ -92,9 +92,9 @@ class Language
 		
 		// If language files does not exists and a sublanguage was used
 		// like en_US then use 'en' to see if it is available.
-		if(!file_exists($this->directory . "/" . $this->language))
+		if(!file_exists($this->directory . '/' . $this->language))
 		{
-			$language_parts = explode("_", $this->language);
+			$language_parts = explode('_', $this->language);
 
 			if(count($language_parts) > 1)
 			{
@@ -116,16 +116,16 @@ class Language
 
 		if(!$this->translations)
 		{
-			$this->translations = $this->PoParser($this->directory . "/" . $this->language . ".po");
+			$this->translations = $this->PoParser($this->directory . '/' . $this->language . '.po');
 		}
 
-		if($text != "")
+		if($text != '')
 		{
 			if(isset($this->translations[$text]))
 			{
 				$available_translation = $this->translations[$text];
 
-				if($available_translation != "")
+				if($available_translation != '')
 				{
 					$translation = $available_translation;
 				}
@@ -149,7 +149,7 @@ class Language
 
 		$file_rows = file($file);
 
-		$original_string = "";
+		$original_string = '';
 		$translations = array();
 
 		$found_original = false;
@@ -158,10 +158,10 @@ class Language
 		{
 			if(!$found_original)
 			{
-				if(substr(trim($row),0,6) == "msgid ")
+				if(substr(trim($row),0,6) == 'msgid ')
 				{
 					$found_original = true;
-					$string = str_replace("msgid ", "", trim($row));
+					$string = str_replace('msgid ', '', trim($row));
 
 					$pattern = "/(\")(.*)(\")/";
 					$replace = "\$2";
@@ -177,10 +177,10 @@ class Language
 			}
 			else
 			{
-				if(substr(trim($row),0,7) == "msgstr ")
+				if(substr(trim($row),0,7) == 'msgstr ')
 				{
 					$found_original = false;
-					$string = str_replace("msgstr ", "", trim($row));
+					$string = str_replace('msgstr ', '', trim($row));
 
 					$pattern = "/(\")(.*)(\")/";
 					$replace = "\$2";
@@ -200,6 +200,61 @@ class Language
 
 		return $translations;
 	}
+    
+    /**
+     * Sets the language to the best match of the user browser language.
+     */
+    public function SetLanguageAsBrowser()
+    {
+        $this->translations = null;
+        
+        if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+        {
+            $user_languages = explode(',', str_replace(' ', '', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'])));
+
+            foreach($user_languages as $user_language)
+            {
+                $language_code_array = explode(';', $user_language);
+
+                $language_code = explode('-', $language_code_array[0]);
+
+                if(count($language_code) > 1)
+                {
+                    $glue = implode('-', $language_code);
+                    if($this->LanguageFileExists($glue) || $glue == 'en')
+                    {
+                        $ths->language = $glue;
+                        return;
+                    }
+                    elseif($this->LanguageFileExists($language_code[0]) || $language_code[0] == 'en')
+                    {
+                        $ths->language = $language_code[0];
+                        return;
+                    }
+                }
+                elseif($this->LanguageFileExists($language_code[0]) || $language_code[0] == 'en')
+                {
+                    $this->language = $language_code[0];
+                    return;
+                }
+            }
+        }
+
+        $this->language = 'en';
+    }
+    
+    /**
+     * Checks if a given language code translations exists.
+     * @param string $language
+     * @return boolean
+     */
+    private function LanguageFileExists($language)
+    {
+        if(file_exists($this->directory . '/' . $language . '.po'))
+            return true;
+        
+        return false;
+    }
 }
 
 ?>

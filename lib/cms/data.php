@@ -48,6 +48,7 @@ class Data
         if(!file_exists($file))
         {
             $this->data = array();
+            return;
         }
 
         $arrFile = file($file);

@@ -8,7 +8,7 @@
  * @link http://github.com/wxphp/peg Source code.
 */
 
-namespace Localization;
+namespace Cms\Enumerations;
 
 /**
  * Enumeration that holds all languages and its code.
