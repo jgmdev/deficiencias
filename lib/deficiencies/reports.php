@@ -11,7 +11,7 @@ namespace Deficiencies;
  */
 class Reports
 {
-    public static function Add($data)
+    public static function Add(\Deficiencies\Reports $data)
     {
         
     }

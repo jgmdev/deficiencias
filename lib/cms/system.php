@@ -31,6 +31,18 @@ class System
     private static $is_initialized;
     
     /**
+     * Holds options used for coneccting to the relational database.
+     * @var \Cms\DBAL\DataSource;
+     */
+    private static $datasource;
+    
+    /**
+     * Reference to a database that can be used globally by the application.
+     * @var \Cms\DBAL\DataBase;
+     */
+    private static $database;
+    
+    /**
      * Disable constructor
      */
     private function __construct(){}
@@ -272,6 +284,35 @@ class System
     public static function SetTranslationsPath($path)
     {
         self::$settings->Add('translations_path', $path);
+    }
+    
+    /**
+     * Set the relational database data source.
+     * @param \Cms\DBAL\DataSource $datasource
+     */
+    public static function SetDataSource(\Cms\DBAL\DataSource $datasource)
+    {
+        if(self::$database)
+        {
+            self::$database->Disconnect();
+        }
+        
+        self::$database = new DBAL\DataBase($datasource);
+    }
+    
+    /**
+     * Get a database that can be shared globally by the application.
+     * @return \Cms\DBAL\DataBase
+     * @throws Exception
+     */
+    public function GetRelationalDatabase()
+    {
+        if(!self::$database)
+        {
+            throw new Exception(t("You have to set the data source before getting the database."));
+        }
+        
+        return self::$database;
     }
     
     /**
