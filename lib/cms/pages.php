@@ -23,8 +23,11 @@ class Pages
      */
     public static function Load($uri)
     {
+        if($uri == '')
+            $uri = System::GetHomePage();
+        
         $page_file = self::GetPath($uri);
-        $page_data = new Data\Page();
+        $page_data = new Data\Page($uri);
         
         if(file_exists($page_file))
         {
@@ -33,13 +36,13 @@ class Pages
             
             $page_data->title = $data_row['title'];
             $page_data->content = $data_row['content'];
-            $page_data->type = $data_row['type'];
+            $page_data->rendering_mode = $data_row['rendering_mode'];
         }
         else
         {   
             $page_data->title = t('Page not found');
             $page_data->content = t('The page you are visiting does not exists.');
-            $page_data->type = Enumerations\PageType::HTML;
+            $page_data->rendering_mode = Enumerations\PageRenderingMode::NORMAL;
             $page_data->http_status_code = Enumerations\HTTPStatusCode::NOT_FOUND;
         }
         
@@ -48,7 +51,7 @@ class Pages
     
     public static function GetPath($uri)
     {
-        return System::GetDataPath() . 'pages/' . Uri::TextToPath($uri) . '.php';
+        return System::GetDataPath() . 'pages/' . Uri::TextToUri($uri) . '.php';
     }
 }
 

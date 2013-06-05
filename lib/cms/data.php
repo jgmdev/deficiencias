@@ -6,6 +6,9 @@
 
 namespace Cms;
 
+/**
+ * Simple and flexible way of managing data on files.
+ */
 class Data
 {
     /**

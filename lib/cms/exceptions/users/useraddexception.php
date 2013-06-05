@@ -4,10 +4,10 @@
  * @license MIT
 */
 
-namespace Cms\Exceptions;
+namespace Cms\Exceptions\Users;
 
 /**
- * Used when user exception arises.
+ * Thrown when failing to add a user.
  */
 class UserAddException extends \Exception {}
 

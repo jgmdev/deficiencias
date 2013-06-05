@@ -4,10 +4,10 @@
  * @license MIT
 */
 
-namespace Cms;
-
+namespace Cms
+{
 /**
- * A class to handle system wide settings.
+ * A static class to handle system wide settings.
  */
 class System 
 {
@@ -22,12 +22,6 @@ class System
      * @var \Cms\Settings 
      */
     private static $settings;
-    
-    /**
-     * Uri of the main homepage.
-     * @var string
-     */
-    private static $home_page;
     
     /**
      * Flag to check if this class was correctly initialized before performing
@@ -46,12 +40,19 @@ class System
      */
     public static function Init()
     {
+        session_start();
+        
         self::InitializeDataPath();
+        
+        self::$is_initialized = true;
         
         self::$settings = new \Cms\Settings("main");
     }
     
-    
+    /**
+     * Creates all neccesary files and directory.
+     * @return type
+     */
     private static function InitializeDataPath()
     {
         if(!self::$data_path)
@@ -69,7 +70,6 @@ class System
                 else
                 {
                     self::$data_path = "data/default/";
-                    return self::$data_path;
                 }
             }
 
@@ -93,23 +93,71 @@ class System
             FileSystem::MakeDir(self::$data_path . 'pages', 0755, true);
             FileSystem::MakeDir(self::$data_path . 'settings', 0755, true);
             FileSystem::MakeDir(self::$data_path . 'sqlite', 0755, true);
+            
+            file_put_contents(
+                self::$data_path . ".htaccess",
+                "#disable download of any file\n".
+                "<files *>\n".
+                "   order allow,deny\n".
+                "   deny from all\n".
+                "</files>\n".
+                "\n" .
+                "# disable directory browsing\n" .
+                "Options All -Indexes\n"
+            );
+            
+            file_put_contents(
+                self::$data_path . ".hiawatha",
+                "AccessList = deny all\n"
+            );
+            
+            file_put_contents(
+                self::$data_path . "web.config",
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
+                "<configuration>\n".
+                "    <system.webServer>\n".
+                "        <rewrite>\n".
+                "            <rules>\n".
+                "                <rule name=\"Protect Directory By Crashing\" stopProcessing=\"true\">\n".
+                "                    <match url=\"^(.*)$\" />\n".
+                "                    <conditions>\n".
+                "                         <add input=\"{REQUEST_FILENAME}\" matchType=\"IsFile\" />\n".
+                "                         <add input=\"{REQUEST_FILENAME}\" matchType=\"IsDirectory\" />\n".
+                "                    </conditions>\n".
+                "                    <action type=\"Rewrite\" url=\"\" appendQueryString=\"false\" />\n".
+                "                </rule>\n".
+                "            </rules>\n".
+                "        </rewrite>\n".
+                "    </system.webServer>\n".
+                "</configuration>\n"
+            );
         }
     }
     
     /**
      * Gets the path to directory that stores site pages, settings, etc...
-     * @return type
+     * @return string
      */
     public static function GetDataPath()
     {
+        self::InitializedCheck();
+        
         return self::$data_path;
     }
     
+    /**
+     * Sets the directory where will reside all data files.
+     * @param string $path
+     */
     public static function SetDataPath($path)
     {
         self::$data_path = rtrim($path, '/') . '/';
     }
     
+    /**
+     * Get the default language as to display the site.
+     * @return string @see \Cms\Enumerations\LanguageCode
+     */
     public static function GetDefaultLanguage()
     {
         self::InitializedCheck();
@@ -120,8 +168,8 @@ class System
     }
     
     /**
-     * Set the language for translations.
-     * @param string $language_code @see Localization\LanguageCode
+     * Set the language the application is going to be displayed as.
+     * @param string $language_code @see \Cms\Enumerations\LanguageCode
      */
     public static function SetDefaultLanguage($language_code)
     {
@@ -131,26 +179,106 @@ class System
     }
     
     /**
-     * Gets the current home page
+     * Gets the uri of home page
      * @return string
      */
     public static function GetHomePage()
     {
-        if(self::$home_page == "")
-            return "";
+        self::InitializedCheck();
         
-        return self::$home_page;
+        $home_page = self::$settings->Get("home_uri");
+        
+        if($home_page == '')
+            return 'home';
+        
+        return $home_page;
     }
     
     /**
      * Sets the path or uri of the home page
-     * @param type $path
+     * @param string $path
      */
-    public static function SetHomePage($path)
+    public static function SetHomePage($uri)
     {
-        self::$home_page = $path;
+        self::InitializedCheck();
+        
+        self::$settings->Add('home_uri', $uri);
     }
     
+    /**
+     * Get the theme that is going to be used to render pages.
+     * @return string
+     */
+    public static function GetTheme()
+    {
+        $theme = self::$settings->Get('theme');
+        
+        if($theme)
+            return $theme;
+        
+        return 'default';
+    }
+    
+    /**
+     * Set the theme that is going to be used to render pages.
+     * @param string $name
+     */
+    public static function SetTheme($name)
+    {
+        self::$settings->Add('theme', $name);
+    }
+    
+    /**
+     * Get the path where themes reside.
+     * @return string
+     */
+    public static function GetThemesPath()
+    {
+        $themes_path = self::$settings->Get('themes_path');
+        
+        if($themes_path)
+            return $themes_path;
+        
+        return 'themes';
+    }
+    
+    /**
+     * Set the path where themes reside.
+     * @param string $path
+     */
+    public static function SetThemesPath($path)
+    {
+        self::$settings->Add('themes_path', $path);
+    }
+    
+    /**
+     * Get the path where translation files reside.
+     * @return string
+     */
+    public static function GetTranslationsPath()
+    {
+        $translations_path = self::$settings->Get('translations_path');
+        
+        if($translations_path)
+            return $translations_path;
+        
+        return 'locale';
+    }
+    
+    /**
+     * Set the path where translation files reside.
+     * @param string $path
+     */
+    public static function SetTranslationsPath($path)
+    {
+        self::$settings->Add('translations_path', $path);
+    }
+    
+    /**
+     * Gets the base url where the application is running.
+     * @staticvar string $base_url To improve performance on successive calls.
+     * @return string
+     */
     public static function GetBaseUrl()
     {
         static $base_url;
@@ -219,7 +347,7 @@ class System
     }
     
     /**
-     * Checks if the current connection is ssl.
+     * Checks if the current transfer type is ssl.
      * @return boolean True on success false otherwise.
      */
     public static function IsSSLConnection()
@@ -242,5 +370,26 @@ class System
             throw new \Exception("You can not use this function without initializing the System class.");
     }
 }
+}
 
+namespace
+{
+    /**
+     * Register global function for translating and to facilitate automatic
+     * generation of po files by tools like poedit.
+     * @param string text
+     * @return string Translation if found.
+     */
+    function t($text)
+    {
+        static $language_object;
+
+        if(!$language_object)
+        {
+            $language_object = new Cms\Language(Cms\System::GetTranslationsPath());
+        }
+
+        return $language_object->Translate($text);
+    }
+}
 ?>

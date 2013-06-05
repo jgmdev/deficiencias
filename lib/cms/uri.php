@@ -7,9 +7,7 @@
 namespace Cms;
 
 /**
- * Description of pathhandler
- *
- * @author jgm
+ * Functions to handle paths.
  */
 class Uri
 {
@@ -92,16 +90,31 @@ class Uri
 
         return $url;
     }
+    
+    /**
+     * Stops php script execution and redirects to a new page.
+     * @param string $uri The page we are going to redirect.
+     * @param array $arguments Arguments to pass to the url in te format $arguments["name"] = "value"
+     * @param $ssl Use ssl protocol when going to the page.
+     */
+    public static function Go($uri, $arguments = null, $ssl=false)
+    {
+        if(!$ssl)
+            header("Location: " . self::GetUrl($uri, $arguments));
+        else
+            header("Location: " . str_replace("http://", "https://", self::GetUrl($uri, $arguments)));
+
+        ob_clean();
+        exit;
+    }
 
     /**
      * Convertes any given string into a conventional path.
-     *
      * @param string $string The string to convert.
      * @param bool $allow_slashes If true, does not strip outs slashes (/).
-     *
      * @return string uri ready to use
      */
-    public static function TextToPath($string, $allow_slashes=false)
+    public static function TextToUri($string, $allow_slashes=false)
     {   
         $uri = $string;
 

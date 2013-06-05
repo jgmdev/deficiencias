@@ -6,7 +6,7 @@ row: 0
     field;
     
     field: content
-        Holaaa
+        Welcome
     field;
     
     field: type

@@ -1,0 +1,8 @@
+#disable download of any file
+<files *>
+ order allow,deny
+ deny from all
+</files>
+
+# disable directory browsing
+Options All -Indexes

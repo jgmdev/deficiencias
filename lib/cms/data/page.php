@@ -11,6 +11,8 @@ namespace Cms\Data;
  */
 class Page
 {
+    public $uri;
+    
     public $title;
     
     public $content;
@@ -31,15 +33,21 @@ class Page
     
     public $http_status_code;
     
+    public $rendering_mode;
+    
     /**
      * Groups that can view this page.
      * @var \Cms\Data\Group[]
      */
     public $groups;
     
-    public function __construct()
+    public function __construct($uri)
     {
+        $this->uri = $uri;
+        
         $this->groups = array();
+        
+        $this->rendering_mode = \Cms\Enumerations\PageRenderingMode::NORMAL;
         
         $this->http_status_code = \Cms\Enumerations\HTTPStatusCode::OK;
     }

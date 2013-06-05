@@ -13,6 +13,10 @@ use Cms\System;
  */
 class Groups 
 {
+    /**
+     * Disable constructor
+     */
+    private function __construct() {}
     
    /**
     * Adds a new group to the system.

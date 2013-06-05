@@ -11,7 +11,9 @@ namespace Cms;
  */
 class FileSystem
 {
-	// Disable constructor
+	/**
+     * Disable constructor
+     */
 	private function __construct() {}
     
     /**

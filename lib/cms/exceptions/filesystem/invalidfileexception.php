@@ -7,7 +7,7 @@
 namespace Cms\Exceptions\FileSystem;
 
 /**
- * Exception thrown if invalid file or no existant file.
+ * Exception thrown if invalid or non existant file.
  */
 class InvalidFileException extends \Exception {}
 

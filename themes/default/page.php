@@ -3,7 +3,6 @@
 
 <head>
 <title><?=$title?></title>
-<?=$header_info?>
 <?=$meta?>
 <?=$styles?>
 <?=$scripts?>
