@@ -6,10 +6,23 @@ row: 0
     field;
     
     field: content
+        <?php 
+            Cms\Theme::AddScript("test.js");
+            Cms\Theme::AddStyle("test.css");
+        ?>
+    
         Welcome
     field;
     
-    field: type
+    field: description
+        A page that displays a list of recent reports.
+    field;
+    
+    field: keywords
+        hoyos, derrumbes, tendido electrico
+    field;
+    
+    field: render_mode
         html
     field;
 row;

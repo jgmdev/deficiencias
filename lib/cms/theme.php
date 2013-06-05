@@ -262,17 +262,17 @@ class Theme
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
         
+        $title = $page->title;
+        $content_title = $page->title;
+        $content = self::ThemeContent($page);
+        
+        $base_url = System::GetBaseUrl();
+        $language = System::GetDefaultLanguage();
         $meta = self::GetMetaTagsHTML($page);
         $styles = self::GetStylesHTML();
         $scripts = self::GetScriptsHTML();
         $messages = self::GetMessagesHTML();
         $tabs = self::GetTabsHTML();
-        
-        $title = $page->title;
-        $content_title = $page->title;
-        $content = self::ThemeContent($page);
-        $base_url = System::GetBaseUrl();
-        $language = System::GetDefaultLanguage();
 
         $html = '';
         
