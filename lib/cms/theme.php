@@ -83,6 +83,13 @@ class Theme
     {
         $content  = Utilities::PHPEval($page->content);
         
+        if($page->rendering_mode && $page->rendering_mode != Enumerations\PageRenderingMode::NORMAL)
+        {
+            return $content;
+        }
+        
+        $formatted_content = '';
+        
         ob_start();
             include(self::ContentTemplate($page->uri, $page->type));
 
@@ -262,9 +269,17 @@ class Theme
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
         
+        System::SetHTTPStatus($page->http_status_code);
+        
         $title = $page->title;
         $content_title = $page->title;
         $content = self::ThemeContent($page);
+        
+        if($page->rendering_mode == Enumerations\PageRenderingMode::API)
+        {
+            print $content;
+            return;
+        }
         
         $base_url = System::GetBaseUrl();
         $language = System::GetDefaultLanguage();
@@ -275,8 +290,6 @@ class Theme
         $tabs = self::GetTabsHTML();
 
         $html = '';
-        
-        System::SetHTTPStatus($page->http_status_code);
 
         ob_start();
             //This is a file that where user can create custom code for the template

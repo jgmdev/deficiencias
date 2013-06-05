@@ -22,7 +22,7 @@ row: 0
         hoyos, derrumbes, tendido electrico
     field;
     
-    field: render_mode
+    field: rendering_mode
         html
     field;
 row;
