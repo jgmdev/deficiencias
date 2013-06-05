@@ -1,11 +1,3 @@
-<?php
-/**
- *Copyright 2008, Jefferson González (JegoYalu.com)
- *This file is part of Jaris CMS and licensed under the GPLPP,
- *check the LICENSE.txt file for version and details or visit
- *http://gplpp.org/license.
-*/
-?>
 <!DOCTYPE html>
 <html lang="<?=$language?>">
 
