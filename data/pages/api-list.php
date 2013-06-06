@@ -82,6 +82,7 @@ row: 0
             {
                 $result['city'] = $cities[$result['city']];
                 $result['age'] = Cms\Utilities::GetTimeElapsed($result["report_timestamp"]);
+                $result['type_str'] = Deficiencies\DeficiencyTypes::getType($result['type']);
                 $reports[] = $result;
                 $reports_returned++;
             }
@@ -92,7 +93,7 @@ row: 0
                     'current_page'=>$page+1,
                     'total_reports'=>$count,
                     'total_pages'=>$pages,
-                    'amount_returned'=>$reports_returned
+                    'amount_returned'=>$reports_returned,
                 )
             );
             

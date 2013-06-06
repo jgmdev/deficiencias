@@ -53,6 +53,7 @@ row: 0
             var html = '';
             
             $('#reports').html('');
+            //console.log(data);
             
             if(data.stats.amount_returned > 0)
             {
@@ -60,14 +61,14 @@ row: 0
                 for(prop in data.reports)
                 {
                     var report = data.reports[prop];
-                    
+ 
                     html += '<tr>';
                     
                     html += '<td><a class="location"></a></td>';
                     
                     html += '<td>';
                     html += report.city;
-                    html += '</td>';
+                    html += ', ' + report.country + ' | ' + report.type_str + '</td>';
                     
                     html += '<td>'+report.age+'</td>';
                     
@@ -80,6 +81,7 @@ row: 0
                 html += '</table>';
                 
                 $('#reports').html(html);
+                $('#qty_reported').html(data.stats.amount_returned);
             }
         }
         
@@ -91,7 +93,7 @@ row: 0
             $.geolocation.get({
                 win: function(position){
                     $('body').unmask();
-                    $('#city').prepend('<option value="near">En mi area</option>');
+                    $('#city').prepend('<option value="near">En mi área</option>');
                     $('#city').val('near');
                     
                     lonVal = position.coords.longitude;

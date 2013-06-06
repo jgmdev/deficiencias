@@ -52,7 +52,7 @@ row: 0
             <tr>
                 <td>
                     <h1 style="text-transform: uppercase; font-size: 14px; font-weight: bold;">
-                        Ultimas deficiencias reportadas
+                        Últimas deficiencias reportadas
                     </h1>
                 </td>
                 
@@ -63,6 +63,8 @@ row: 0
         </table>
         
         <div id="reports"></div>
+        <br />
+        <div style="text-align: center;" id="reports_footer">DEFICIENCIAS REPORTADAS: <span id="qty_reported">0</span></div>
     field;
     
     field: description

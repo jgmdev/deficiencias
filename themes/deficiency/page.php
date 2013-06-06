@@ -28,7 +28,7 @@ if($mobile_detect->isMobile()){
             </a>
         </td>
 		<td class="descripcion">
-            <div style="width: 250px; margin: 0 auto 0 auto;">
+		<div style="textwidth: 250px; margin: 0 auto 0 auto;">
                 <div style="font-size: 16px; color: #000">S I S T E M A</div>
                 <div style="font-size: 18px; font-weight: bold; color: #34495e">Reporte de Deficiencias</div>
                 <div style="color: #000">En las Carreteras de Puerto Rico</div>

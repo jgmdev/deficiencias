@@ -35,3 +35,8 @@ table, td
 	border-spacing: 0;
 	padding: 0;
 }
+
+#reports_footer
+{
+	text-align: center;
+}
