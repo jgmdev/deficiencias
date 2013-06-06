@@ -172,6 +172,16 @@ class DataBase
         return false;
     }
     
+    public function FetchArray()
+    {
+        $this->VerifyIsConnected();
+        
+        if($this->pdo_statement)
+            return $this->pdo_statement->fetch(\PDO::FETCH_ASSOC);
+        
+        return false;
+    }
+    
     public function LastInsertID()
     {
         $this->VerifyIsConnected();

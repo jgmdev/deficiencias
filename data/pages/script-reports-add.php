@@ -31,7 +31,7 @@ row: 0
                             }
                         }
                     );
-                }, 
+                },
                 fail: function(position){
                     alert("No se pudo obtener su ubicación.\nEntre la dirección física del área lo mas certero posible.");
                     $('#address').show();

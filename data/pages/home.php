@@ -12,16 +12,15 @@ row: 0
             Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
             Cms\Theme::AddScript('scripts/jquery.geolocation.js');
             Cms\Theme::AddScript("scripts/jquery.loadmask.js");
-            Cms\Theme::AddScript('scripts/listing.js');
+            Cms\Theme::AddScript('script/reports/list');
         ?>
     
         <table class="filter">
             <tr>
                 <td class="town">
                     <div><strong>Ubicación</strong></div>
-                    <select id="town">
+                    <select id="city">
                         <option value="">Todos</option>
-                        <!--<option style="display: none" value="near" class="near">En Mi Area</option>-->
                     <?php
                         foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
                         {
@@ -35,13 +34,7 @@ row: 0
                     <div><strong>Tipo de Deficiencia</strong></div>
                     <select id="type">
                         <option value="">Todos</option>
-                        <option style="display: none" value="near">En Mi Area</option>
-                    <?php
-                        foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
-                        {
-                            print "<option value=\"$value\">$label</option>";
-                        }
-                    ?>
+                        <option value="0">Hoyos en las carreteras</option>
                     </select>
                 </td>
             </tr>
@@ -63,8 +56,8 @@ row: 0
                 </td>
             </tr>
         </table>
-    
         
+        <div id="reports"></div>
     field;
     
     field: description
