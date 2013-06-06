@@ -63,13 +63,17 @@ row: 0
                     
                     html += '<tr>';
                     
-                    html += '<td></td>';
+                    html += '<td><a class="location"></a></td>';
                     
                     html += '<td>';
-                    html += report.longitude;
+                    html += report.city;
                     html += '</td>';
                     
-                    html += '<td></td>';
+                    html += '<td>'+report.age+'</td>';
+                    
+                    html += '<td>';
+                    html += '<a title="'+report.id+'" class="confirm">Confirmar</a>';
+                    html +='</td>';
                     
                     html += '</tr>';
                 }

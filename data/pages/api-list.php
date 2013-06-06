@@ -78,6 +78,7 @@ row: 0
             $reports_returned = 0;
             while($result = $db->FetchArray())
             {
+                $result['age'] = Cms\Utilities::GetTimeElapsed($result["report_timestamp"]);
                 $reports[] = $result;
                 $reports_returned++;
             }
