@@ -76,6 +76,11 @@ class Deficiency {
      * @Column(type="datetime")
      */
     public $last_update;
+    
+    public function __construct()
+    {
+        $this->address = new Address;
+    }
 }
 
 

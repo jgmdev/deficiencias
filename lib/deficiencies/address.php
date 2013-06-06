@@ -11,8 +11,6 @@ namespace Deficiencies;
  */
 class Address 
 {
-    public $deficiency_id;
-    
     /**
      * @Column(type="string")
      */

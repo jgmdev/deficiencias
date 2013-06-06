@@ -172,6 +172,13 @@ class DataBase
         return false;
     }
     
+    public function LastInsertID()
+    {
+        $this->VerifyIsConnected();
+        
+        return $this->pdo->lastInsertId();
+    }
+    
     private function VerifyIsConnected()
     {
         if(!$this->connected)

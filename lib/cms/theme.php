@@ -285,7 +285,7 @@ class Theme
         $content_title = $page->title;
         $content = self::ThemeContent($page);
         
-        if($page->rendering_mode == Enumerations\PageRenderingMode::API)
+        if($page->rendering_mode && $page->rendering_mode != Enumerations\PageRenderingMode::NORMAL)
         {
             print $content;
             return;

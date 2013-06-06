@@ -8,7 +8,7 @@
 $mobile_detect = new Cms\MobileDetect();
 if($mobile_detect->isMobile()){
 ?>
-<meta name="viewport" content="width=480, user-scalable=yes">
+<meta name="viewport" content="width=480px, user-scalable=yes, initial-scale=0">
 <?php } ?>
 <?=$styles?>
 <?=$scripts?>
@@ -17,6 +17,8 @@ if($mobile_detect->isMobile()){
 
 <body>
 
+<div id="main-container">
+    
 <!--Header-->
 <table id="header">
 	<tr>
@@ -26,9 +28,9 @@ if($mobile_detect->isMobile()){
             </a>
         </td>
 		<td class="descripcion">
-            <div style="width: 200px; margin: 0 auto 0 auto;">
+            <div style="width: 250px; margin: 0 auto 0 auto;">
                 <div style="font-size: 16px; color: #000">S I S T E M A</div>
-                <div style="font-size: 18px; font-weight: bold; color: #34495e">Reporte e Deficiencias</div>
+                <div style="font-size: 18px; font-weight: bold; color: #34495e">Reporte de Deficiencias</div>
                 <div style="color: #000">En las Carreteras de Puerto Rico</div>
                 <div>( SIRDE )</div>
             </div>
@@ -60,6 +62,7 @@ if($mobile_detect->isMobile()){
 	<?=$footer_message?>
 </div>
 
+</div>
 
 </body>
 

@@ -53,6 +53,8 @@ class Pages
     
     public static function GetPath($uri)
     {
+        $uri = str_replace('/', '-', $uri);
+        
         return System::GetDataPath() . 'pages/' . Uri::TextToUri($uri) . '.php';
     }
 }

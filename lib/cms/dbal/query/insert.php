@@ -75,7 +75,7 @@ class Insert
                     break;
                 
                 case FieldType::INTEGER:
-                    $sql .= $sql .= intval($options["value"]) . ', ';
+                    $sql .= intval($options["value"]) . ', ';
                     break;
                 
                 case FieldType::REAL:

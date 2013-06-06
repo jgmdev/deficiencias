@@ -2,14 +2,12 @@ body
 {
 	margin: 0 auto 0 auto;
 	background: transparent url(images/gradient-top.png) repeat-x left top;
-    padding: 20px;
     min-width: 480px;
 }
 
 body *
 {
-	font-family: Arial, Sans-Serif;
-	font-size: 14px;
+	font:normal 14px tahoma, arial, helvetica, sans-serif;
     text-align: left;
 }
 
@@ -18,7 +16,7 @@ h1, h2 ,h3
 	color: #004c60;
 }
 
-h1{ font-size: 32px; }
+h1{ font-size: 32px; color: #2980B9;}
 h2{ font-size: 22px; }
 h3{ font-size: 18px; }
 
@@ -26,6 +24,11 @@ a{ color: #00576d; text-decoration: none; }
 a:hover{ color: #e88c00; }
 
 img{ border: 0 }
+
+strong
+{
+    font-weight: bold;
+}
 
 table
 {
@@ -40,28 +43,45 @@ table, td
 	padding: 0;
 }
 
+#main-container
+{
+    width: 480px;
+    margin: 0 auto 0 auto;
+    border: solid 1px #d3d3d3;
+    padding: 20px 5px 20px 5px;
+}
+
+#header .logo
+{
+    text-align: center;
+    width: 50%;
+}
+
 #header .descripcion
 {
     padding: 0 0 0 20px;
     vertical-align: middle;
+    width: 50%;
 }
 
 #content .center
 {
-    padding: 30px 0 30px 0;
+    padding: 30px 30px 30px 30px;
 }
 
-#filter .town
+.filter .town
 {
     padding-right: 15px;
+    width: 50%;
 }
 
-#filter .type
+.filter .type
 {
     padding-left: 15px;
+    width: 50%;
 }
 
-#filter select
+.filter select
 {
     width: 100%;
     border: solid 2px #d3d3d3;
@@ -71,7 +91,7 @@ table, td
     font-size: 30px;
 }
 
-#filter .add-button a
+.filter .add-button
 {
     background-color: #d35400;
     display: block;
@@ -79,4 +99,51 @@ table, td
     font-weight: bold;
     padding: 7px;
     color: #fff;
+    float: right;
+    
+    border-radius: 7px;
+}
+
+label
+{
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+    font-size: 24px;
+}
+
+input[type=text], select, textarea
+{
+    display: block;
+    width: 100%;
+    margin-bottom: 7px;
+    height: 35px;
+    border-radius: 3px;
+    boder: solid 1px #d3d3d3;
+    box-shadow: 0px 0px 8px #d3d3d3;
+    font-size: 20px;
+}
+
+input[type=text]:focus, select:focus, textarea:focus
+{
+    box-shadow: 0px 0px 8px #2980B9;
+}
+
+textarea
+{
+    height: 150px;
+}
+
+input[type=submit]
+{
+    padding: 10px;
+    border-radius: 3px;
+    background-color: #16A085;
+    border: 0;
+    color: #fff;
+    font-weight: bold;
+    margin: 0 auto 0 auto;
+    font-size: 24px;
+    display: inline;
 }

@@ -34,23 +34,15 @@ class Setup
             ->AddIntegerField('report_month')
             ->AddIntegerField('report_year')
             ->AddIntegerField('last_update')
+            ->AddIntegerField('line1')
+            ->AddIntegerField('line2')
+            ->AddIntegerField('zipcode')
+            ->AddIntegerField('city')
+            ->AddIntegerField('country')
             ->AddPrimaryKey('id')
         ;
         
         $db->CreateTable($deficiency_table);
-        
-        //Address Table
-        $address_table = new \Cms\DBAL\Query\Table('address');
-        
-        $address_table->AddIntegerField('deficiency_id')
-            ->AddTextField('line1')
-            ->AddTextField('line2')
-            ->AddTextField('zipcode')
-            ->AddTextField('city')
-            ->AddTextField('country')
-        ;
-        
-        $db->CreateTable($address_table);
     }
 }
 ?>

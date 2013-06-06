@@ -15,10 +15,10 @@ row: 0
             Cms\Theme::AddScript('scripts/listing.js');
         ?>
     
-        <table id="filter">
+        <table class="filter">
             <tr>
                 <td class="town">
-                    <div>Ubicación</div>
+                    <div><strong>Ubicación</strong></div>
                     <select id="town">
                         <option value="">Todos</option>
                         <!--<option style="display: none" value="near" class="near">En Mi Area</option>-->
@@ -32,7 +32,7 @@ row: 0
                 </td>
                 
                 <td class="type">
-                    <div>Ubicación</div>
+                    <div><strong>Tipo de Deficiencia</strong></div>
                     <select id="type">
                         <option value="">Todos</option>
                         <option style="display: none" value="near">En Mi Area</option>
@@ -45,8 +45,23 @@ row: 0
                     </select>
                 </td>
             </tr>
-            
-            
+        </table>
+    
+        <table id="list"></table>
+        <table id="listnavigation"></table>
+    
+        <table class="filter" style="margin-top: 20px;">
+            <tr>
+                <td>
+                    <h1 style="text-transform: uppercase; font-size: 14px; font-weight: bold;">
+                        Ultimas deficiencias reportadas
+                    </h1>
+                </td>
+                
+                <td>
+                    <a class="add-button" href="<?=Cms\Uri::GetUrl('reports/add')?>">Reportar Nueva</a>
+                </td>
+            </tr>
         </table>
     
         
