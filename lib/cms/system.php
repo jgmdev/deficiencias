@@ -305,7 +305,7 @@ class System
      * @return \Cms\DBAL\DataBase
      * @throws Exception
      */
-    public function GetRelationalDatabase()
+    public static function GetRelationalDatabase()
     {
         if(!self::$database)
         {

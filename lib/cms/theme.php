@@ -103,7 +103,7 @@ class Theme
      * Generate the html code to insert css files on rendered pages.
      * @return string Html code for the head section of a document.
      */
-    function GetStylesHTML()
+    public static function GetStylesHTML()
     {
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
@@ -131,7 +131,7 @@ class Theme
      * Generate the html code to javascript files on rendered pages.
      * @return string Html code for the head section of document.
      */
-    function GetScriptsHTML()
+    public static function GetScriptsHTML()
     {
         $scripts_code = '';
         
@@ -150,7 +150,7 @@ class Theme
      * Generates the meta tags html for a rendered page.
      * @param \Cms\Data\Page $page
      */
-    function GetMetaTagsHTML($page)
+    public static function GetMetaTagsHTML($page)
     {
         $meta_tags = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'."\n";
         $meta_tags .= '<meta name="generator" content="Cms Framework" />'."\n";
@@ -273,7 +273,7 @@ class Theme
      * Renders and prints a page as html
      * @param \Cms\Data\Page $page
      */
-    function Render($page)
+    public static function Render($page)
     {
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
