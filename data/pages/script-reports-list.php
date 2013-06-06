@@ -53,6 +53,7 @@ row: 0
             var html = '';
             
             $('#reports').html('');
+            $('#qty_reported').html('0');
             //console.log(data);
             
             if(data.stats.amount_returned > 0)
