@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) <2013> <Jefferson González, Yaritza Luyando and Omar Soto>
+Copyright (c) <2013> <Jefferson GonzÃ¡lez, Yaritza Luyando and Omar Soto>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
