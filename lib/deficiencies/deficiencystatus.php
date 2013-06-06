@@ -18,9 +18,9 @@ class DeficiencyStatus
     
     public static function getAll() {
         $def_status = array(
-                            UNFIXED => t('Unfixed'),
-                            FIXED => t('Fixed'),
-                            IN_PROCESS => t('In process'),
+                            self::UNFIXED => t('Unfixed'),
+                            self::FIXED => t('Fixed'),
+                            self::IN_PROCESS => t('In process'),
                             );
         
         return $def_status;
