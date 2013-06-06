@@ -54,9 +54,9 @@ row: 0
                     
                     $id = \Deficiencies\Reports::Add($deficiency);
                     
-                    echo sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id);
+                    Cms\Theme::AddMessage(sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id));
                 } else {
-                    echo t('A valid file is an image with max file size of 2MB.');
+                    Cms\Theme::AddMessage(t('A valid file is an image with max file size of 2MB.'));
                 }
                 
             } else {
