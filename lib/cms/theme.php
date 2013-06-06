@@ -105,7 +105,16 @@ class Theme
      */
     function GetStylesHTML()
     {
+        $theme = System::GetTheme();
+        $theme_path = System::GetThemesPath();
+        $theme_css_file = $theme_path . '/' . $theme . '/style.css';
+                
         $styles_code = '';
+        
+        if(file_exists($theme_css_file))
+        {
+            self::$styles[$theme_css_file] = Uri::GetUrl($theme_css_file);
+        }
         
         if(count(self::$styles) > 0)
         {
@@ -268,6 +277,7 @@ class Theme
     {
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
+        $theme_url = Uri::GetUrl($theme_path . '/' . $theme);
         
         System::SetHTTPStatus($page->http_status_code);
         

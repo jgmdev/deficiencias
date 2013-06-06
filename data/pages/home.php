@@ -7,11 +7,49 @@ row: 0
     
     field: content
         <?php 
-            Cms\Theme::AddScript("test.js");
-            Cms\Theme::AddStyle("test.css");
+            Cms\Theme::AddStyle("styles/jquery.loadmask.css");
+            
+            Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
+            Cms\Theme::AddScript('scripts/jquery.geolocation.js');
+            Cms\Theme::AddScript("scripts/jquery.loadmask.js");
+            Cms\Theme::AddScript('scripts/listing.js');
         ?>
     
-        Welcome
+        <table id="filter">
+            <tr>
+                <td class="town">
+                    <div>Ubicación</div>
+                    <select id="town">
+                        <option value="">Todos</option>
+                        <!--<option style="display: none" value="near" class="near">En Mi Area</option>-->
+                    <?php
+                        foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
+                        {
+                            print "<option value=\"$value\">$label</option>";
+                        }
+                    ?>
+                    </select>
+                </td>
+                
+                <td class="type">
+                    <div>Ubicación</div>
+                    <select id="type">
+                        <option value="">Todos</option>
+                        <option style="display: none" value="near">En Mi Area</option>
+                    <?php
+                        foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
+                        {
+                            print "<option value=\"$value\">$label</option>";
+                        }
+                    ?>
+                    </select>
+                </td>
+            </tr>
+            
+            
+        </table>
+    
+        
     field;
     
     field: description

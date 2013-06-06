@@ -1,0 +1,82 @@
+body
+{
+	margin: 0 auto 0 auto;
+	background: transparent url(images/gradient-top.png) repeat-x left top;
+    padding: 20px;
+    min-width: 480px;
+}
+
+body *
+{
+	font-family: Arial, Sans-Serif;
+	font-size: 14px;
+    text-align: left;
+}
+
+h1, h2 ,h3
+{
+	color: #004c60;
+}
+
+h1{ font-size: 32px; }
+h2{ font-size: 22px; }
+h3{ font-size: 18px; }
+
+a{ color: #00576d; text-decoration: none; }
+a:hover{ color: #e88c00; }
+
+img{ border: 0 }
+
+table
+{
+	width: 100%;
+}
+
+table, td
+{
+	border: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0;
+}
+
+#header .descripcion
+{
+    padding: 0 0 0 20px;
+    vertical-align: middle;
+}
+
+#content .center
+{
+    padding: 30px 0 30px 0;
+}
+
+#filter .town
+{
+    padding-right: 15px;
+}
+
+#filter .type
+{
+    padding-left: 15px;
+}
+
+#filter select
+{
+    width: 100%;
+    border: solid 2px #d3d3d3;
+    background-color: #fff;
+    color: #000;
+    height: 40px;
+    font-size: 30px;
+}
+
+#filter .add-button a
+{
+    background-color: #d35400;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 7px;
+    color: #fff;
+}

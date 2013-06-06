@@ -21,9 +21,9 @@ class Deficiency {
     public $type;
     
     /**
-     * @OneToOne(targetEntity="Address")
-     * @JoinColumn(name="address_id", referencedColumnName="id")
-     **/
+     * Physical address of the report.
+     * @var \Deficiencies\Address;
+     */
     public $address;
     
     /**
@@ -76,12 +76,6 @@ class Deficiency {
      * @Column(type="datetime")
      */
     public $last_update;
-    
-    /**
-     * Physical address of the report.
-     * @var \Deficiencies\Address;
-     */
-    public $address;
 }
 
 

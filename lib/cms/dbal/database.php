@@ -30,10 +30,16 @@ class DataBase
     public $type;
     
     /**
+     * Copy of the data source used to initialize the connection.
+     * @var \Cms\DBAL\DataSource 
+     */
+    public $datasource;
+    
+    /**
      * Flag that inidicates connection status.
      * @var boolean 
      */
-    public $connected;
+    private $connected;
     
     public function __construct(\Cms\DBAL\DataSource $datasource=null)
     {
@@ -49,6 +55,8 @@ class DataBase
     public function Connect(\Cms\DBAL\DataSource $datasource=null)
     {
         $this->Disconnect();
+        
+        $this->datasource = clone $datasource;
         
         $this->type = $datasource->type;
         
@@ -80,6 +88,19 @@ class DataBase
         
         if($this->pdo)
             unset($this->pdo);
+        
+        if($this->pdo_statement)
+            unset($this->pdo_statement);
+    }
+    
+    public function Reconnect()
+    {
+        $this->Connect($this->datasource);
+    }
+    
+    public function IsConnected()
+    {
+        return $this->connected;
     }
     
     public function CreateTable(\Cms\DBAL\Query\Table $table)

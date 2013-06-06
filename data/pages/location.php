@@ -17,8 +17,6 @@ row: 0
         
         $geocodes = $MAP_OBJECT->getGeoCode("Vail, CO");
         $geocodes_full = $MAP_OBJECT->geoGetCoordsFull("Vail, CO");
-        
-        
     ?>
 
         <h2>Cached response:</h2>

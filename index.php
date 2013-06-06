@@ -13,6 +13,16 @@ Cms\System::Init();
 
 Cms\System::SetHomePage('home');
 
+Cms\System::SetTheme('deficiency');
+
+$datasource = new \Cms\DBAL\DataSource;
+$datasource->InitAsSQLite('deficiencies', \Cms\System::GetDataPath() . "sqlite");
+
+Cms\System::SetDataSource($datasource);
+
+//Setup the deficiency databse
+Deficiencies\Setup::Database();
+
 $page = Cms\Pages::Load(Cms\Uri::GetCurrent());
 
 //Display the page

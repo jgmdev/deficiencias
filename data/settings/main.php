@@ -27,3 +27,16 @@ row: 1
 row;
 
 
+row: 2
+
+	field: name
+		theme
+	field;
+
+	field: value
+		deficiency
+	field;
+
+row;
+
+

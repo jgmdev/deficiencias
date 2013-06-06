@@ -9,36 +9,34 @@ namespace Deficiencies;
 /**
  * @Entity(repositoryClass="Address") @Table(name="address")
  */
-class Address {
-    /**
-     * @Id @Column(type="integer") @GeneratedValue
-     */
-    protected $deficiency_id;
+class Address 
+{
+    public $deficiency_id;
     
     /**
      * @Column(type="string")
      */
-    protected $line1;
+    public $line1;
     
     /**
      * @Column(type="string")
      */
-    protected $line2;
+    public $line2;
     
     /**
      * @Column(type="integer")
      */
-    protected $zipcode;
+    public $zipcode;
     
     /**
      * @Column(type="string")
      */
-    protected $city;
+    public $city;
     
     /**
      * @Column(type="string")
      */
-    protected $country;
+    public $country;
 }
 
 
