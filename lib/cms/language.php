@@ -64,7 +64,7 @@ class Language
 	 * Gets the current system language.
 	 * @return string Language code @see \Cms\Enumerations\LanguageCode
 	 */
-	public function GetSystemLangauge()
+	public function GetSystemLanguage()
 	{
 		//TODO: Implement also for microsoft windows
 		$language_parts = explode(':', $_SERVER['LANGUAGE']);
@@ -83,7 +83,8 @@ class Language
 		
 		if(!$language)
 		{
-			$this->language = $this->GetSystemLangauge();
+			//$this->language = $this->GetSystemLanguage();
+			$this->language = 'es';
 		}
 		else
 		{

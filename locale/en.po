@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deficiencies\n"
 "POT-Creation-Date: 2013-06-06 15:58-0400\n"
-"PO-Revision-Date: 2013-06-06 16:25-0400\n"
+"PO-Revision-Date: 2013-06-06 16:27-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,64 +15,64 @@ msgstr ""
 
 #: C:\AppServ\www\deficiencias/data/pages/home.php:36
 msgid "All"
-msgstr ""
+msgstr "Todos"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:5
 msgid "Problem Report"
-msgstr ""
+msgstr "Reporte de Problema"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:57
 #, php-format
 msgid "The report has been submitted. Thanks for your collaboration. (ID: %s)"
-msgstr ""
+msgstr "El reporte se ha sometido. Gracias por su colaboración. (ID: %s)"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:59
 msgid "A valid file is an image with max file size of 2MB."
-msgstr ""
+msgstr "Un archivo válido es una imagen con un tamaño máximo de 2MB. "
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:66
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:77
 msgid "Latitude"
-msgstr ""
+msgstr "Latitud"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:80
 msgid "Longitude"
-msgstr ""
+msgstr "Longitud"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:85
 msgid "Physical Address"
-msgstr ""
+msgstr "Dirección física"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:88
 msgid "Zipcode"
-msgstr ""
+msgstr "Código postal"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:92
 msgid "City"
-msgstr ""
+msgstr "Ciudad"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:102
 msgid "Photo"
-msgstr ""
+msgstr "Foto"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:105
 msgid "Comments"
-msgstr ""
+msgstr "Comentarios"
 
 #: C:\AppServ\www\deficiencias/data/pages/reports-add.php:108
 msgid "Send"
-msgstr ""
+msgstr "Enviar"
 
 #: C:\AppServ\www\deficiencias/lib/cms/pages.php:45
 msgid "Page not found"
-msgstr ""
+msgstr "Página no encontrada"
 
 #: C:\AppServ\www\deficiencias/lib/cms/pages.php:46
 msgid "The page you are visiting does not exists."
-msgstr ""
+msgstr "La página que estás intentando acceder no existe. "
 
 #: C:\AppServ\www\deficiencias/lib/cms/system.php:312
 msgid "You have to set the data source before getting the database."
@@ -82,79 +82,79 @@ msgstr ""
 
 #: C:\AppServ\www\deficiencias/lib/cms/theme.php:258
 msgid "error:"
-msgstr ""
+msgstr "error:"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:48
 msgid "0 seconds"
-msgstr ""
+msgstr "0 segundos"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:52
 msgid "year"
-msgstr ""
+msgstr "año"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:52
 msgid "years"
-msgstr ""
+msgstr "años"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:53
 msgid "month"
-msgstr ""
+msgstr "mes"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:53
 msgid "months"
-msgstr ""
+msgstr "meses"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:54
 msgid "day"
-msgstr ""
+msgstr "día"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:54
 msgid "days"
-msgstr ""
+msgstr "días"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:55
 msgid "hour"
-msgstr ""
+msgstr "hora"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:55
 msgid "hours"
-msgstr ""
+msgstr "horas"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:56
 msgid "minute"
-msgstr ""
+msgstr "minuto"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:56
 msgid "minutes"
-msgstr ""
+msgstr "minutos"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:57
 msgid "second"
-msgstr ""
+msgstr "segundo"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:57
 msgid "seconds"
-msgstr ""
+msgstr "segundos"
 
 #: C:\AppServ\www\deficiencias/lib/cms/utilities.php:72
 msgid "{time} {period} ago"
-msgstr ""
+msgstr "Hace {time} {period}"
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/database.php:81
 msgid "Invalid data source."
-msgstr ""
+msgstr "Fuente de datos invalida."
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/database.php:195
 msgid "No connection establised to carry out this operation."
-msgstr ""
+msgstr "No hay una conexión establecida para ejecutar ésta operación."
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/datasource.php:25
 msgid "Data source hasn't been initialized."
-msgstr ""
+msgstr "La fuente de datos no ha sido inicializada."
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/query/select.php:36
 msgid "All columns already selected."
-msgstr ""
+msgstr "Todas las columnas han sido seleccionadas."
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/query/select.php:46
 msgid "Select all not allowed if columns where previously selected."
@@ -164,36 +164,36 @@ msgstr ""
 
 #: C:\AppServ\www\deficiencias/lib/cms/dbal/query/table.php:58
 msgid "Field is not defined."
-msgstr ""
+msgstr "El campo no está definido."
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:21
 msgid "Unfixed"
-msgstr ""
+msgstr "Sin fijar"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:22
 msgid "Fixed"
-msgstr ""
+msgstr "Fijo"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:23
 msgid "In process"
-msgstr ""
+msgstr "En proceso"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:23
 msgid "Hole"
-msgstr ""
+msgstr "Hoyo"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:24
 msgid "Water tube"
-msgstr ""
+msgstr "Tubo de agua"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:25
 msgid "Signal light"
-msgstr ""
+msgstr "Semáforo"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:26
 msgid "Collapse"
-msgstr ""
+msgstr "Derrumbe"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:27
 msgid "Power line"
-msgstr ""
+msgstr "Tendido eléctrico"
