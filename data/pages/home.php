@@ -33,8 +33,13 @@ row: 0
                 <td class="type">
                     <div><strong>Tipo de Deficiencia</strong></div>
                     <select id="type">
-                        <option value="">Todos</option>
-                        <option value="0">Hoyos en las carreteras</option>
+                        <option value=""><?=t('All')?></option>
+                        <?php
+                            foreach(\Deficiencies\DeficiencyTypes::getAll() as $label=>$value)
+                            {
+                                print "<option value=\"$label\">$value</option>";
+                            }
+                        ?>
                     </select>
                 </td>
             </tr>
