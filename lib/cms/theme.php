@@ -281,6 +281,8 @@ class Theme
         
         System::SetHTTPStatus($page->http_status_code);
         
+        $page->title = Utilities::PHPEval($page->title);
+        
         $title = $page->title;
         $content_title = $page->title;
         $content = self::ThemeContent($page);

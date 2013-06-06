@@ -2,7 +2,7 @@
 
 row: 0
     field: title
-        Reportar Problema
+        <?=t('Problem Report')?>
     field;
     
     field: content
@@ -18,44 +18,78 @@ row: 0
         <?php
             if(isset($_REQUEST["btnSave"]))
             {
-                $deficiency = new Deficiencies\Deficiency;
-                $deficiency->type = $_REQUEST["type"];
-                $deficiency->latitude = $_REQUEST["lat"];
-                $deficiency->longitude = $_REQUEST["lon"];
-                $deficiency->comments = $_REQUEST["comments"];
+                $valid = true;
+                $has_photo = false;
                 
-                $deficiency->address->line1 = $_REQUEST["address"];
-                $deficiency->address->zipcode = $_REQUEST["zip"];
-                $deficiency->address->city = $_REQUEST["city"];
-                $deficiency->address->country = 'Puerto Rico';
+                if (!empty($_FILES['photo']['name'])) {
+                    $photo = $_FILES['photo'];
+
+                    if (strpos($photo['type'], 'image') === FALSE || $photo['size'] > 2097152222222) {
+                        $valid = false;
+                    } else {
+                        $has_photo = true;
+                    }
+                }
                 
-                \Deficiencies\Reports::Add($deficiency);
-            }
+                if ($valid) {
+                    $deficiency = new Deficiencies\Deficiency;
+                    $deficiency->type = $_REQUEST["type"];
+                    $deficiency->latitude = $_REQUEST["lat"];
+                    $deficiency->longitude = $_REQUEST["lon"];
+                    $deficiency->comments = $_REQUEST["comments"];
+                    
+                    $deficiency->address->line1 = $_REQUEST["address"];
+                    $deficiency->address->zipcode = $_REQUEST["zip"];
+                    $deficiency->address->city = $_REQUEST["city"];
+                    $deficiency->address->country = 'Puerto Rico';
+
+                    if ($has_photo) {
+                        $photo_dir = './def_images/def_photo' . time() . strrchr($photo['name'], '.');
+                        move_uploaded_file($photo['tmp_name'], $photo_dir);
+                        
+                        $deficiency->photo = $photo_dir;
+                    } else {
+                        $deficiency->photo = null;
+                    }
+                    
+                    $id = \Deficiencies\Reports::Add($deficiency);
+                    
+                    echo sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id);
+                } else {
+                    echo t('A valid file is an image with max file size of 2MB.');
+                }
+                
+            } else {
         ?>
     
-        <form method="post" action="<?=\Cms\Uri::GetUrl('reports/add')?>">
-            <label for="type">Tipo</label>
+        <form method="post" action="<?=\Cms\Uri::GetUrl('reports/add')?>" enctype="multipart/form-data">
+            <label for="type"><?=t('Type')?></label>
             <select id="type" name="type">
-                <option value="1">Hoyo en la carretera</option>
+            <?php
+                foreach(\Deficiencies\DeficiencyTypes::getAll() as $label=>$value)
+                {
+                    print "<option value=\"$label\">$value</option>";
+                }
+            ?>
             </select>
             
             <div id="coords" style="display: none;">
-            <label for="lat">Latitud</label>
+            <label for="lat"><?=t('Latitude')?></label>
             <input type="text" readonly="readonly" id="lat" name="lat" />
             
-            <label for="lon">Longitud</label>
+            <label for="lon"><?=t('Longitude')?></label>
             <input type="text" readonly="readonly" id="lon" name="lon" />
             </div>
             
             <div id="address" style="display: none">
-            <label for="address">Dirección Física</label>
+            <label for="address"><?=t('Physical Address')?></label>
             <textarea id="address" name="address"></textarea>
             
-            <label for="zip">Zipcode</label>
+            <label for="zip"><?=t('Zipcode')?></label>
             <input type="text" id="zip" name="zip" />
             </div>
             
-            <label for="city">Pueblo</label>
+            <label for="city"><?=t('City')?></label>
             <select id="city" name="city">
             <?php
                 foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
@@ -65,11 +99,16 @@ row: 0
             ?>
             </select>
             
-            <label for="comments">Comentarios</label>
+            <label for="photo"><?=t('Photo')?></label>
+            <input type="file" id="photo" name="photo" />
+            
+            <label for="comments"><?=t('Comments')?></label>
             <textarea id="comments" name="comments"></textarea>
             
-            <input type="submit" id="report" name="btnSave" value="Enviar" />
+            <input type="submit" id="report" name="btnSave" value="<?=t('Send')?>" />
         </form>
+        
+        <? } ?>
         
     field;
     

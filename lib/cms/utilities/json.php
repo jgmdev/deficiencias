@@ -80,7 +80,7 @@ class Json
 	 * @param array $data
 	 * @return string
 	 */
-	function Encode($data)
+	public static function Encode($data)
 	{
 		$data = json_encode($data);
 
@@ -93,7 +93,7 @@ class Json
 	 * @param string $data Json encoded data.
 	 * @return array
 	 */
-	function Decode($data)
+	public static function Decode($data)
 	{
 		return json_decode($data, true);
 	}

@@ -17,6 +17,8 @@ class Reports
     {
         $db = \Cms\System::GetRelationalDatabase();
         
+        date_default_timezone_set('UTC');
+        
         $insert = new \Cms\DBAL\Query\Insert('deficiencies');
         $insert->Insert('type', $data->type, FieldType::INTEGER)
             ->Insert('latitude', $data->latitude, FieldType::REAL)
@@ -33,9 +35,12 @@ class Reports
             ->Insert('city', $data->address->city, FieldType::TEXT)
             ->Insert('country', $data->address->country, FieldType::TEXT)
             ->Insert('zipcode', $data->address->zipcode, FieldType::TEXT)
+            ->Insert('photo', $data->photo, FieldType::TEXT)
         ;
         
         $db->Insert($insert);
+        
+        return $db->LastInsertID();
     }
     
     public static function Edit($id, $data)
