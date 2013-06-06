@@ -16,7 +16,7 @@ class Towns
      * Gets a sorted array of towns.
      * @return array
      */
-    function GetAll()
+    public static function GetAll()
     {
         $pueblos['Humacao'] = "humacao";
         $pueblos['Caguas'] = "caguas";

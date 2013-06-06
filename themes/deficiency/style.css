@@ -104,6 +104,39 @@ table, td
     border-radius: 7px;
 }
 
+#reports
+{
+    margin-top: 20px;
+}
+
+#reports table tr
+{
+    border-top: dashed 1px #d3d3d3;
+}
+
+#reports table td
+{
+    padding: 7px 0 7px 0;
+}
+
+#reports .location
+{
+    display: block;
+    width: 20px;
+    height: 26px;
+    margin: 5px;
+    background: transparent url(images/location.png) no-repeat center;
+}
+
+#reports .confirm
+{
+    color: #fff;
+    background-color: #16A085;
+    display: block;
+    float: right;
+    padding: 7px;
+}
+
 label
 {
     font-weight: bold;
