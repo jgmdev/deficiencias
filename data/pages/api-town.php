@@ -21,21 +21,24 @@ row: 0
         
         foreach($data['results'][0]['address_components'] as $component)
         {
-            foreach($component['types'] as $type)
+            if(is_array($component['types']))
             {
-                if($type == 'administrative_area_level_1')
+                foreach($component['types'] as $type)
                 {
-                    $town = $uri = str_ireplace(
-                        array("á", "é", "í", "ó", "ú", "ä", "ë", "ï", "ö", "ü", "ñ",
-                        "Á", "É", "Í", "Ó", "Ú", "Ä", "Ë", "Ï", "Ö", "Ü", "Ñ"), 
-                        array("a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n",
-                        "a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n"), 
-                        $component['long_name']
-                    );
-                    
-                    $town = strtolower(str_replace(' ', '_', $town));
-                    print $town;
-                    break 2;
+                    if($type == 'administrative_area_level_1')
+                    {
+                        $town = $uri = str_ireplace(
+                            array("á", "é", "í", "ó", "ú", "ä", "ë", "ï", "ö", "ü", "ñ",
+                            "Á", "É", "Í", "Ó", "Ú", "Ä", "Ë", "Ï", "Ö", "Ü", "Ñ"), 
+                            array("a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n",
+                            "a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n"), 
+                            $component['long_name']
+                        );
+
+                        $town = strtolower(str_replace(' ', '_', $town));
+                        print $town;
+                        break 2;
+                    }
                 }
             }
         }
