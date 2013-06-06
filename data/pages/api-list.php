@@ -74,10 +74,13 @@ row: 0
             
             $db->CustomQuery("select * from deficiencies $where");
             
+            $cities = array_flip(Deficiencies\Towns::GetAll());
+            
             $reports = array();
             $reports_returned = 0;
             while($result = $db->FetchArray())
             {
+                $result['city'] = $cities[$result['city']];
                 $result['age'] = Cms\Utilities::GetTimeElapsed($result["report_timestamp"]);
                 $reports[] = $result;
                 $reports_returned++;
