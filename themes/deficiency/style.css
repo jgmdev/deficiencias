@@ -1,19 +1,19 @@
 body
 {
-	margin: 0 auto 0 auto;
-	background: transparent url(images/gradient-top.png) repeat-x left top;
+    margin: 0 auto 0 auto;
+    background: transparent url(images/gradient-top.png) repeat-x left top;
     min-width: 480px;
 }
 
 body *
 {
-	font:normal 14px tahoma, arial, helvetica, sans-serif;
+    font:normal 14px tahoma, arial, helvetica, sans-serif;
     text-align: left;
 }
 
 h1, h2 ,h3
 {
-	color: #004c60;
+    color: #004c60;
 }
 
 h1{ font-size: 32px; color: #2980B9;}
@@ -32,15 +32,15 @@ strong
 
 table
 {
-	width: 100%;
+    width: 100%;
 }
 
 table, td
 {
-	border: 0;
-	border-collapse: collapse;
-	border-spacing: 0;
-	padding: 0;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0;
 }
 
 #main-container
