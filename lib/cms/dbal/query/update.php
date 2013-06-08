@@ -9,43 +9,56 @@ namespace Cms\DBAL\Query;
 use Cms\DBAL\DataSource;
 use Cms\Enumerations\FieldType;
 
-class Select
+class Update
 {
     public $table;
     public $columns;
-    public $all;
+    public $increments;
+    public $decrements;
     public $where;
-    public $limit;
-    public $order_by;
     
     public function __construct($table)
     {
         $this->table = $table;
         $this->columns = array();
+        $this->increments = array();
+        $this->decrements = array();
         $this->where = array();
-        $this->order_by = array();
         
         return $this;
     }
     
-    public function Select($column)
+    /**
+     * Update a column on a table
+     * @param string $column
+     * @param string $value
+     * @param \Cms\Enumerations\FieldType $type
+     * @return \Cms\DBAL\Query\Update
+     */
+    public function Update($column, $value, $type)
     {
-        if(!$this->all)
-            $this->columns[] = $column;
-        else
-            throw new \Exception(t("All columns already selected."));
+        $this->CheckColumnNotSet($column);
+        
+        $this->columns[$column] = array(
+            'value'=>$value,
+            'type'=>$type
+        );
         
         return $this;
     }
     
-    public function SelectAll()
+    public function Increment($column, $value=1)
     {
-        if(count($this->columns) == 0)
-            $this->all = true;
-        else
-            throw new \Exception(t("Select all not allowed if columns where previously selected."));
+        $this->CheckColumnNotSet($column);
         
-        return $this;
+        $this->increments[$column] = $value;
+    }
+    
+    public function Decrement($column, $value=1)
+    {
+        $this->CheckColumnNotSet($column);
+        
+        $this->decrements[$column] = $value;
     }
     
     public function WhereEqual($column, $value, $type)
@@ -96,13 +109,6 @@ class Select
         return $this;
     }
     
-    public function Limit($from, $to)
-    {
-        $this->limit = array($from, $to);
-        
-        return $this;
-    }
-    
     /**
      * Generates the sql code to create a table depending on database type.
      * @param string $type One of the constants from \Cms\DBAL\DataSource
@@ -124,14 +130,52 @@ class Select
     
     private function GetSQLiteSQL()
     {
-        $sql = 'select ';
+        $sql = 'update ';
         
-        if($this->all)
-            $sql .= '*';
-        else
-            $sql .= implode(',', $this->columns);
+        $sql .= $this->table . ' set ';
         
-        $sql .= ' from ' . $this->table;
+        if(count($this->columns) > 0)
+        {
+            foreach($this->columns as $name=>$data)
+            {
+                switch($data['type'])
+                {
+                    case FieldType::BOOLEAN:
+                        $sql .= $name . '=' .($data["value"]?1:0) . ', ';
+                        break;
+
+                    case FieldType::INTEGER:
+                        $sql .= $name . '=' . intval($data["value"]) . ', ';
+                        break;
+
+                    case FieldType::REAL:
+                        $sql .= $name . '=' . doubleval($data["value"]) . ', ';
+                        break;
+
+                    case FieldType::TEXT:
+                        $sql .= $name . '=' . "'" . str_replace("'", "''", $data["value"])."', ";
+                        break;
+                }
+            }
+        }
+        
+        if(count($this->increments) > 0)
+        {
+            foreach($this->increments as $name=>$value)
+            {
+                $sql .= "$name=$name+" . intval($value);
+            }
+        }
+        
+        if(count($this->decrements) > 0)
+        {
+            foreach($this->decrements as $name=>$value)
+            {
+                $sql .= "$name=$name-" . intval($value);
+            }
+        }
+        
+        $sql = rtrim($sql, ', ');
         
         if(count($this->where) > 0)
         {
@@ -148,7 +192,7 @@ class Select
                         break;
 
                     case FieldType::INTEGER:
-                        $sql .= intval($where["value"]) . ' and ';
+                        $sql .= $sql .= intval($where["value"]) . ' and ';
                         break;
 
                     case FieldType::REAL:
@@ -164,11 +208,6 @@ class Select
             $sql = rtrim($sql, 'and ');
         }
         
-        if(count($this->limit) > 0)
-        {
-            $sql .= ' limit ' . $this->limit[0] . ',' . $this->limit[1];
-        }
-        
         return $sql;
     }
     
@@ -180,6 +219,16 @@ class Select
     private function GetPostgreSQL()
     {
         throw new Exception('Not implemented');
+    }
+    
+    private function CheckColumnNotSet($column)
+    {
+        if(
+            isset($this->columns[$column]) ||
+            isset($this->increments[$column]) ||
+            isset($this->decrements[$column])
+        )
+            throw new \Exception(t('The column was already assigned.'));
     }
 }
 ?>

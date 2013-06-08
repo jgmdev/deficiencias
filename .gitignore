@@ -1,1 +1,6 @@
-/nbproject/private/
+nbproject/private/
+data/sqlite/deficiencies
+data/sqlite/geocodes
+def_images/*.png
+def_images/*.jpg
+def_images/*.gif
