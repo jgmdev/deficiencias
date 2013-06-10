@@ -12,16 +12,18 @@ row: 0
             
             if(!($data = \Deficiencies\Reports::GetData($_REQUEST['id'])))
                 \Cms\Uri::Go('');
+            
+            $cities = array_flip(Deficiencies\Towns::GetAll());
         ?>
-    
+        
         <script>
         $(document).ready(function(){
             $('#deficiency-view .map').gmap3({
                 map:{
                     options:{
                         center:[<?=$data['latitude']?>,<?=$data['longitude']?>],
-                        zoom:50,
-                        mapTypeId: google.maps.MapTypeId.HYBRID,
+                        zoom:15,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
                         mapTypeControl: true,
                         mapTypeControlOptions: {
                             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -51,20 +53,29 @@ row: 0
                     </td>
                 </tr>
             </table>
-
-            <div class="map" style="height: 300px"></div>
             
-            <h3>Dirección</h3>
-            <p><?=$data['line1']?>, <?=$data['city']?>, Puerto Rico, <?=$data['zipcode']?></p>
+            <div class="map-container">
+                <div class="map" style="height: 275px"></div>
+            </div>
             
-            <h3>Latitude</h3>
-            <p><?=$data['latitude']?></p>
-            
-            <h3>Longitude</h3>
-            <p><?=$data['longitude']?></p>
+            <div class="address-icon"></div>
+            <p><span class="address-line"><?=$data['line1']?></span><br /> 
+            <span class="address-city"><?=$cities[$data['city']]?>, Puerto Rico <?=$data['zipcode']?></span></p>
+           
+            <div style="border-top: dotted 1px #d4d4d4; border-bottom: dotted 1px #d4d4d4; padding: 5px;">
+                <div style="float:left; margin-right: 50px;">
+                    <h3><?=t('Latitude')?></h3>
+                    <p class="address-info"><?=$data['latitude']?></p>
+                </div>
+                <div style="float:left; margin-left: 50px"> 
+                    <h3><?=t('Longitude')?></h3>
+                    <p class="address-info"><?=$data['longitude']?></p>
+                </div>
+                <div style="clear:both"></div>
+            </div>
             
             <h3>Comentario</h3>
-            <p><?=$data['comments']?></p>
+            <p class="report-comment"><?=$data['comments']?></p>
         
         </div>
     field;

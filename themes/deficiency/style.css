@@ -12,12 +12,12 @@ body *
 
 h1, h2 ,h3
 {
-    color: #004c60;
+    color: #333;
 }
 
 h1{ font-size: 32px; color: #2980B9;}
 h2{ font-size: 22px; }
-h3{ font-size: 18px; }
+h3{ font-size: 18px; font-weight: bold; padding: 3px; margin: 0;}
 
 a{ color: #00576d; text-decoration: none; }
 a:hover{ color: #e88c00; }
@@ -73,8 +73,9 @@ table, td
     margin: 0;
     height: 40px;
     margin-left: 5px;
-    border-left: solid 3px #99ccff;
+    border-left: solid 3px #468EBE;
     padding-left: 10px;
+    font-size: 28px;
 }
 
 #main-container
@@ -134,7 +135,7 @@ table, td
     display: none;
     font-size: 18px;
     font-weight: bold;
-    padding: 7px;
+    padding: 10px 7px 10px 7px;
     color: #fff;
     cursor: pointer;
     text-align: center;
@@ -204,7 +205,10 @@ table, td
     background-color: #16A085;
     display: block;
     float: right;
-    padding: 7px;
+    padding: 15px 10px 15px 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 4px;
 }
 
 #navigation
@@ -228,11 +232,12 @@ table, td
 #navigation .previous a, #navigation .next a
 {
     display: block;
-    padding: 7px;
-    background-color: #D5D5D5;
-    color: #34495E;
+    padding: 15px 10px 15px 10px;
+    background-color: #D9D9D9;
+    color: #2C3D4E;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     
     border-radius: 7px;
@@ -248,9 +253,20 @@ table, td
     float: right;
 }
 
+#deficiency-view .icon
+{
+    background: transparent url(images/deficiency-icon.png) no-repeat center;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px 5px 5px;
+    padding-right: 10px;
+    
+}
+
 #deficiency-view .type
 {
     font-size: 18px;
+    font-weight: bold;
 }
 
 #deficiency-view .time-elapsed
@@ -266,14 +282,37 @@ table, td
     background-color: #16A085;
     display: block;
     float: right;
-    padding: 7px;
+    padding: 15px 10px 15px 10px;
     font-size: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+#deficiency-view .map-container
+{
+    margin-top: 20px;
+    border: solid 1px #d4d4d4;
+    padding: 5px;
+}
+
+#deficiency-view .address-icon
+{
+    background: transparent url(images/location.png) no-repeat center;
+    width: 40px;
+    height: 40px;
+    padding: 25px 7px 0 0;
+    float: left; 
+}
+
+#deficiency-view .address-line
+{
+    font-size: 18px;
     font-weight: bold;
 }
 
-#deficiency-view .map
+#deficiency-view .address-city, #deficiency-view .address-info, #deficiency-view .report-comment
 {
-    margin-top: 20px;
+    font-size: 16px;
 }
 
 label
