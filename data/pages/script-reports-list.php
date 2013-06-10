@@ -149,7 +149,7 @@ row: 0
                     }
                         
                     
-                    html += '<td>';
+                    html += '<td class="confirms" style="display: none">';
                     html += '<a data-id="'+report.id+'" class="confirm" href="reports/confirm?id='+report.id+'">Confirmar</a>';
                     html +='</td>';
                     
@@ -200,6 +200,10 @@ row: 0
                             LoadAll();
                     });
                 }  
+                
+                if($(window).innerWidth() > 470){
+                    $('.confirms').show();
+                }
             }
         }
         
@@ -282,6 +286,14 @@ row: 0
                     LoadAll();
             });
             
+            $(window).resize(function(){
+                if($(window).innerWidth() > 470){
+                    $('.confirms').show();
+                }
+                else{
+                    $('.confirms').hide();
+                }
+            });
             
         });
     field;

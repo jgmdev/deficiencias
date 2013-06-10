@@ -8,7 +8,7 @@
 $mobile_detect = new Cms\MobileDetect();
 if($mobile_detect->isMobile()){
 ?>
-<meta name="viewport" content="width=490px, user-scalable=yes, initial-scale=0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <?php } ?>
 <?=$styles?>
 <?=$scripts?>
@@ -20,22 +20,45 @@ $(document).ready(function(){
 });
 </script>
 <?php } ?>
+<script>
+$(document).ready(function(){
+    var header_resize;
+    $(window).resize(function(){
+        header_resize = setTimeout(
+            function(){
+                $('#header-menu').width($(window).width());
+                
+                $('#header-menu .container').width(
+                    $('#header-menu').width() - parseInt(
+                        $('#header-menu .container').css('padding-left') + 
+                        $('#header-menu .container').css('padding-right') - 5
+                    )
+                );
+                clearInterval(header_resize);
+            },
+            200
+        );
+    });
+});
+</script>
 </head>
 
 
 <body>
 
 <div id="header-menu" style="<?=$mobile_detect->isMobile()?'position: fixed; top: 0':''?>">
-    <a title="home" class="home" href="<?=$base_url?>">
-        <img src="<?=$theme_url?>/images/home.png" />
-    </a>
-    
-    <h1><?=$content_title?></h1>
-    
-    <a title="add report" class="add-report" href="<?=$base_url?>/reports/add">
-        <img src="<?=$theme_url?>/images/add-deficiency.png" />
-    </a>
-    <div style="clear: both"></div>
+    <div class="container">
+	<a title="home" class="home" href="<?=$base_url?>">
+	    <img src="<?=$theme_url?>/images/home.png" />
+	</a>
+	
+	<h1><?=$content_title?></h1>
+	
+	<a title="add report" class="add-report" href="<?=$base_url?>/reports/add">
+	    <img src="<?=$theme_url?>/images/add-deficiency.png" />
+	</a>
+	<div style="clear: both"></div>
+    </div>
 </div>
     
 <div id="main-container" style="<?=$mobile_detect->isMobile()?'':'margin-top: 0;'?>">

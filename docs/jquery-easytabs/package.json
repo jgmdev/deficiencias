@@ -1,0 +1,54 @@
+{
+  "name": "EasyTabs",
+  "description": "The jQuery EasyTabs plugin handles all of the functionality of tabs and none of the styling.",
+  "version": "3.2.0",
+  "keywords": [
+    "tabs"
+  ],
+  "maintainers": [
+    {
+      "name": "Steve Schwartz",
+      "email": "steve@alfajango.com",
+      "web": "http://www.alfajango.com/blog"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Steve Schwartz",
+      "email": "steve@alfajango.com",
+      "web": "http://www.alfajango.com/blog"
+    }
+  ],
+  "dependencies": {
+    "jquery": ["1.4.3","1.5","1.6","1.7"]
+  },
+  "optionalDependencies": {
+    "hashchange": "",
+    "address": ""
+  },
+  "demos": [
+    "/examples/demo.html"
+  ],
+  "bugs": {
+    "mail": "support@alfajango.com",
+    "web": "https://github.com/jangosteve/jquery-easytabs/issues"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/jangosteve/jquery-easytabs.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    {
+      "name": "GPL",
+      "url": "http://www.gnu.org/licenses/gpl.html"
+    }
+  ],
+  "homepage": "http://www.alfajango.com/blog/jquery-easytabs-plugin/",
+  "main": "/lib/jquery.easytabs.min.js"
+}

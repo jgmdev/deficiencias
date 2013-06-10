@@ -2,7 +2,7 @@
 
 row: 0
     field: title
-        <?=t('Problem Report')?>
+        <?=t('Add Report')?>
     field;
     
     field: content

@@ -2,7 +2,6 @@ body
 {
     margin: 0 auto 0 auto;
     background: transparent url(images/gradient-top.png) repeat-x left top;
-    min-width: 480px;
 }
 
 body *
@@ -45,11 +44,15 @@ table, td
 
 #header-menu
 {
-    width: 480px;
+    width: 100%;
     margin: 0 auto 0 auto;
     background-color: #2980b9;
-    height: 40px;
-    padding: 5px;
+    z-index: 10000;
+}
+
+#header-menu .container
+{
+    padding: 10px;
 }
 
 #header-menu .home
@@ -76,23 +79,15 @@ table, td
 
 #main-container
 {
-    width: 480px;
     margin: 0 auto 0 auto;
     border: solid 1px #d3d3d3;
     padding: 20px 5px 20px 5px;
-    margin-top: 50px;
+    margin-top: 60px;
 }
 
 #header .logo
 {
     text-align: center;
-    width: 50%;
-}
-
-#header .descripcion
-{
-    padding: 0 0 0 20px;
-    vertical-align: middle;
     width: 50%;
 }
 
@@ -118,7 +113,7 @@ table, td
 
 #content .center
 {
-    padding: 0 30px 30px 30px;
+    padding-bottom: 30px;
 }
 
 .filter .town
