@@ -1,7 +1,7 @@
-hoyos
-=====
+Sistema de Reporte de Deficiencias en las Carreteras de Pueto Rico
+==================================================================
 
-Aplicación web con interfaz móvil que los ciudadanos puedan utilizar para reportar los hoyos en la carretera con sus coordenadas de ubicación, asistiendo y agilizando el proceso de reparación por las agencias pertinentes.
+Aplicación web con interfaz móvil que los ciudadanos puedan utilizar para reportar deficiencias en las carreteras como lo son los hoyos con sus coordenadas de ubicación, asistiendo y agilizando el proceso de reparación por las agencias pertinentes.
 
 # Inspiración
 
@@ -15,11 +15,11 @@ Al otro día llevo mi auto a cambiar la goma para descubrir que también las sus
 
 La aplicación hará uso de las nuevas tecnologías proveídas por el estándar de HTML5 además de librerías JavaScript para su visualización y el lenguaje PHP para el procesamiento de datos.
 
-Cuando el ciudadano abra la aplicación la misma detectará si su dispositivo soporta el API de "GeoLocation", de soportarlo utilizará las coordenadas reportadas por el mismo para el reporte del hoyo, de no soportarlo el ciudadano podrá entrar la dirección donde se ubica el hoyo así como compartir foto del mismo de manera opcional.
+Cuando el ciudadano abra la aplicación la misma detectará si su dispositivo soporta el API de "GeoLocation", de soportarlo utilizará las coordenadas reportadas por el mismo para el reporte de la deficiencia, de no soportarlo el ciudadano podrá entrar la dirección donde se ubica la deficiencia así como compartir foto de la misma de manera opcional.
 
-Otros ciudadanos que reporten un hoyo en las cercanías podrán escoger de un listado de hoyos pre-existentes para votar por ellos en vez de duplicar el reporte.
+Otros ciudadanos que reporten un deficiencias en las cercanías podrán escoger de un listado pre-existentes para votar por ellos en vez de duplicar el reporte.
 
-El Departamento de Transportación y Obras Públicas (DTOP) podrá ver un listado de hoyos recientes además de tener la opción de filtrarlos por pueblo, hoyos más votados y subscribirse a notificaciones por correo electrónico de nuevos hoyos por pueblo. Además DTOP podrá modificar el estatus del hoyo a reparado.
+El Departamento de Transportación y Obras Públicas (DTOP) podrá ver un listado de deficiencias recientes además de tener la opción de filtrarlos por pueblo, más votados y subscribirse a notificaciones por correo electrónico de nuevas deficiencias por pueblo. Además DTOP podrá modificar el estatus de la deficiencia a reparado.
 
 ## Herramientas a utilizar
 
