@@ -39,6 +39,13 @@ $(document).ready(function(){
             200
         );
     });
+    
+    $('*').bind('touchstart touchend', function(e) {
+        var that = this;
+        this.onclick = function() {
+            that.onhover.call(that);
+        };
+    });
 });
 </script>
 </head>

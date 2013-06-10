@@ -2,7 +2,7 @@
 
 row: 0
     field: title
-        SIRDE Inicio
+        SIRDE
     field;
     
     field: content

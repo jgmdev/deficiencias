@@ -158,6 +158,11 @@ table, td
     border-top: dashed 1px #d3d3d3;
 }
 
+#reports .list tr:hover, #reports .list tr:active
+{
+    background-color: #e8e8e8;
+}
+
 #reports .list td
 {
     padding: 7px 0 7px 0;

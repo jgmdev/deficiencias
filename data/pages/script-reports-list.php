@@ -106,7 +106,7 @@ row: 0
                 {
                     var report = data.reports[prop];
  
-                    html += '<tr>';
+                    html += '<tr data-id="'+report.id+'" class="row">';
                     
                     var style='background: transparent url(themes/deficiency/images/location.png) no-repeat center;';
                     
@@ -204,6 +204,10 @@ row: 0
                 if($(window).innerWidth() > 470){
                     $('.confirms').show();
                 }
+                
+                $('.row').click(function(){
+                   location.href = 'reports/view?id=' +  $(this).attr('data-id');
+                });
             }
         }
         
