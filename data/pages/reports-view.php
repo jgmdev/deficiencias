@@ -62,6 +62,9 @@ row: 0
             
             <h3>Longitude</h3>
             <p><?=$data['longitude']?></p>
+            
+            <h3>Comentario</h3>
+            <p><?=$data['comments']?></p>
         
         </div>
     field;
