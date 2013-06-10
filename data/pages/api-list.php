@@ -12,6 +12,9 @@ row: 0
             
             $page = intval($_REQUEST['page']);
             
+            if($page == 0)
+                $page = 1;
+            
             $amount = 5;
             if(strlen(trim($_REQUEST['amount'])) > 0)
             {
@@ -21,58 +24,69 @@ row: 0
                     $amount = $_REQUEST['amount'];
             }
             
-            $where = '';
+            $by_city = false;
+            
+            $select = new Cms\DBAL\Query\Select('deficiencies');
+            $select->SelectAll();
+            
+            $select_count = new Cms\DBAL\Query\Count('deficiencies', 'id', 'reports_count');
             
             if(trim($_REQUEST['city']))
             {
-                $where .= "city='".str_replace("'", "''", $_REQUEST['city'])."' and ";
+                $by_city = true;
+                
+                $select->WhereEqual('city', $_REQUEST['city'], FieldType::TEXT);
+                $select_count->WhereEqual('city', $_REQUEST['city'], FieldType::TEXT);
             }
             
             if(strlen(trim($_REQUEST['type'])) > 0)
             {
-                $where .= "type=".intval($_REQUEST['type'])." and ";
+                $select->WhereEqual('type', $_REQUEST['type'], FieldType::INTEGER);
+                $select_count->WhereEqual('type', $_REQUEST['type'], FieldType::INTEGER);
             }
             
-            if($where == '')
+            if(!$by_city)
             {
-                if(trim($_REQUEST['lon']))
+                if(trim($_REQUEST['lon']) && trim($_REQUEST['lat']))
                 {
-                    $where .= "longitude=".doubleval($_REQUEST['lon'])." and ";
-                }
-                
-                if(trim($_REQUEST['lat']))
-                {
-                    $where .= "latitude=".doubleval($_REQUEST['lat'])." and ";
+                    $sum = doubleval($_REQUEST['lat']) + doubleval($_REQUEST['lon']);
+                    
+                    $select->OrderByCustom("abs((latitude+longitude)-($sum))");
                 }
             }
-            
-            if($where)
+            else
             {
-                $where = 'where ' . rtrim($where, ' and');
+                $select->OrderBy('report_timestamp', \Cms\Enumerations\Sort::DESCENDING);
             }
-            
-            $db = \Cms\System::GetRelationalDatabase();
             
             $limit_start = 0;
             
-            if(($page + 1) > 1)
-                $limit_start = ($page+1) * $amount;
+            if($page > 1)
+                $limit_start = $page * $amount;
             
-            $db->CustomQuery("select count(id) as reports_count from deficiencies $where limit $limit_start,$amount");
+            $select->Limit($limit_start, $amount);
+            
+            $db = \Cms\System::GetRelationalDatabase();
+            
+            //Count results
+            $db->Count($select_count);
             
             $result = $db->Fetch();
             
             $count = $result['reports_count'];
             
+            //Calculate pages
             $pages = 1;
             
-            if($amount < $pages)
+            if($amount < $count)
             {
-                $pages = ceil($count / $amount);
+                $pages = floor($count / $amount);
             }
             
+            //Return results
+            //print $select->GetSQL(\Cms\DBAL\DataSource::SQLITE);
             
-            $db->CustomQuery("select * from deficiencies $where");
+            $db->Select($select);
             
             $cities = array_flip(Deficiencies\Towns::GetAll());
             
@@ -84,13 +98,14 @@ row: 0
                 $result['age'] = Cms\Utilities::GetTimeElapsed($result["report_timestamp"]);
                 $result['type_str'] = Deficiencies\DeficiencyTypes::getType($result['type']);
                 $reports[] = $result;
+                
                 $reports_returned++;
             }
             
             $output = array(
                 'reports'=>$reports,
                 'stats'=>array(
-                    'current_page'=>$page+1,
+                    'current_page'=>$page,
                     'total_reports'=>$count,
                     'total_pages'=>$pages,
                     'amount_returned'=>$reports_returned,

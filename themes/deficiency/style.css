@@ -81,17 +81,7 @@ table, td
     width: 50%;
 }
 
-.filter select
-{
-    width: 100%;
-    border: solid 2px #d3d3d3;
-    background-color: #fff;
-    color: #000;
-    height: 40px;
-    font-size: 30px;
-}
-
-.filter .add-button
+.filter .add-button, .filter .monitor-button
 {
     background-color: #d35400;
     display: block;
@@ -100,8 +90,14 @@ table, td
     padding: 7px;
     color: #fff;
     float: right;
+    cursor: pointer;
     
     border-radius: 7px;
+}
+
+.filter .monitor-button
+{
+    float: left;
 }
 
 #reports
@@ -109,12 +105,17 @@ table, td
     margin-top: 20px;
 }
 
-#reports table tr
+#reports .list-container
+{
+    min-height: 300px;
+}
+
+#reports .list tr
 {
     border-top: dashed 1px #d3d3d3;
 }
 
-#reports table td
+#reports .list td
 {
     padding: 7px 0 7px 0;
 }
@@ -128,6 +129,23 @@ table, td
     background: transparent url(images/location.png) no-repeat center;
 }
 
+#reports .route
+{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#reports .city
+{
+    font-size: 12px;
+}
+
+#reports .type
+{
+    color: #808080;
+    font-size: 12px;
+}
+
 #reports .confirm
 {
     color: #fff;
@@ -135,6 +153,46 @@ table, td
     display: block;
     float: right;
     padding: 7px;
+}
+
+#navigation
+{
+    margin-top: 20px;
+}
+
+#navigation .pages
+{
+    text-align: center;
+    color: #545454;
+    width: 25%;
+}
+
+#navigation .previous, #navigation .next
+{
+    width: 37.5%;
+}
+
+#navigation .previous a, #navigation .next a
+{
+    display: block;
+    padding: 7px;
+    background-color: #D5D5D5;
+    color: #34495E;
+    text-transform: uppercase;
+    font-size: 18px;
+    cursor: pointer;
+    
+    border-radius: 7px;
+}
+
+#navigation .previous a
+{
+    float: left;
+}
+
+#navigation .next a
+{
+    float: right;
 }
 
 label
@@ -166,6 +224,11 @@ input[type=text]:focus, input[type=file]:focus, select:focus, textarea:focus
 textarea
 {
     height: 150px;
+}
+
+input[type=file]
+{
+    height: 45px;
 }
 
 input[type=submit]

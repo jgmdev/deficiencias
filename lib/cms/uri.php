@@ -130,18 +130,21 @@ class Uri
 
         $uri= strtolower($uri);
 
-        // only take alphanumerical characters, but keep the spaces and dashes
+        // only take alphanumerical characters, but keep the spaces, dots and dashes
         if(!$allow_slashes)
-            $uri= preg_replace('/[^a-zA-Z0-9 -]/', '', $uri );
+            $uri= preg_replace('/[^a-zA-Z0-9\. -]/', '', $uri );
 
-        // only take alphanumerical characters, but keep the spaces, dashes and slashes
+        // only take alphanumerical characters, but keep the spaces, dots, dashes and slashes
         else
-            $uri= preg_replace('/[^a-zA-Z0-9 -\/]/', '', $uri );
+            $uri= preg_replace('/[^a-zA-Z0-9\. -\/]/', '', $uri );
 
         $uri= str_replace(' ', '-', $uri);
 
         //Replace consecutive dashes by a single one
         $uri = preg_replace('/([-]+)/', '-', $uri);
+        
+        //Replace consecutive dots by a single one
+        $uri = preg_replace('/([\.]+)/', '.', $uri);
 
         return $uri;
     }

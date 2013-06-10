@@ -6,15 +6,6 @@ row: 0
     field;
     
     field: content
-        <?php 
-            Cms\Theme::AddStyle("styles/jquery.loadmask.css");
-            
-            Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
-            Cms\Theme::AddScript('scripts/jquery.geolocation.js');
-            Cms\Theme::AddScript("scripts/jquery.loadmask.js");
-            Cms\Theme::AddScript('script/reports/add');
-        ?>
-    
         <?php
             if(isset($_REQUEST["btnSave"]))
             {
@@ -42,24 +33,44 @@ row: 0
                     $deficiency->address->zipcode = $_REQUEST["zip"];
                     $deficiency->address->city = $_REQUEST["city"];
                     $deficiency->address->country = 'Puerto Rico';
-
-                    if ($has_photo) {
-                        $photo_dir = './def_images/def_photo' . time() . strrchr($photo['name'], '.');
-                        move_uploaded_file($photo['tmp_name'], $photo_dir);
-                        
-                        $deficiency->photo = $photo_dir;
-                    } else {
-                        $deficiency->photo = null;
+                    
+                    if(\Deficiencies\Reports::Exists($deficiency))
+                    {
+                        Cms\Theme::AddMessage(
+                            t('This deficiency has already been report.'), 
+                            Cms\Enumerations\MessageType::ERROR
+                        );
                     }
-                    
-                    $id = \Deficiencies\Reports::Add($deficiency);
-                    
-                    Cms\Theme::AddMessage(sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id));
+                    else
+                    {
+                        if ($has_photo) {
+                            $photo_dir = './def_images/def_photo' . time() . strrchr($photo['name'], '.');
+                            move_uploaded_file($photo['tmp_name'], $photo_dir);
+
+                            $deficiency->photo = $photo_dir;
+                        } else {
+                            $deficiency->photo = null;
+                        }
+
+                        $id = \Deficiencies\Reports::Add($deficiency);
+
+                        Cms\Theme::AddMessage(sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id));
+                    }
                 } else {
                     Cms\Theme::AddMessage(t('A valid file is an image with max file size of 2MB.'));
                 }
                 
             } else {
+                
+                Cms\Theme::AddStyle("styles/jquery.loadmask.css");
+            
+                Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
+                Cms\Theme::AddScript('scripts/jquery.geolocation.js');
+                Cms\Theme::AddScript("scripts/jquery.loadmask.js");
+                Cms\Theme::AddScript('scripts/jquery.timer.js');
+                Cms\Theme::AddScript('http://maps.google.com/maps/api/js?sensor=false&amp;language=en');
+                Cms\Theme::AddScript('scripts/jquery.gmap3.js');
+                Cms\Theme::AddScript('script/reports/add');
         ?>
     
         <form method="post" action="<?=\Cms\Uri::GetUrl('reports/add')?>" enctype="multipart/form-data">
@@ -81,7 +92,7 @@ row: 0
             <input type="text" readonly="readonly" id="lon" name="lon" />
             </div>
             
-            <div id="address" style="display: none">
+            <div id="address-container" style="display: none">
             <label for="address"><?=t('Physical Address')?></label>
             <textarea id="address" name="address"></textarea>
             

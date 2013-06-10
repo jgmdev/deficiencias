@@ -143,6 +143,18 @@ class DataBase
         return false;
     }
     
+    public function Count(\Cms\DBAL\Query\Count $select)
+    {
+        $this->VerifyIsConnected();
+        
+        $this->pdo_statement = $this->pdo->query($select->GetSQL($this->type));
+        
+        if($this->pdo_statement)
+            return true;
+        
+        return false;
+    }
+    
     public function CustomExec($sql)
     {
         $this->VerifyIsConnected();

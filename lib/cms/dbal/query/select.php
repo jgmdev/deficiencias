@@ -96,6 +96,44 @@ class Select
         return $this;
     }
     
+    public function WhereCustom($statement)
+    {
+        $this->where[] = array(
+            'value'=>$statement,
+            'type'=>'custom',
+        );
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param string $column
+     * @param integer $sort @see \Cms\Enumerations\Sort
+     * @return \Cms\DBAL\Query\Select
+     */
+    public function OrderBy($column, $sort=\Cms\Enumerations\Sort::ASCENDING)
+    {
+        $this->order_by[] = array(
+            'column'=>$column,
+            'sort'=>$sort,
+            'custom'=>false
+        );
+        
+        return $this;
+    }
+    
+    public function OrderByCustom($statement, $sort=\Cms\Enumerations\Sort::ASCENDING)
+    {
+        $this->order_by[] = array(
+            'statement'=>$statement,
+            'sort'=>$sort,
+            'custom'=>true
+        );
+        
+        return $this;
+    }
+    
     public function Limit($from, $to)
     {
         $this->limit = array($from, $to);
@@ -139,6 +177,12 @@ class Select
             
             foreach($this->where as $where)
             {
+                if($where['type'] == 'custom')
+                {
+                    $sql .= $where["value"] . ' ';
+                    continue;
+                }
+                
                 $sql .= $where["column"] . ' ' . $where['op'] . ' ';
                 
                 switch($where['type'])
@@ -162,6 +206,31 @@ class Select
             }
             
             $sql = rtrim($sql, 'and ');
+        }
+        
+        if(count($this->order_by) > 0)
+        {
+            $sql .= ' order by ';
+            
+            foreach($this->order_by as $order)
+            {
+                if($order['custom'])
+                {
+                    $sql .= $order["statement"] . ' ';
+                    continue;
+                }
+                else
+                {
+                    $sql .= $order["column"] . ' ';
+                }
+                
+                if($order["sort"] == \Cms\Enumerations\Sort::ASCENDING)
+                    $sql .= 'asc, ';
+                else
+                    $sql .= 'desc, ';
+            }
+            
+            $sql = rtrim($sql, ', ');
         }
         
         if(count($this->limit) > 0)

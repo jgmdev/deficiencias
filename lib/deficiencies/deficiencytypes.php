@@ -20,12 +20,12 @@ class DeficiencyTypes
     
     public static function getAll() {
         $def_types = array(
-                            self::HOLE => t('Hole'),
-                            self::WATER_TUBE => t('Water tube'),
-                            self::SIGNAL_LIGHT => t('Signal light'),
-                            self::COLLAPSE => t('Collapse'),
-                            self::POWER_LINE => t('Power line')
-                            );
+            self::HOLE => t('Hole'),
+            self::WATER_TUBE => t('Water tube'),
+            self::SIGNAL_LIGHT => t('Signal light'),
+            self::COLLAPSE => t('Collapse'),
+            self::POWER_LINE => t('Power line')
+        );
         
         return $def_types;
     }

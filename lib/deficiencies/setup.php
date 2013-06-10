@@ -34,11 +34,11 @@ class Setup
             ->AddIntegerField('report_month')
             ->AddIntegerField('report_year')
             ->AddIntegerField('last_update')
-            ->AddIntegerField('line1')
-            ->AddIntegerField('line2')
-            ->AddIntegerField('zipcode')
-            ->AddIntegerField('city')
-            ->AddIntegerField('country')
+            ->AddTextField('line1')
+            ->AddTextField('line2')
+            ->AddTextField('zipcode')
+            ->AddTextField('city')
+            ->AddTextField('country')
             ->AddPrimaryKey('id')
         ;
         

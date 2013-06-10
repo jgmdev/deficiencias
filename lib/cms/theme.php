@@ -287,6 +287,25 @@ class Theme
         $content_title = $page->title;
         $content = self::ThemeContent($page);
         
+        //Set adequate content type and enconding
+        switch($page->rendering_mode)
+        {
+            case Enumerations\PageRenderingMode::API:
+                header('Content-Type: text/plain; charset=utf-8');
+                break;
+            
+            case Enumerations\PageRenderingMode::JAVASCRIPT:
+                header('Content-Type: text/javascript; charset=utf-8');
+                break;
+            
+            case Enumerations\PageRenderingMode::STYLE:
+                header('Content-Type: text/css; charset=utf-8');
+                break;
+            
+            defaul:
+                header('Content-Type: text/html; charset=utf-8');
+        }
+        
         if($page->rendering_mode && $page->rendering_mode != Enumerations\PageRenderingMode::NORMAL)
         {
             print $content;

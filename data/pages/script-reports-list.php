@@ -8,10 +8,12 @@ row: 0
     
     field: content
         //<script>
+        var page = 0;
         var cityVal = '';
         var typeVal = '';
         var lonVal = '';
         var latVal = '';
+        var watch = false;
         
         function LoadAll()
         {
@@ -20,7 +22,8 @@ row: 0
                 {
                     data: {
                         city: cityVal, 
-                        type: typeVal
+                        type: typeVal,
+                        page: page
                     },
                     dataType: 'json',
                     complete: function(data, message){
@@ -38,7 +41,8 @@ row: 0
                     data: {
                         lon: lonVal, 
                         lat: latVal,
-                        type: typeVal
+                        type: typeVal,
+                        page: page
                     },
                     dataType: 'json',
                     complete: function(data, message){
@@ -48,8 +52,46 @@ row: 0
             );
         }
         
+        function GetDistance(lat, lon, element)
+        {
+            $('body').gmap3({
+                getdistance:{
+                    options:{
+                        origins:[[latVal, lonVal]],
+                        destinations:[[lat, lon]],
+                        travelMode: google.maps.TravelMode.DRIVING
+                    },
+                    callback: function(results, status){
+                        var html = "";
+                        if (results){
+                            for (var i = 0; i < results.rows.length; i++){
+                                var elements = results.rows[i].elements;
+                                for(var j=0; j<elements.length; j++){
+                                    switch(elements[j].status){
+                                        case "OK":
+                                            html += elements[j].distance.text + " (" + elements[j].duration.text + ")<br />";
+                                            break;
+                                        case "NOT_FOUND":
+                                        case "ZERO_RESULTS":
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        //Wait until element is created
+                        while($(element).lenght <= 0){}
+                        
+                        $(element).html(html);
+                    }
+                }
+            });
+        }
+        
         function GenerateResults(data)
         {
+            cityVal = $('#city').val();
+            
             var html = '';
             
             $('#reports').html('');
@@ -58,31 +100,84 @@ row: 0
             
             if(data.stats.amount_returned > 0)
             {
-                html += '<table>';
+                html += '<div class="list-container">';
+                html += '<table class="list">';
                 for(prop in data.reports)
                 {
                     var report = data.reports[prop];
  
                     html += '<tr>';
                     
-                    html += '<td><a class="location"></a></td>';
+                    html += '<td><a class="location" href="reports/view?id='+report.id+'"></a></td>';
                     
                     html += '<td>';
-                    html += report.city;
-                    html += ', ' + report.country + ' | ' + report.type_str + '</td>';
+                    html += '<div class="route">' + report.line1 + '</div>';
+                    html += '<span class="city">';
+                    html += report.city + ', ' + 'PR';
+                    html += ' | </span>';
+                    html += '<span class="type">' + report.type_str + '</span>';
+                    html += '</td>';
                     
-                    html += '<td>'+report.age+'</td>';
+                    if(cityVal != 'near'){
+                        html += '<td>'+report.age+'</td>';
+                    }
+                    else{
+                        html += '<td class="distance-'+report.id+'">-</td>';
+                        GetDistance(report.latitude, report.longitude, '.distance-'+report.id);
+                    }
+                        
                     
                     html += '<td>';
-                    html += '<a title="'+report.id+'" class="confirm">Confirmar</a>';
+                    html += '<a data-id="'+report.id+'" class="confirm">Confirmar</a>';
                     html +='</td>';
                     
                     html += '</tr>';
                 }
                 html += '</table>';
+                html += '</div>';
+                
+                var stats = data.stats;
+                
+                html += '<table id="navigation">';
+                html += '<tr>';
+                html += '<td class="previous">';
+                if(stats.current_page > 1){
+                    html += '<a id="previous_page">&lt; Anterior</a>';
+                }
+                html += '</td>';
+                html += '<td class="pages">';
+                html += stats.current_page + '/' + stats.total_pages;
+                html += '</td>';
+                html += '<td class="next">';
+                if(stats.current_page < stats.total_pages){
+                    html += '<a id="next_page">Siguiente &gt;</a>';
+                }    
+                html += '</td>';
+                html += '</tr>';
+                html += '</table>';
                 
                 $('#reports').html(html);
-                $('#qty_reported').html(data.stats.amount_returned);
+                $('#qty_reported').html(data.stats.total_reports);
+                
+                if(stats.current_page > 1){
+                    $('#previous_page').click(function(){
+                        page = stats.current_page - 1;
+                        if(cityVal == 'near')
+                            LoadByCoords();
+                        else
+                            LoadAll();
+                    });
+                }
+                
+                if(stats.current_page < stats.total_pages){
+                    $('#next_page').click(function(){
+                        page = stats.current_page + 1;
+                        if(cityVal == 'near')
+                            LoadByCoords();
+                        else
+                            LoadAll();
+                    });
+                }  
             }
         }
         
@@ -92,6 +187,11 @@ row: 0
             $('body').mask("Detectando su ubicación");
 
             $.geolocation.get({
+                options: {
+                    highAccuracy: true,
+					maximumAge: 0,
+					timeout: 20000 // 20 seconds
+                },
                 win: function(position){
                     $('body').unmask();
                     $('#city').prepend('<option value="near">En mi área</option>');
@@ -101,6 +201,34 @@ row: 0
                     latVal = position.coords.latitude;
                     
                     LoadByCoords();
+                    
+                    //Add monitoring button
+                    $('.filter .left_button').html('<a class="monitor-button">Monitorear</a>');
+                    $('.monitor-button').click(function(){
+                        if($(this).html() == 'Monitorear'){
+                            watch = $.geolocation.watch({
+                                options: {
+                                    highAccuracy: true,
+                                    maximumAge: 0,
+                                    timeout: 20000 // 20 seconds
+                                },
+                                win: function(position){
+                                    lonVal = position.coords.longitude;
+                                    latVal = position.coords.latitude;
+                                    page = 1;
+                                    
+                                    LoadByCoords();
+                                }
+                            });
+                            
+                            $(this).html('Detener Monitoreo');
+                        }
+                        else{
+                            $.geolocation.stop(watch);
+                            $(this).html('Monitorear');
+                        }
+                            
+                    });
                 },
                 fail: function(position){
                     alert("No se pudo obtener su ubicación.\nMostrando todos los reportes.");
@@ -112,6 +240,8 @@ row: 0
             $('#city').change(function(){
                 cityVal = $('#city').val();
                 
+                page = 1;
+                
                 if(cityVal == 'near')
                     LoadByCoords();
                 else
@@ -119,7 +249,10 @@ row: 0
             });
             
             $('#type').change(function(){
+                cityVal = $('#city').val();
                 typeVal = $('#type').val();
+                
+                page = 1;
                 
                 if(cityVal == 'near')
                     LoadByCoords();

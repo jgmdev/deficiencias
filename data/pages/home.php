@@ -12,13 +12,15 @@ row: 0
             Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
             Cms\Theme::AddScript('scripts/jquery.geolocation.js');
             Cms\Theme::AddScript("scripts/jquery.loadmask.js");
+            Cms\Theme::AddScript('http://maps.google.com/maps/api/js?sensor=false&amp;language=en');
+            Cms\Theme::AddScript('scripts/jquery.gmap3.js');
             Cms\Theme::AddScript('script/reports/list');
         ?>
     
         <table class="filter">
             <tr>
                 <td class="town">
-                    <div><strong>Ubicación</strong></div>
+                    <label for="city"><?=t('City')?></label>
                     <select id="city">
                         <option value="">Todos</option>
                     <?php
@@ -31,7 +33,7 @@ row: 0
                 </td>
                 
                 <td class="type">
-                    <div><strong>Tipo de Deficiencia</strong></div>
+                    <label for="type"><?=t('Type')?></label>
                     <select id="type">
                         <option value=""><?=t('All')?></option>
                         <?php
@@ -45,18 +47,15 @@ row: 0
             </tr>
         </table>
     
-        <table id="list"></table>
-        <table id="listnavigation"></table>
-    
         <table class="filter" style="margin-top: 20px;">
             <tr>
-                <td>
+                <td class='left_button'>
                     <h1 style="text-transform: uppercase; font-size: 14px; font-weight: bold;">
                         Últimas deficiencias reportadas
                     </h1>
                 </td>
                 
-                <td>
+                <td class='right_button'>
                     <a class="add-button" href="<?=Cms\Uri::GetUrl('reports/add')?>">Reportar Nueva</a>
                 </td>
             </tr>
@@ -73,9 +72,5 @@ row: 0
     
     field: keywords
         hoyos, derrumbes, tendido electrico
-    field;
-    
-    field: rendering_mode
-        html
     field;
 row;
