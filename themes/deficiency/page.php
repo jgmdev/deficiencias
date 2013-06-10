@@ -38,7 +38,7 @@ $(document).ready(function(){
     <div style="clear: both"></div>
 </div>
     
-<div id="main-container">
+<div id="main-container" style="<?=$mobile_detect->isMobile()?'':'margin-top: 0;'?>">
 
 <?php if($messages){?>
 <div id="messages"><?=$messages?></div>
