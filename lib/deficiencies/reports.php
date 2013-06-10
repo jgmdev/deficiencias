@@ -53,19 +53,71 @@ class Reports
         return $db->LastInsertID();
     }
     
+    public static function AddConfirm($id)
+    {
+        $update = new \Cms\DBAL\Query\Update('deficiencies');
+        $update->Increment('reports_count')
+            ->WhereEqual('id', $id, FieldType::INTEGER)
+        ;
+
+        $db = \Cms\System::GetRelationalDatabase();
+        $db->Update($update);
+    }
+    
     public static function Edit($id, $data)
     {
+        $db = \Cms\System::GetRelationalDatabase();
         
+        date_default_timezone_set('UTC');
+        
+        $update = new \Cms\DBAL\Query\Update('deficiencies');
+        $update->Update('type', $data->type, FieldType::INTEGER)
+            ->Update('latitude', $data->latitude, FieldType::REAL)
+            ->Update('longitude', $data->longitude, FieldType::REAL)
+            ->Update('status', \Deficiencies\DeficiencyStatus::UNFIXED, FieldType::INTEGER)
+            ->Update('comments', $data->comments, FieldType::TEXT)
+            ->Update('last_update', time(), FieldType::INTEGER)
+            ->Update('line1', $data->address->line1, FieldType::TEXT)
+            ->Update(
+                'city', 
+                str_ireplace(
+                    array("á", "é", "í", "ó", "ú", "ä", "ë", "ï", "ö", "ü", "ñ",
+                    "Á", "É", "Í", "Ó", "Ú", "Ä", "Ë", "Ï", "Ö", "Ü", "Ñ"), 
+                    array("a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n",
+                    "a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "n"), 
+                    $data->address->city
+                ),
+                FieldType::TEXT
+            )
+            ->Update('country', $data->address->country, FieldType::TEXT)
+            ->Update('zipcode', $data->address->zipcode, FieldType::TEXT)
+            ->Update('photo', $data->photo, FieldType::TEXT)
+            ->WhereEqual('id', $id, FieldType::INTEGER)
+        ;
+        
+        $db->Update($update);
     }
     
     public static function GetData($id)
     {
-        
+        $select = new \Cms\DBAL\Query\Select('deficiencies');
+        $select->SelectAll()
+            ->WhereEqual('id', $_REQUEST['id'], FieldType::INTEGER)
+        ;
+
+        $db = \Cms\System::GetRelationalDatabase();
+        $db->Select($select);
+
+        return $db->FetchArray();
     }
     
     public static function Delete($id)
     {
+        $delete = new \Cms\DBAL\Query\Delete('deficiencies');
+        $delete->WhereEqual('id', $id, FieldType::INTEGER);
         
+        $db = \Cms\System::GetRelationalDatabase();
+        $db->Delete($delete);
     }
     
     /**

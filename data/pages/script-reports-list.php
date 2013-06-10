@@ -108,14 +108,36 @@ row: 0
  
                     html += '<tr>';
                     
-                    html += '<td><a class="location" href="reports/view?id='+report.id+'"></a></td>';
+                    var style='background: transparent url(themes/deficiency/images/location.png) no-repeat center;';
                     
-                    html += '<td>';
+                    switch(report.type){
+                        case '0':
+                            style='background: transparent url(themes/deficiency/images/deficiency-hole.png) no-repeat center;';
+                            break;
+                        case '1':
+                            style='background: transparent url(themes/deficiency/images/deficiency-broken-pipe.png) no-repeat center;';
+                            break;
+                        case '3':
+                            style='background: transparent url(themes/deficiency/images/deficiency-traffic-lights.png) no-repeat center;';
+                            break;
+                        case '4':
+                            style='background: transparent url(themes/deficiency/images/deficiency-rock-slide.png) no-repeat center;';
+                            break;
+                        case '5':
+                            style='background: transparent url(themes/deficiency/images/deficiency-electric-pole.png) no-repeat center;';
+                            break;
+                    }
+                    
+                    html += '<td><a class="location" style="'+style+'" href="reports/view?id='+report.id+'"></a></td>';
+                    
+                    html += '<td class="details">';
+                    html += '<a href="reports/view?id='+report.id+'">';
                     html += '<div class="route">' + report.line1 + '</div>';
                     html += '<span class="city">';
                     html += report.city + ', ' + 'PR';
-                    html += ' | </span>';
-                    html += '<span class="type">' + report.type_str + '</span>';
+                    html += '</span>';
+                    html += '<div class="type">' + report.type_str + '</div>';
+                    html += '</a>';
                     html += '</td>';
                     
                     if(cityVal != 'near'){
@@ -128,7 +150,7 @@ row: 0
                         
                     
                     html += '<td>';
-                    html += '<a data-id="'+report.id+'" class="confirm">Confirmar</a>';
+                    html += '<a data-id="'+report.id+'" class="confirm" href="reports/confirm?id='+report.id+'">Confirmar</a>';
                     html +='</td>';
                     
                     html += '</tr>';
@@ -203,7 +225,7 @@ row: 0
                     LoadByCoords();
                     
                     //Add monitoring button
-                    $('.filter .left_button').html('<a class="monitor-button">Monitorear</a>');
+                    $('.filter .monitor-button').css('display', 'block');
                     $('.monitor-button').click(function(){
                         if($(this).html() == 'Monitorear'){
                             watch = $.geolocation.watch({

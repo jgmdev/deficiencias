@@ -43,12 +43,44 @@ table, td
     padding: 0;
 }
 
+#header-menu
+{
+    width: 480px;
+    margin: 0 auto 0 auto;
+    background-color: #2980b9;
+    height: 40px;
+    padding: 5px;
+}
+
+#header-menu .home
+{
+    float: left;
+}
+
+#header-menu .add-report
+{
+    float: right;
+}
+
+#header-menu h1
+{
+    float: left;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    height: 40px;
+    margin-left: 5px;
+    border-left: solid 3px #99ccff;
+    padding-left: 10px;
+}
+
 #main-container
 {
     width: 480px;
     margin: 0 auto 0 auto;
     border: solid 1px #d3d3d3;
     padding: 20px 5px 20px 5px;
+    margin-top: 50px;
 }
 
 #header .logo
@@ -64,9 +96,29 @@ table, td
     width: 50%;
 }
 
+#messages
+{
+    background-color: #ffff99;
+	padding: 3px;
+	color: #000;
+	font-weight: bold;
+    font-size: 24px;
+    top: -20px;
+    position: relative;
+    border-left: solid 2px #E5B500;
+    border-right: solid 2px #E5B500;
+    border-bottom: solid 2px #E5B500;
+}
+
+#messages .error
+{
+	color: #ca1919;
+    font-size: 24px;
+}
+
 #content .center
 {
-    padding: 30px 30px 30px 30px;
+    padding: 0 30px 30px 30px;
 }
 
 .filter .town
@@ -81,23 +133,19 @@ table, td
     width: 50%;
 }
 
-.filter .add-button, .filter .monitor-button
+.filter .monitor-button
 {
     background-color: #d35400;
-    display: block;
+    display: none;
     font-size: 18px;
     font-weight: bold;
     padding: 7px;
     color: #fff;
-    float: right;
     cursor: pointer;
+    text-align: center;
+    margin: 10px 0 0 0;
     
     border-radius: 7px;
-}
-
-.filter .monitor-button
-{
-    float: left;
 }
 
 #reports
@@ -120,30 +168,34 @@ table, td
     padding: 7px 0 7px 0;
 }
 
+#reports .list .details a
+{
+    color: #000
+}
+
 #reports .location
 {
     display: block;
-    width: 20px;
-    height: 26px;
+    width: 34px;
+    height: 43px;
     margin: 5px;
-    background: transparent url(images/location.png) no-repeat center;
 }
 
 #reports .route
 {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 #reports .city
 {
-    font-size: 12px;
+    font-size: 15px;
 }
 
-#reports .type
+#reports .details a .type
 {
     color: #808080;
-    font-size: 12px;
+    font-size: 15px;
 }
 
 #reports .confirm
@@ -165,6 +217,7 @@ table, td
     text-align: center;
     color: #545454;
     width: 25%;
+    font-size: 18px;
 }
 
 #navigation .previous, #navigation .next
@@ -193,6 +246,34 @@ table, td
 #navigation .next a
 {
     float: right;
+}
+
+#deficiency-view .type
+{
+    font-size: 18px;
+}
+
+#deficiency-view .time-elapsed
+{
+    color: #4d4d4d;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#deficiency-view .confirm a
+{
+    color: #fff;
+    background-color: #16A085;
+    display: block;
+    float: right;
+    padding: 7px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#deficiency-view .map
+{
+    margin-top: 20px;
 }
 
 label

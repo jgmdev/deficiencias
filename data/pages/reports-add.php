@@ -64,7 +64,6 @@ row: 0
                 
                 Cms\Theme::AddStyle("styles/jquery.loadmask.css");
             
-                Cms\Theme::AddScript('scripts/jquery-1.8.2.min.js');
                 Cms\Theme::AddScript('scripts/jquery.geolocation.js');
                 Cms\Theme::AddScript("scripts/jquery.loadmask.js");
                 Cms\Theme::AddScript('scripts/jquery.timer.js');

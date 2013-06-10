@@ -52,6 +52,8 @@ class Update
         $this->CheckColumnNotSet($column);
         
         $this->increments[$column] = $value;
+        
+        return $this;
     }
     
     public function Decrement($column, $value=1)
@@ -59,6 +61,8 @@ class Update
         $this->CheckColumnNotSet($column);
         
         $this->decrements[$column] = $value;
+        
+        return $this;
     }
     
     public function WhereEqual($column, $value, $type)
@@ -192,7 +196,7 @@ class Update
                         break;
 
                     case FieldType::INTEGER:
-                        $sql .= $sql .= intval($where["value"]) . ' and ';
+                        $sql .= intval($where["value"]) . ' and ';
                         break;
 
                     case FieldType::REAL:

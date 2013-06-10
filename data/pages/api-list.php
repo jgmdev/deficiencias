@@ -15,7 +15,7 @@ row: 0
             if($page == 0)
                 $page = 1;
             
-            $amount = 5;
+            $amount = 10;
             if(strlen(trim($_REQUEST['amount'])) > 0)
             {
                 $_REQUEST['amount'] = intval($_REQUEST['amount']);
@@ -62,7 +62,7 @@ row: 0
             $limit_start = 0;
             
             if($page > 1)
-                $limit_start = $page * $amount;
+                $limit_start = ($page-1) * $amount;
             
             $select->Limit($limit_start, $amount);
             
@@ -81,6 +81,9 @@ row: 0
             if($amount < $count)
             {
                 $pages = floor($count / $amount);
+                
+                if(($count % $amount) > 0)
+                    $pages++;
             }
             
             //Return results

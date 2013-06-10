@@ -135,6 +135,8 @@ class Theme
     {
         $scripts_code = '';
         
+        $scripts_code .= '<script type="text/javascript" src="'.Uri::GetUrl('scripts/jquery-1.8.2.min.js').'"></script>'."\n";
+        
         if(count(self::$scripts) > 0)
         {
             foreach(self::$scripts as $file)
