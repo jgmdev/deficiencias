@@ -159,6 +159,11 @@ table, td
     border-top: dashed 1px #d3d3d3;
 }
 
+#reports .list tr.separator
+{
+    border-top: none;
+}
+
 #reports .list tr:hover, #reports .list tr:active
 {
     background-color: #e8e8e8;
@@ -169,9 +174,19 @@ table, td
     border-right: solid 10px #e74c3c;
 }
 
+#reports .list tr.blink
+{
+    border-right: solid 10px #f39c12;
+}
+
 #reports .list td
 {
     padding: 7px 0 7px 0;
+}
+
+#reports .list tr.separator td
+{
+    padding: 2px;
 }
 
 #reports .list .details a

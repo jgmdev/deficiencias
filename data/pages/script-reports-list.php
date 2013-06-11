@@ -109,16 +109,16 @@ row: 0
                     var report = data.reports[prop];
                     
                     var near_class = '';
-                    if(report.distance_unit == 'pies' || (report.distance_unit == 'mi' && report.distance < 0.3)){
+                    if(report.distance_unit == 'pies' || (report.distance_unit == 'mi' && parseFloat(report.distance) < 0.3)){
                         near_class = ' near';
                         
                         if(watch && !alertedReports[report.id]){
                             alertedReports[report.id] = true;
-                            playAlert();
+                            playAlert(report.id);
                         }
                     }
  
-                    html += '<tr data-id="'+report.id+'" class="row'+near_class+'">';
+                    html += '<tr id="row-'+report.id+'" class="row'+near_class+'">';
                     
                     var style='background: transparent url(themes/deficiency/images/location.png) no-repeat center;';
                     
@@ -168,6 +168,8 @@ row: 0
                     html +='</td>';
                     
                     html += '</tr>';
+                    
+                    html += '<tr class="separator"><td></td></td>';
                 }
                 html += '</table>';
                 html += '</div>';
@@ -225,7 +227,7 @@ row: 0
             }
         }
         
-        function playAlert()
+        function playAlert(id)
         {
             var sound = document.getElementById('alert-sound');
             
@@ -237,6 +239,30 @@ row: 0
                         sound.pause();
                     },
                     7000
+                );
+                
+                var count = 0;
+                var blinkReport = setInterval(
+                    function(){
+                        count++;
+                        
+                        if($('#row-'+id).hasClass('blink')){
+                            $('#row-'+id).removeClass('blink');
+                            $('#row-'+id).addClass('near');
+                        }
+                        else{
+                            $('#row-'+id).removeClass('near');
+                            $('#row-'+id).addClass('blink');
+                        }
+                        
+                        if(count >= 10)
+                        {
+                            $('#row-'+id).removeClass('blink');
+                            $('#row-'+id).addClass('near');
+                            clearInterval(blinkReport);
+                        }
+                    },
+                    700
                 );
             }
         }
@@ -299,6 +325,7 @@ row: 0
                             }
                             else{
                                 $.geolocation.stop(watch);
+                                alertedReports = new Array();
                                 watch = false;
                                 $(this).html('Monitorear');
                             }
