@@ -13,6 +13,7 @@ row: 0
         var typeVal = '';
         var lonVal = '';
         var latVal = '';
+        var coordsGet = false;
         var watch = false;
         
         function LoadAll()
@@ -144,8 +145,10 @@ row: 0
                         html += '<td>'+report.age+'</td>';
                     }
                     else{
-                        html += '<td class="distance-'+report.id+'">-</td>';
-                        GetDistance(report.latitude, report.longitude, '.distance-'+report.id);
+                        /*html += '<td class="distance-'+report.id+'">-</td>';
+                        GetDistance(report.latitude, report.longitude, '.distance-'+report.id);*/
+                                                        
+                        html += '<td class="distance-'+report.id+'">'+report.distance+'<br />'+report.arrival_time+'</td>';
                     }
                         
                     
@@ -216,51 +219,67 @@ row: 0
 
             $('body').mask("Detectando su ubicación");
 
-            $.geolocation.get({
+            coordsGet = $.geolocation.watch({
                 options: {
                     enableHighAccuracy: true,
 					maximumAge: 0,
-					timeout: 20000 // 20 seconds
+					timeout: 10000 // 10 seconds
                 },
                 win: function(position){
-                    $('body').unmask();
-                    $('#city').prepend('<option value="near">En mi área</option>');
-                    $('#city').val('near');
-                    
-                    lonVal = position.coords.longitude;
-                    latVal = position.coords.latitude;
-                    
-                    LoadByCoords();
-                    
-                    //Add monitoring button
-                    $('.filter .monitor-button').css('display', 'block');
-                    $('.monitor-button').click(function(){
-                        if($(this).html() == 'Monitorear'){
-                            watch = $.geolocation.watch({
-                                options: {
-                                    enableHighAccuracy: true,
-                                    maximumAge: 0,
-                                    timeout: 20000 // 20 seconds
-                                },
-                                win: function(position){
-                                    lonVal = position.coords.longitude;
-                                    latVal = position.coords.latitude;
-                                    page = 1;
-                                    
-                                    LoadByCoords();
-                                }
-                            });
-                            
-                            $(this).html('Detener Monitoreo');
-                        }
-                        else{
-                            $.geolocation.stop(watch);
-                            $(this).html('Monitorear');
-                        }
-                            
-                    });
+                    if(position.coords.accuracy < 15){
+                        $.geolocation.stop(coordsGet);
+
+                        $('body').unmask();
+                        $('#city').prepend('<option value="near">En mi área</option>');
+                        $('#city').val('near');
+
+                        lonVal = position.coords.longitude;
+                        latVal = position.coords.latitude;
+
+                        LoadByCoords();
+
+                        //Add monitoring button
+                        $('.filter .monitor-button').css('display', 'block');
+                        $('.monitor-button').click(function(){
+                            if($(this).html() == 'Monitorear'){
+                                watch = $.geolocation.watch({
+                                    options: {
+                                        enableHighAccuracy: true,
+                                        maximumAge: 0,
+                                        timeout: 10000 // 10 seconds
+                                    },
+                                    win: function(position){
+                                        if(typeof(refreshWatch) == 'undefined'){
+                                            lonVal = position.coords.longitude;
+                                            latVal = position.coords.latitude;
+                                            page = 1;
+
+                                            LoadByCoords();
+                                            
+                                            refreshWatch = setTimeout(
+                                                function(){
+                                                    clearTimeout(refreshWatch);
+                                                    refreshWatch = undefined;
+                                                },
+                                                3000 //Monitor every 3 seconds
+                                            );
+                                        }
+                                    }
+                                });
+
+                                $(this).html('Detener Monitoreo');
+                            }
+                            else{
+                                $.geolocation.stop(watch);
+                                $(this).html('Monitorear');
+                            }
+
+                        });
+                    }
                 },
                 fail: function(position){
+                    $.geolocation.stop(coordsGet);
+                    
                     alert("No se pudo obtener su ubicación.\nMostrando todos los reportes.");
                     $('body').unmask();
                     LoadAll();

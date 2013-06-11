@@ -7,6 +7,8 @@ row: 0
     
     field: content
     //<script>
+        var coordsGet = false;
+        
         function getAddressByCoords(lat, lon)
         {
             $('body').mask("Obteniendo direcciones");
@@ -68,21 +70,27 @@ row: 0
         $(document).ready(function(){
             $('body').mask("Detectando su ubicación");
     
-            $.geolocation.get({
+            coordsGet = $.geolocation.watch({
                 options: {
                     enableHighAccuracy: true,
 					maximumAge: 0,
-					timeout: 20000 // 20 seconds
+					timeout: 10000 // 10 seconds
                 },
                 win: function(position){
-                    $('body').unmask();
-                    $('#coords').show();
-                    $('#lon').val(position.coords.longitude);
-                    $('#lat').val(position.coords.latitude);
-                    
-                    getAddressByCoords(position.coords.latitude, position.coords.longitude);
+                    if(position.coords.accuracy < 15){
+                        $.geolocation.stop(coordsGet);
+                        
+                        $('body').unmask();
+                        $('#coords').show();
+                        $('#lon').val(position.coords.longitude);
+                        $('#lat').val(position.coords.latitude);
+
+                        getAddressByCoords(position.coords.latitude, position.coords.longitude);
+                    }
                 },
                 fail: function(position){
+                    $.geolocation.stop(coordsGet);
+                    
                     alert("No se pudo obtener su ubicación.\nEntre la dirección física del área lo mas certero posible.");
                     $('#address-container').show();
                     $('body').unmask();

@@ -49,7 +49,6 @@ row: 0
             $by_city = false;
             
             $select = new Cms\DBAL\Query\Select('deficiencies');
-            $select->SelectAll();
             
             $select_count = new Cms\DBAL\Query\Count('deficiencies', 'id', 'reports_count');
             
@@ -74,15 +73,33 @@ row: 0
                     $lat = doubleval($_REQUEST['lat']);
                     $lon = doubleval($_REQUEST['lon']);
                     
-                    //Less precise but faster
-                    //$select->OrderByCustom("abs((latitude+longitude+172)-($lat+$lon+172))");
-                    
-                    //More precise but slower
-                    $select->OrderByCustom("distance(latitude, longitude, $lat, $lon)");
+                    if(Cms\System::GetRelationalDatabase()->type == \Cms\DBAL\DataSource::SQLITE)
+                    {
+                        //More precise but slower
+                        $select->SelectCustom("
+                            distance(latitude, longitude, $lat, $lon) as distance, 
+                            id, type, latitude, longitude, photo, comments, 
+                            reports_count, status, report_timestamp, last_update,
+                            line1, zipcode, city, country"
+                        );
+                        
+                        $select->OrderBy('distance');
+                    }
+                    else
+                    {
+                        //Less precise but faster
+                        $select->SelectAll();
+                        $select->OrderByCustom("abs((latitude+longitude+172)-($lat+$lon+172))");
+                    }
+                }
+                else
+                {
+                    $select->SelectAll();
                 }
             }
             else
             {
+                $select->SelectAll();
                 $select->OrderBy('report_timestamp', \Cms\Enumerations\Sort::DESCENDING);
             }
             
@@ -95,7 +112,8 @@ row: 0
             
             $db = \Cms\System::GetRelationalDatabase();
             
-            $db->pdo->sqliteCreateFunction("distance", 'distance', 4);
+            if($db->type == \Cms\DBAL\DataSource::SQLITE)
+                $db->pdo->sqliteCreateFunction("distance", 'distance', 4);
             
             //Count results
             $db->Count($select_count);
@@ -129,6 +147,39 @@ row: 0
                 $result['city'] = $cities[$result['city']];
                 $result['age'] = Cms\Utilities::GetTimeElapsed($result["report_timestamp"]);
                 $result['type_str'] = Deficiencies\DeficiencyTypes::getType($result['type']);
+                
+                if(!$by_city)
+                {
+                    if(trim($_REQUEST['lon']) && trim($_REQUEST['lat']))
+                    {
+                        $distance = $result['distance'];
+                        
+                        if($db->type == \Cms\DBAL\DataSource::SQLITE)
+                            $result['distance'] = round($result['distance'], 1);
+                        else
+                            $result['distance'] = round(distance($result['latitude'], $result['longitude'], $lat, $lon), 1);
+                        
+                        $time = $distance / 40; //distace / 40 m/h
+                        
+                        if($distance > 40)
+                        {
+                            $hours = floor($time) . ' h';
+                            $minutes = round(($time*60)%60);
+                            $result['arrival_time'] = $hours . ($minutes > 0?' '.$minutes.' min':'');
+                        }
+                        else
+                        {
+                            $minutes = round(($time*60));
+                            $result['arrival_time'] = $minutes . ' min';
+                        }
+                        
+                        if($result['distance'] >= 0.3)
+                            $result['distance'] .= ' mi';
+                        else
+                            $result['distance'] = floor($distance * 5280) . ' pies';
+                    }
+                }
+                
                 $reports[] = $result;
                 
                 $reports_returned++;
