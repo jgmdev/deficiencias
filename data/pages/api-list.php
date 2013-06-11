@@ -71,9 +71,14 @@ row: 0
             {
                 if(trim($_REQUEST['lon']) && trim($_REQUEST['lat']))
                 {
-                    $sum = doubleval($_REQUEST['lat']) + doubleval($_REQUEST['lon']);
+                    $lat = doubleval($_REQUEST['lat']);
+                    $lon = doubleval($_REQUEST['lon']);
                     
-                    $select->OrderByCustom("abs((latitude+longitude+172)-($sum+172))");
+                    //Less precise but faster
+                    //$select->OrderByCustom("abs((latitude+longitude+172)-($lat+$lon+172))");
+                    
+                    //More precise but slower
+                    $select->OrderByCustom("distance(latitude, longitude, $lat, $lon)");
                 }
             }
             else
