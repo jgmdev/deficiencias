@@ -70,7 +70,7 @@ row: 0
     
             $.geolocation.get({
                 options: {
-                    highAccuracy: false,
+                    enableHighAccuracy: true,
 					maximumAge: 0,
 					timeout: 20000 // 20 seconds
                 },

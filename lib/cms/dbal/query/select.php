@@ -13,6 +13,7 @@ class Select
 {
     public $table;
     public $columns;
+    public $columns_custom;
     public $all;
     public $where;
     public $limit;
@@ -22,6 +23,7 @@ class Select
     {
         $this->table = $table;
         $this->columns = array();
+        $this->columns_custom = array();
         $this->where = array();
         $this->order_by = array();
         
@@ -44,6 +46,16 @@ class Select
             $this->all = true;
         else
             throw new \Exception(t("Select all not allowed if columns where previously selected."));
+        
+        return $this;
+    }
+    
+    public function SelectCustom($statement)
+    {
+        if(!$this->all)
+            $this->columns_custom[] = $statement;
+        else
+            throw new \Exception(t("All columns already selected."));
         
         return $this;
     }
@@ -169,6 +181,16 @@ class Select
         else
             $sql .= implode(',', $this->columns);
         
+        if(!$this->all && count($this->columns_custom) > 0)
+        {   
+            foreach($this->columns_custom as $statement)
+            {
+                $sql .= $statement . ', ';
+            }
+            
+            $sql = rtrim($sql, ', ');
+        }
+        
         $sql .= ' from ' . $this->table;
         
         if(count($this->where) > 0)
@@ -217,7 +239,6 @@ class Select
                 if($order['custom'])
                 {
                     $sql .= $order["statement"] . ' ';
-                    continue;
                 }
                 else
                 {

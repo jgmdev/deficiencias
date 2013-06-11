@@ -218,7 +218,7 @@ row: 0
 
             $.geolocation.get({
                 options: {
-                    highAccuracy: true,
+                    enableHighAccuracy: true,
 					maximumAge: 0,
 					timeout: 20000 // 20 seconds
                 },
@@ -238,7 +238,7 @@ row: 0
                         if($(this).html() == 'Monitorear'){
                             watch = $.geolocation.watch({
                                 options: {
-                                    highAccuracy: true,
+                                    enableHighAccuracy: true,
                                     maximumAge: 0,
                                     timeout: 20000 // 20 seconds
                                 },
