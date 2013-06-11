@@ -174,9 +174,14 @@ row: 0
                         }
                         
                         if($result['distance'] >= 0.3)
-                            $result['distance'] .= ' mi';
+                        {
+                            $result['distance_unit'] = 'mi';
+                        }
                         else
-                            $result['distance'] = floor($distance * 5280) . ' pies';
+                        {
+                            $result['distance'] = floor($distance * 5280);
+                            $result['distance_unit'] = 'pies';
+                        }
                     }
                 }
                 

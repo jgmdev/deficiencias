@@ -15,6 +15,7 @@ row: 0
         var latVal = '';
         var coordsGet = false;
         var watch = false;
+        var alertedReports = new Array();
         
         function LoadAll()
         {
@@ -106,8 +107,18 @@ row: 0
                 for(prop in data.reports)
                 {
                     var report = data.reports[prop];
+                    
+                    var near_class = '';
+                    if(report.distance_unit == 'pies' || (report.distance_unit == 'mi' && report.distance < 0.3)){
+                        near_class = ' near';
+                        
+                        if(watch && !alertedReports[report.id]){
+                            alertedReports[report.id] = true;
+                            playAlert();
+                        }
+                    }
  
-                    html += '<tr data-id="'+report.id+'" class="row">';
+                    html += '<tr data-id="'+report.id+'" class="row'+near_class+'">';
                     
                     var style='background: transparent url(themes/deficiency/images/location.png) no-repeat center;';
                     
@@ -148,7 +159,7 @@ row: 0
                         /*html += '<td class="distance-'+report.id+'">-</td>';
                         GetDistance(report.latitude, report.longitude, '.distance-'+report.id);*/
                                                         
-                        html += '<td class="distance-'+report.id+'">'+report.distance+'<br />'+report.arrival_time+'</td>';
+                        html += '<td class="distance-'+report.id+'">'+report.distance+' '+report.distance_unit+'<br />'+report.arrival_time+'</td>';
                     }
                         
                     
@@ -214,6 +225,22 @@ row: 0
             }
         }
         
+        function playAlert()
+        {
+            var sound = document.getElementById('alert-sound');
+            
+            if(sound.paused){
+                sound.play();
+
+                setTimeout(
+                    function(){
+                        sound.pause();
+                    },
+                    7000
+                );
+            }
+        }
+        
         $(document).ready(function(){
             $("#town .near").show();
 
@@ -241,6 +268,7 @@ row: 0
                         //Add monitoring button
                         $('.filter .monitor-button').css('display', 'block');
                         $('.monitor-button').click(function(){
+                            alertedReports = new Array();
                             if($(this).html() == 'Monitorear'){
                                 watch = $.geolocation.watch({
                                     options: {
@@ -271,6 +299,7 @@ row: 0
                             }
                             else{
                                 $.geolocation.stop(watch);
+                                watch = false;
                                 $(this).html('Monitorear');
                             }
 

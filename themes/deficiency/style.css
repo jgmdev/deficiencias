@@ -164,6 +164,11 @@ table, td
     background-color: #e8e8e8;
 }
 
+#reports .list tr.near
+{
+    border-right: solid 10px #e74c3c;
+}
+
 #reports .list td
 {
     padding: 7px 0 7px 0;

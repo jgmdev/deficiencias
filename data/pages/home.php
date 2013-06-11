@@ -16,6 +16,12 @@ row: 0
             Cms\Theme::AddScript('script/reports/list');
         ?>
     
+        <audio id="alert-sound" loop preload="auto">
+            <source src="<?=Cms\Uri::GetUrl('audio/alert.mp3') ?>" type="audio/mpeg">
+            <source src="<?=Cms\Uri::GetUrl('audio/alert.wav') ?>" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio> 
+
         <table class="filter">
             <tr>
                 <td class="town">
