@@ -109,10 +109,10 @@ row: 0
                     var report = data.reports[prop];
                     
                     var near_class = '';
-                    if(report.distance_unit == 'pies' || (report.distance_unit == 'mi' && parseFloat(report.distance) < 0.3)){
+                    if(report.distance_unit == 'pies'){
                         near_class = ' near';
                         
-                        if(watch && !alertedReports[report.id]){
+                        if(parseInt(report.distance) < 200 && watch && !alertedReports[report.id]){
                             alertedReports[report.id] = true;
                             playAlert(report.id);
                         }
