@@ -22,31 +22,27 @@ class Groups
     * Adds a new group to the system.
     * @param \Cms\Data\Group $group
     */
-    static function Add($group)
+    public static function Add(\Cms\Data\Group $group)
     {
-       $group_data_path = self::GetPath($group->machine_name);
+       $group_name = $group->machine_name;
+       $group_data_path = self::GetPath($group_name);
 
        //Check if group file already exist
        if(!file_exists($group_data_path))
        {
            //Create group directory
-           make_directory(data_directory() . "groups/$group_name", 0755, true);
-
-           if(!add_data($fields, $group_data_path))
-           {
-               return error_message("write_error_data");
-           }
+           FileSystem::MakeDir(System::GetDataPath() . "groups/$group_name", 0755, true);
+           
+           $group_data = new Data($group_data_path);
+           $group_data->Write($group);
 
            //Create user group directory
-           make_directory(data_directory() . "users/$group_name", 0755, true);
+           FileSystem::MakeDir(System::GetDataPath() . "users/$group_name", 0755, true);
        }
        else
        {
-           //if file exist then group exist so return error message
-           return error_message("group_exist");
+           throw new Exceptions\FileSystem\GroupExistsException(t("The group you are trying to add already exists."));
        }
-
-       return "true";
     }
 
     /**
@@ -56,46 +52,42 @@ class Groups
     *
     * @return string "true" string on success or error message on fail.
     */
-    static function Delete($group)
+    public static function Delete($group_name)
     {
-       $group_data_path = generate_user_path($group_name);
+       $group_data_path = self::GetPath($group_name);
 
        //Check if group is not from system
        if($group_name != "administrator" && $group_name != "regular" && $group_name != "guest")
        {
            //Delete group files
-           if(!recursive_remove_directory(data_directory() . "groups/$group_name"))
+           if(!FileSystem::RecursiveRemoveDir(System::GetDataPath() . "groups/$group_name"))
            {
-               return error_message("write_error_data");
+               throw new Exceptions\FileSystem\WriteFileException;
            }
 
            //Move existing users from deleted group to regular group
-           recursive_move_directory(data_directory() . "users/$group_name", data_directory() . "users/regular");
+           FileSystem::RecursiveMoveDir(System::GetDataPath() . "users/$group_name", System::GetDataPath() . "users/regular");
 
            //Delete users group directory
-           recursive_remove_directory(data_directory() . "users/$group_name");
+           FileSystem::RecursiveRemoveDir(System::GetDataPath() . "users/$group_name");
        }
        else
        {
            //This is a system group and can not be deleted
-           return error_message("delete_system_group");
+           throw new Exceptions\FileSystem\SystemGroupException;
        }
-
-       return "true";
     }
 
     /**
     * Edits or changes the data of an existing group.
     *
     * @param string $group_name The machine readable group.
-    * @param array $new_data An array of the fields that will substitue the old values.
-    * @param string $new_name The new machine readable name.
     *
     * @return string "true" string on success or error message on fail.
     */
     static function Edit($name, $group_data)
     {
-       $group_data_path = generate_group_path($group_name);
+       $group_data_path = self::GetPath($group_name);
 
        if(!edit_data(0, $new_data, $group_data_path))
        {
@@ -154,30 +146,24 @@ class Groups
        }
     }
 
-    static function GetPermissions()
-    {
-       
-    }
-
     /**
     * Gets a list of existing groups on the system.
     *
     * @return array An array of groups in the format array(name=>"group directory name").
     */
-    function get_group_list()
+    public static function GetList()
     {
-       $dir_handle = opendir(data_directory() . "groups");
+       $dir_handle = opendir(System::GetDataPath() . "groups");
        $groups = array();
-
 
        while(($group_directory = readdir($dir_handle)) !== false)
        {
            //just check directories inside and skip the guest user group
            if(strcmp($group_directory, ".") != 0 && strcmp($group_directory, "..") != 0 && strcmp($group_directory, "guest") != 0)
            {
-               $group_data = get_group_data($group_directory);
+               $group_data = self::GetData($group_directory);
 
-               $groups[$group_data["name"]] = $group_directory;
+               $groups[] = $group_data;
            }
        }
 
@@ -189,7 +175,7 @@ class Groups
     *
     * @param string $group_name The group to translate to a valid user data path.
     */
-    static function GetPath($group_name)
+    public static function GetPath($group_name)
     {
        return System::GetDataPath() . "groups/$group_name/data.php";
     }
