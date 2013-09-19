@@ -201,14 +201,23 @@ class Data
     /**
      * Gets a row and all its fields from a data file.
      * @param integer $position The number or id of the row to retrieve.
+     * @param object Optional object to append array elements to it as properties.
      * @return Array in the format fields["name"] = "value"
      */
-    public function GetRow($position)
+    public function GetRow($position, $object=null)
     {
         //In case file is been write wait to not get empty content
         $this->WaitIfLock();
         
         $this->Parse($this->file);
+        
+        if(is_object($object))
+        {
+            foreach($this->data[$position] as $field_name=>$value)
+            {
+                $object->$field_name = $value;
+            }
+        }
 
         return $this->data[$position];
     }
@@ -222,7 +231,7 @@ class Data
     {	
         $this->Parse($this->file);
 
-        $this->data[] = $fields;
+        $this->data[] = (array) $fields;
 
         $this->Write($this->data);      
     }
@@ -269,7 +278,7 @@ class Data
     {
         $this->Parse($this->file);
 
-        $this->data[$position] = $new_data;
+        $this->data[$position] = (array) $new_data;
 
         $this->Write($this->data);
     }

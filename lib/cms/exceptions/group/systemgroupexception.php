@@ -4,10 +4,10 @@
  * @license MIT
 */
 
-namespace Cms\Exceptions\FileSystem;
+namespace Cms\Exceptions\Group;
 
 /**
- * Exception thrown when deleting a file fails.
+ * Exception trying to modify a system group.
  */
 class SystemGroupException extends \Exception {}
 

@@ -4,7 +4,7 @@
  * @license MIT
 */
 
-namespace Cms\Exceptions\FileSystem;
+namespace Cms\Exceptions\Group;
 
 /**
  * Exception thrown when deleting a file fails.

@@ -14,8 +14,14 @@ use Cms\System;
 class Users
 {
     /**
+     * Disable constructor
+     */
+    private function __construct() {}
+    
+    /**
      * Adds a new user into the system.
      * @param \Cms\Data\User $user
+     * @throws \Cms\Exception\Users\UserExistsException
      */
     public static function Add($user)
     {
@@ -26,34 +32,31 @@ class Users
        
        FileSystem::MakeDir($path, 0755, true);
        
-       $row = array();
-       $row[0] = (array) $user;
-       
        $user_data = new Data($path . "data.php");
-       $user_data->Write($row);
+       $user_data->AddRow($user);
     }
 
     /**
      * Deletes a user account from the system.
      * @param string $username
-     * @throws Exception\Users\UserNotExistsException
+     * @throws \Cms\Exception\Users\UserNotExistsException
      */
     public static function Delete($username)
     {
-        $path = self::GetPath($user->username, $user->group);
+        $user_exists = self::Exists($username);
         
-        if(!file_exists($path))
+        if(!is_array($user_exists))
            throw new Exception\Users\UserNotExistsException;
         
-        $user_data = self::GetData($username);
+        $path = self::GetPath($username, $user_exists['group']);
         
         FileSystem::RecursiveRemoveDir($path);
         
         //Remove old data/users/group_name/X/XX if empty
-		rmdir(System::GetDataPath() . "users/{$user_data->group}/" . substr($username, 0, 1) . '/' . substr($username, 0, 2));
+        rmdir(System::GetDataPath() . "users/{$user_exists['group']}/" . substr($username, 0, 1) . '/' . substr($username, 0, 2));
 
-		//Remove old data/users/group_name/X if empty
-		rmdir(System::GetDataPath() . "users/{$user_data->group}/" . substr($username, 0, 1));
+        //Remove old data/users/group_name/X if empty
+        rmdir(System::GetDataPath() . "users/{$user_exists['group']}/" . substr($username, 0, 1));
     }
 
     /**
@@ -117,18 +120,8 @@ class Users
             $user_data_path = $user_exist['path'];
 
             $data = new Data($user_data_path . 'data.php');
-            $user_data = $data->GetRow(0);
             $user_object = new Data\User();
-            
-            $user_object->username = $user_data['username'];
-            $user_object->fullname = $user_data['fullname'];
-            $user_object->group = $user_exist['group'];
-            $user_object->password = $user_data['password'];
-            $user_object->birth_date = $user_data['birth_date'];
-            $user_object->gender = $user_data['gender'];
-            $user_object->registration_date = $user_data['registration_date'];
-            $user_object->status = $user_data['status'];
-            $user_object->picture = $user_data['picture'];
+            $data->GetRow(0, $user_object);
 
             return $user_object;
         }
@@ -145,8 +138,8 @@ class Users
     
     /**
      * Checks if a user exists.
-     * @param string $username The username to check.
-     * @return boolean
+     * @param string $username
+     * @return bool
      */
     public static function Exists($username)
     {
