@@ -32,13 +32,7 @@ class Pages
         if(file_exists($page_file))
         {
             $data = new Data($page_file);
-            $data_row = $data->GetRow(0);
-            
-            $page_data->title = $data_row['title'];
-            $page_data->content = $data_row['content'];
-            $page_data->description = $data_row['description'];
-            $page_data->keywords = $data_row['keywords'];
-            $page_data->rendering_mode = $data_row['rendering_mode'];
+            $data_row = $data->GetRow(0, $page_data);
         }
         else
         {   
