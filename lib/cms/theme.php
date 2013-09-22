@@ -15,31 +15,31 @@ class Theme
      * List of css files to include on a rendered page.
      * @var array
      */
-    private static $styles;
+    private static $styles = array();
 
     /**
      * Array of raw css code to be added to header of page.
      * @var array
      */
-    private static $styles_raw;
+    private static $styles_raw = array();
 
     /**
      * List of javascript files to include on a rendered page.
      * @var array
      */
-    private static $scripts;
+    private static $scripts = array();
 
     /**
      * Array of raw javscript code to be added to header of page.
      * @var array
      */
-    private static $scripts_raw;
+    private static $scripts_raw = array();
 
     /**
      * List of tabs to display on a rendered page.
      * @var array
      */
-    private static $tabs;
+    private static $tabs = array();
 
     /**
      * Disable constructor
@@ -61,7 +61,8 @@ class Theme
      */
     public static function AddRawStyle($code)
     {
-        self::$styles_raw[] = $code;
+        if(!in_array($code, self::$styles_raw))
+            self::$styles_raw[] = $code;
     }
 
     /**
@@ -79,7 +80,8 @@ class Theme
      */
     public static function AddRawScript($code)
     {
-        self::$scripts_raw[] = $code;
+        if(!in_array($code, self::$scripts_raw))
+            self::$scripts_raw[] = $code;
     }
 
     /**
@@ -172,7 +174,7 @@ class Theme
             {
                 $styles_code .= $code . "\n";
             }
-            $styles_code = '</style>' . "\n";
+            $styles_code .= '</style>' . "\n";
         }
 
         return $styles_code;
@@ -214,7 +216,7 @@ class Theme
             {
                 $scripts_code .= $code . "\n";
             }
-            $scripts_code = '</script>' . "\n";
+            $scripts_code .= '</script>' . "\n";
         }
 
         return $scripts_code;

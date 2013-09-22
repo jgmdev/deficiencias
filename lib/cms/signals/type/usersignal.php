@@ -9,7 +9,7 @@ namespace Cms\Signals\Type;
 /**
  * Available user signals.
  */
-class GroupSignal
+class UserSignal
 {
     const ADD = 'USER_ADD';
     const EDIT = 'USER_EDIT';

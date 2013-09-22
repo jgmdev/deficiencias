@@ -13,6 +13,7 @@ class FormFieldType
 {
     const HIDDEN = 'hidden';
     const TEXT = 'text';
+    const PASSWORD = 'password';
     const TEXTAREA = 'textarea';
     const FILE = "file";
     const CHECKBOX = 'checkbox';

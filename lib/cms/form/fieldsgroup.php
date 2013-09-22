@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Jefferson González
  * @license MIT
@@ -20,6 +19,11 @@ class FieldsGroup
     public $description;
     
     /**
+     * @var \Cms\Form\Field[] 
+     */
+    public $fields;
+    
+    /**
      * @var bool
      */
     public $collapsed;
@@ -30,13 +34,21 @@ class FieldsGroup
      * @param string $description
      * @param bool $collapsed
      */
-    public function __construct($label, $description, $collapsed)
+    public function __construct($label, $description, $collapsed=false)
     {
         $this->label = $label;
         $this->description = $description;
         $this->collapsed = $collapsed;
+        $this->fields = array();
     }
     
-    public function AddField(Field $field);
+    /**
+     * Add a new field to the internal fields array.
+     * @param \Cms\Form\Field $field
+     */
+    public function AddField(\Cms\Form\Field $field)
+    {
+        $this->fields[] = $field;
+    }
 }
 ?>

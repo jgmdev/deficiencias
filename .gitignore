@@ -4,3 +4,4 @@ data/sqlite/geocodes
 def_images/*.png
 def_images/*.jpg
 def_images/*.gif
+docs/api

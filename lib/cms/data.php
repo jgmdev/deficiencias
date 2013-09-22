@@ -82,7 +82,7 @@ class Data
                     if($stripped != $field)
                         $field = $stripped;
                     else
-                        $field = preg_replace("/^(        )/", "", $field, 1);
+                        $field = preg_replace("/^[ ]{8}/", "", $field, 1);
 
                     $field = str_replace("\\field;", "field;", $field);
 

@@ -8,34 +8,33 @@ row: 0
     
     field: content
     <?php
-        use Cms\Enumerations\FieldType;
+        $form = new Cms\Form('login', null, Cms\Enumerations\FormMethod::POST);
         
-        $datasource = new Cms\DBAL\DataSource();
-        $datasource->InitAsSQLite('geocodes', Cms\System::GetDataPath() . "sqlite");
+        $form->Listen(Cms\Signals\Type\FormSignal::SUBMIT, function($signal_data){
+            print $signal_data->form->name . ' ';
+            print 'form was submitted!';
+        });
         
-        $table = new Cms\DBAL\Query\Table('geocodes');
+        $form->AddField(new Cms\Form\TextField('Login', 'username'));
+       
+        $form->AddField(new Cms\Form\PasswordField('Password', 'password'));
         
-        $table->AddTextField('address')
-            ->AddRealField('lon')
-            ->AddRealField('lat')
-            ->AddPrimaryKey('address')
-        ;
+        $form->AddField(new Cms\Form\TextAreaField(
+            'Description', 
+            'description', 
+            '', 
+            'A description', 
+            'Write something short about you', 
+            false, 
+            false, 
+            200
+        ));
         
-        $db = new Cms\DBAL\DataBase($datasource);
+        $form->AddField(new Cms\Form\Field(
+            '', 'btnSend', 'Send', '', '', Cms\Enumerations\FormFieldType::SUBMIT)
+        );
         
-        $db->CreateTable($table);
-        
-        $insert = new Cms\DBAL\Query\Insert('geocodes');
-        $insert->Insert('address', 'Una dirección xD\'', FieldType::TEXT)
-            ->Insert('lon', 35.32, FieldType::REAL)
-            ->Insert('lat', -35.32, FieldType::REAL)
-        ;
-        
-        $select = new \Cms\DBAL\Query\Select('geocodes');
-        $select->Select('lat')->Select('lon')->WhereEqual('address', 'wepale', FieldType::TEXT)->Limit(0, 15);
-        print $select->GetSQL(\Cms\Enumerations\DBDataSource::SQLITE);
-        
-        $db->Insert($insert);
+        $form->Render();
     ?>
     field;
     

@@ -8,11 +8,11 @@ namespace Cms\Form;
 
 use Cms\Enumerations\FormFieldType;
 
-class TextField extends Field
+class PasswordField extends Field
 {
     public function __construct($label, $name, $value='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
     {
-        parent::__construct($label, $name, $value, $description, $placeholder, FormFieldType::TEXT, $required, $readonly, $size);
+        parent::__construct($label, $name, $value, $description, $placeholder, FormFieldType::PASSWORD, $required, $readonly, $size);
     }
     
     /**

@@ -4,11 +4,11 @@
  * @license MIT
 */
 
-namespace Cms\Exceptions\FileSystem;
+namespace Cms\Exceptions\Form;
 
 /**
  * Exception thrown when deleting a file fails.
  */
-class DeleteFileException extends \Exception {}
+class EmptyFieldsGroupException extends \Exception {}
 
 ?>

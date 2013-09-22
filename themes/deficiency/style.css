@@ -344,7 +344,7 @@ label
     font-size: 24px;
 }
 
-input[type=text], input[type=file], select, textarea
+input[type=text], input[type=password], input[type=file], select, textarea
 {
     display: block;
     width: 100%;
@@ -356,7 +356,7 @@ input[type=text], input[type=file], select, textarea
     font-size: 20px;
 }
 
-input[type=text]:focus, input[type=file]:focus, select:focus, textarea:focus
+input[type=text]:focus, input[type=password]:focus, input[type=file]:focus, select:focus, textarea:focus
 {
     box-shadow: 0px 0px 8px #2980B9;
 }

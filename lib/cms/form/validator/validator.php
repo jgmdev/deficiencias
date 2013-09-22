@@ -45,7 +45,7 @@ class Validator
      * List of error messages produced while checking if value is valid.
      * @var array
      */
-    protected $errors;
+    public $errors;
     
     /**
      * Default constructor.

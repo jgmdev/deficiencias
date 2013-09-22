@@ -27,28 +27,18 @@ class Signal
     
     /**
      * Calls all callbacks listening for a given signal type.
-     * The $var1-$var6 are optional parameters passed to the callback.
      * @see \Cms\Signals\Type
-     * @param int $signal_type
+     * @param string $signal_type
+     * @param \Cms\Signals\SignalData $signal_data
      */
-    private function Send($signal_type, &$var1=null, &$var2=null, &$var3=null, &$var4=null, &$var5=null, &$var6=null)
+    public function Send($signal_type, \Cms\Signals\SignalData &$signal_data=null)
     {
         foreach($this->listeners[$signal_type] as $callback_data)
         {
             $callback = $callback_data['callback'];
             
-            if($var1 != null && $var2 != null && $var3 != null && $var4 != null && $var5 != null && $var6 != null)
-                $callback($var1, $var2, $var3, $var4, $var5, $var6);
-            elseif($var1 != null && $var2 != null && $var3 != null && $var4 != null && $var5 != null)
-                $callback($var1, $var2, $var3, $var4, $var5);
-            elseif($var1 != null && $var2 != null && $var3 != null && $var4 != null)
-                $callback($var1, $var2, $var3, $var4);
-            elseif($var1 != null && $var2 != null && $var3 != null)
-                $callback($var1, $var2, $var3);
-            elseif($var1 != null && $var2 != null)
-                $callback($var1, $var2);
-            elseif($var1 != null)
-                $callback($var1);
+            if(is_object($signal_data))
+                $callback($signal_data);
             else
                 $callback();
         }
