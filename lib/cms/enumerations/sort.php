@@ -7,7 +7,7 @@
 namespace Cms\Enumerations;
 
 /**
- * Enumerations for types of ordering.
+ * Basic mechanisms of ordering.
  */
 class Sort
 {

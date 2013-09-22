@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * @author Jefferson González
  * @license MIT
 */
@@ -9,31 +9,43 @@ namespace Cms;
 /**
  * Functions to handle theming
  */
-class Theme 
+class Theme
 {
     /**
      * List of css files to include on a rendered page.
-     * @var array 
+     * @var array
      */
     private static $styles;
-    
+
+    /**
+     * Array of raw css code to be added to header of page.
+     * @var array
+     */
+    private static $styles_raw;
+
     /**
      * List of javascript files to include on a rendered page.
-     * @var array 
+     * @var array
      */
     private static $scripts;
-    
+
+    /**
+     * Array of raw javscript code to be added to header of page.
+     * @var array
+     */
+    private static $scripts_raw;
+
     /**
      * List of tabs to display on a rendered page.
-     * @var array 
+     * @var array
      */
     private static $tabs;
-    
+
     /**
      * Disable constructor
      */
     private function __construct() {}
-    
+
     /**
      * Adds a css file to be added when rendering a page.
      * @param string $path
@@ -42,7 +54,16 @@ class Theme
     {
         self::$styles[$path] = Uri::GetUrl($path);
     }
-    
+
+    /**
+     * Adds raw css code to be inserted on header when rendering a page.
+     * @param string $code
+     */
+    public static function AddRawStyle($code)
+    {
+        self::$styles_raw[] = $code;
+    }
+
     /**
      * Adds a javascript file to be added when rendering a page.
      * @param string $path
@@ -51,7 +72,16 @@ class Theme
     {
         self::$scripts[$path] = Uri::GetUrl($path);
     }
-    
+
+    /**
+     * Adds raw javascript code to be inserted on header when rendering a page.
+     * @param string $code
+     */
+    public static function AddRawScript($code)
+    {
+        self::$scripts_raw[] = $code;
+    }
+
     /**
      * Adds a button/tab to be displayed when rendering the page.
      * @param string $caption
@@ -73,7 +103,7 @@ class Theme
     {
         $_SESSION["messages"][] = array("text"=>$message, "type"=>$type);
     }
-    
+
     /**
      * Themes the content of a page using a template file.
      * @param \Cms\Data\Page $page
@@ -82,14 +112,14 @@ class Theme
     public static function ThemeContent($page)
     {
         $content  = Utilities::PHPEval($page->content);
-        
+
         if($page->rendering_mode && $page->rendering_mode != Enumerations\PageRenderingMode::NORMAL)
         {
             return $content;
         }
-        
+
         $formatted_content = '';
-        
+
         ob_start();
             include(self::ContentTemplate($page->uri, $page->type));
 
@@ -108,14 +138,14 @@ class Theme
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
         $theme_css_file = $theme_path . '/' . $theme . '/style.css';
-                
+
         $styles_code = '';
-        
+
         if(file_exists($theme_css_file))
         {
             self::$styles[$theme_css_file] = Uri::GetUrl($theme_css_file);
         }
-        
+
         if(count(self::$styles) > 0)
         {
             foreach(self::$styles as $file)
@@ -128,15 +158,36 @@ class Theme
     }
 
     /**
+     * Generate the html code to insert inline css on rendered pages.
+     * @return string Html code for the head section of a document.
+     */
+    public static function GetRawStylesHTML()
+    {
+        $styles_code = '';
+
+        if(count(self::$styles_raw) > 0)
+        {
+            $styles_code = '<style>' . "\n";
+            foreach(self::$styles_raw as $code)
+            {
+                $styles_code .= $code . "\n";
+            }
+            $styles_code = '</style>' . "\n";
+        }
+
+        return $styles_code;
+    }
+
+    /**
      * Generate the html code to javascript files on rendered pages.
      * @return string Html code for the head section of document.
      */
     public static function GetScriptsHTML()
     {
         $scripts_code = '';
-        
+
         $scripts_code .= '<script type="text/javascript" src="'.Uri::GetUrl('scripts/jquery-1.8.2.min.js').'"></script>'."\n";
-        
+
         if(count(self::$scripts) > 0)
         {
             foreach(self::$scripts as $file)
@@ -144,10 +195,31 @@ class Theme
                 $scripts_code .= "<script type=\"text/javascript\" src=\"$file\"></script>\n";
             }
         }
-        
+
         return $scripts_code;
     }
     
+    /**
+     * Generate the html code to insert inline javascript code on rendered pages.
+     * @return string Html code for the head section of a document.
+     */
+    public static function GetRawScriptsHTML()
+    {
+        $scripts_code = '';
+
+        if(count(self::$scripts_raw) > 0)
+        {
+            $scripts_code = '<script type="text/javascript">' . "\n";
+            foreach(self::$scripts_raw as $code)
+            {
+                $scripts_code .= $code . "\n";
+            }
+            $scripts_code = '</script>' . "\n";
+        }
+
+        return $scripts_code;
+    }
+
     /**
      * Generates the meta tags html for a rendered page.
      * @param \Cms\Data\Page $page
@@ -156,7 +228,7 @@ class Theme
     {
         $meta_tags = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'."\n";
         $meta_tags .= '<meta name="generator" content="Cms Framework" />'."\n";
-        
+
         if($page->description)
         {
             $meta_tags .= '<meta name="description" content="'.$page->description.'" />'."\n";
@@ -166,7 +238,7 @@ class Theme
         {
             $meta_tags .= '<meta name="keywords" content="'.$page->keywords.'" />'."\n";
         }
-        
+
         return $meta_tags;
     }
 
@@ -280,45 +352,45 @@ class Theme
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
         $theme_url = Uri::GetUrl($theme_path . '/' . $theme);
-        
+
         System::SetHTTPStatus($page->http_status_code);
-        
+
         $page->title = Utilities::PHPEval($page->title);
-        
+
         $title = $page->title;
         $content_title = $page->title;
         $content = self::ThemeContent($page);
-        
+
         //Set adequate content type and enconding
         switch($page->rendering_mode)
         {
             case Enumerations\PageRenderingMode::API:
                 header('Content-Type: text/plain; charset=utf-8');
                 break;
-            
+
             case Enumerations\PageRenderingMode::JAVASCRIPT:
                 header('Content-Type: text/javascript; charset=utf-8');
                 break;
-            
+
             case Enumerations\PageRenderingMode::STYLE:
                 header('Content-Type: text/css; charset=utf-8');
                 break;
-            
+
             defaul:
                 header('Content-Type: text/html; charset=utf-8');
         }
-        
+
         if($page->rendering_mode && $page->rendering_mode != Enumerations\PageRenderingMode::NORMAL)
         {
             print $content;
             return;
         }
-        
+
         $base_url = System::GetBaseUrl();
         $language = System::GetDefaultLanguage();
         $meta = self::GetMetaTagsHTML($page);
-        $styles = self::GetStylesHTML();
-        $scripts = self::GetScriptsHTML();
+        $styles = self::GetStylesHTML() . self::GetRawStylesHTML();
+        $scripts = self::GetScriptsHTML() . self::GetRawScriptsHTML();
         $messages = self::GetMessagesHTML();
         $tabs = self::GetTabsHTML();
 
@@ -348,7 +420,7 @@ class Theme
     {
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
-        
+
         $uri = str_replace('/', '-', $uri);
         $segments = explode('-', $uri);
 
@@ -394,7 +466,7 @@ class Theme
     {
         $theme = System::GetTheme();
         $theme_path = System::GetThemesPath();
-        
+
         $uri = str_replace('/', '-', $uri);
 
         $current_page = $theme_path . '/' . $theme . '/content-' . $uri . '.php';

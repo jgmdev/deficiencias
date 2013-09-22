@@ -25,10 +25,10 @@ class Uri
     {
         static $page;
 
-        if($page == "")
+        if($page == '')
         {
             //Default home page.
-            $page = "home";
+            $page = 'home';
 
             //Try to get home page set on site settings
             if($home_page = System::GetHomePage())

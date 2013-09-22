@@ -36,7 +36,7 @@ class Utilities
     
     /**
      * Get the amount of time in a easy to read human format.
-     * @param timestamp $timestamp
+     * @param int $timestamp
      * @return string
      */
     public static function GetTimeElapsed($timestamp)
@@ -69,7 +69,7 @@ class Utilities
                 else
                     $period = $labels[0];
 
-                return str_replace(array("{time}", "{period}"), array($time, $period), t('{time} {period} ago'));
+                return str_replace(array('{time}', '{period}'), array($time, $period), t('{time} {period} ago'));
             }
         }
     }

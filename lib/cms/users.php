@@ -32,7 +32,7 @@ class Users
        
        FileSystem::MakeDir($path, 0755, true);
        
-       $user_data = new Data($path . "data.php");
+       $user_data = new Data($path . 'data.php');
        $user_data->AddRow($user);
     }
 
@@ -72,13 +72,13 @@ class Users
 
         if($user_exist)
         {
-            $user_data_path = $user_exist["path"];
+            $user_data_path = $user_exist['path'];
             
-            $data = new Data($user_data_path . "data.php");
+            $data = new Data($user_data_path . 'data.php');
             $data->EditRow(0, $user_data);
 
             //Change user group
-            if($user_data->group != $user_exist["group"])
+            if($user_data->group != $user_exist['group'])
             {
                 $new_path = self::GetPath($username, $user_data->group);
 
@@ -92,7 +92,7 @@ class Users
                 FileSystem::RecursiveRemoveDir($user_data_path);
 
                 //Remove old data/users/group_name/X/XX if empty
-                rmdir(System::GetDataPath() . "users/{$user_exist['group']}/" . substr($username, 0, 1) . "/" . substr($username, 0, 2));
+                rmdir(System::GetDataPath() . "users/{$user_exist['group']}/" . substr($username, 0, 1) . '/' . substr($username, 0, 2));
 
                 //Remove old data/users/group_name/X if empty
                 rmdir(System::GetDataPath() . "users/{$user_exist['group']}/" . substr($username, 0, 1));
@@ -106,7 +106,7 @@ class Users
 
     /**
      * Gets the data of a user
-     * @param type $username
+     * @param string $username
      * @return \Cms\Data\User
      * @throws \Cms\Exceptions\Users\UserNotExistsException
      */
@@ -121,7 +121,9 @@ class Users
 
             $data = new Data($user_data_path . 'data.php');
             $user_object = new Data\User();
+            $user_object->username = $username;
             $data->GetRow(0, $user_object);
+            $user_object->group = $user_exist['group'];
 
             return $user_object;
         }
@@ -131,9 +133,34 @@ class Users
         }
     }
 
+    /**
+     * Gets the data of a user by its email.
+     * @param string $email
+     * @return \Cms\Data\User
+     * @throws \Cms\Exceptions\Users\UserNotExistsException
+     */
     public static function GetDataByEmail($email)
     {
         
+    }
+    
+    /**
+     * Get a predefined guest user.
+     * @staticvar \Cms\Data\User $guest
+     * @return \Cms\Data\User
+     */
+    public static function GetGuestUser()
+    {
+        static $guest;
+        
+        if(!is_object($guest))
+        {
+            $guest = new Data\User;
+            $guest->username = 'guest';
+            $guest->group = 'guest';
+        }
+        
+        return $guest;
     }
     
     /**
@@ -144,20 +171,20 @@ class Users
     public static function Exists($username)
     {
         $username = strtolower($username);
-        $dir_handle = opendir(System::GetDataPath() . "users");
+        $dir_handle = opendir(System::GetDataPath() . 'users');
 
         if(!is_bool($dir_handle))
         {
             while(($group_directory = readdir($dir_handle)) !== false)
             {
                 //just check directories inside
-                if(strcmp($group_directory, ".") != 0 && strcmp($group_directory, "..") != 0)
+                if(strcmp($group_directory, '.') != 0 && strcmp($group_directory, '..') != 0)
                 {
                     $user_data_path = self::GetPath($username, $group_directory);
 
                     if(file_exists($user_data_path))
                     {
-                        return array("path"=>$user_data_path, "group"=>$group_directory);
+                        return array('path'=>$user_data_path, 'group'=>$group_directory);
                     }
                 }
             }
@@ -178,7 +205,7 @@ class Users
 
     public static function GeneratePassword()
     {
-        $password = str_replace(array("\$", ".", "/"), "", crypt(uniqid(rand(),1)));
+        $password = str_replace(array('$', '.', '/'), '', crypt(uniqid(rand(),1)));
 
         if(strlen($password) > 10)
         {

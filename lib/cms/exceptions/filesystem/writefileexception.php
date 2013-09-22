@@ -7,7 +7,7 @@
 namespace Cms\Exceptions\FileSystem;
 
 /**
- * Exception thrown writing to a file failed.
+ * Exception thrown when writing to a file failed.
  */
 class WriteFileException extends \Exception {}
 

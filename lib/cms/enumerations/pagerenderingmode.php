@@ -7,7 +7,8 @@
 namespace Cms\Enumerations;
 
 /**
- * Different ways that a page can be rendered by \Cms\Theme::Render()
+ * Different ways that a page can be rendered.
+ * @see \Cms\Theme::Render()
  */
 class PageRenderingMode
 {

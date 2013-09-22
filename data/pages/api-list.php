@@ -73,7 +73,7 @@ row: 0
                     $lat = doubleval($_REQUEST['lat']);
                     $lon = doubleval($_REQUEST['lon']);
                     
-                    if(Cms\System::GetRelationalDatabase()->type == \Cms\DBAL\DataSource::SQLITE)
+                    if(Cms\System::GetRelationalDatabase()->type == \Cms\Enumerations\DBDataSource::SQLITE)
                     {
                         //More precise but slower
                         $select->SelectCustom("
@@ -112,7 +112,7 @@ row: 0
             
             $db = \Cms\System::GetRelationalDatabase();
             
-            if($db->type == \Cms\DBAL\DataSource::SQLITE)
+            if($db->type == \Cms\Enumerations\DBDataSource::SQLITE)
                 $db->pdo->sqliteCreateFunction("distance", 'distance', 4);
             
             //Count results
@@ -134,8 +134,6 @@ row: 0
             }
             
             //Return results
-            //print $select->GetSQL(\Cms\DBAL\DataSource::SQLITE);
-            
             $db->Select($select);
             
             $cities = array_flip(Deficiencies\Towns::GetAll());
@@ -154,7 +152,7 @@ row: 0
                     {
                         $distance = $result['distance'];
                         
-                        if($db->type == \Cms\DBAL\DataSource::SQLITE)
+                        if($db->type == \Cms\Enumerations\DBDataSource::SQLITE)
                             $result['distance'] = round($result['distance'], 1);
                         else
                             $result['distance'] = round(distance($result['latitude'], $result['longitude'], $lat, $lon), 1);

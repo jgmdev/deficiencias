@@ -11,7 +11,7 @@
 namespace Cms\Enumerations;
 
 /**
- * Enumeration that holds all languages and its code.
+ * All languages and its code.
  */
 class LanguageCode
 {

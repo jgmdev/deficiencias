@@ -71,7 +71,7 @@ class Groups {
             }
 
             //Move existing users from deleted group to regular group
-            FileSystem::RecursiveMoveDir(System::GetDataPath() . "users/$group_name", System::GetDataPath() . "users/regular");
+            FileSystem::RecursiveMoveDir(System::GetDataPath() . "users/$group_name", System::GetDataPath() . 'users/regular');
 
             //Delete users group directory
             FileSystem::RecursiveRemoveDir(System::GetDataPath() . "users/$group_name");
@@ -137,8 +137,8 @@ class Groups {
             $data = new Data($group_data_path);
 
             $group_data = $data->GetRow(0);
-            $group_object->name = trim($group_data[0]["name"]);
-            $group_object->description = trim($group_data[0]["description"]);
+            $group_object->name = trim($group_data[0]['name']);
+            $group_object->description = trim($group_data[0]['description']);
 
             return $group_object;
         }
@@ -146,6 +146,23 @@ class Groups {
         {
             throw new Exceptions\Group\GroupNotExistsException;
         }
+    }
+    
+    /**
+     * Get a predefined guest group.
+     * @staticvar \Cms\Data\Group $guest
+     * @return \Cms\Data\Group
+     */
+    public static function GetGuestGroup()
+    {
+        static $guest;
+        
+        if(!is_object($guest))
+        {
+            $guest = new Data\Group('guest', 'Guest');
+        }
+        
+        return $guest;
     }
 
     /**
@@ -169,7 +186,7 @@ class Groups {
      */
     public static function GetList()
     {
-        $dir_handle = opendir(System::GetDataPath() . "groups");
+        $dir_handle = opendir(System::GetDataPath() . 'groups');
         $groups = array();
 
         while (($group_directory = readdir($dir_handle)) !== false)
@@ -178,7 +195,7 @@ class Groups {
                 continue;
 
             //just check directories inside and skip the guest user group
-            if (strcmp($group_directory, ".") != 0 && strcmp($group_directory, "..") != 0 && strcmp($group_directory, "guest") != 0)
+            if (strcmp($group_directory, '.') != 0 && strcmp($group_directory, '..') != 0 && strcmp($group_directory, 'guest') != 0)
             {
                 $group_data = self::GetData($group_directory);
 
@@ -188,17 +205,76 @@ class Groups {
 
         return $groups;
     }
+    
+    /**
+     * Get all permissions and its current values.
+     * @staticvar array $permission_table
+     * @param string $group_name
+     * @return \Cms\Data\PermissionsList[]
+     */
+    public static function GetPermissions($group_name)
+    {
+        static $permission_table;
+
+        if(!isset($permission_table[$group_name]))
+        {
+            if(!is_array($permission_table))
+                $permission_table = array();
+            
+            $permissions_data_path = str_replace(
+                '/data.php', 
+                '/permissions.php', 
+                self::GetPath($group_name)
+            );  
+
+            if(file_exists($permissions_data_path))
+            {
+                $data = new Data;
+                $permission_table[$group_name] = $data->Parse($permissions_data_path);
+            }
+        }
+
+        $permissions = array();
+        
+        $permissions[] = new Permissions\UserPermissions;
+        $permissions[] = new Permissions\GroupPermissions;
+        
+        if($group_name == 'administrator')
+        {
+            foreach($permissions as &$permission_group)
+            {
+                $permission_group->SetAllPermissionsTrue();
+            }
+            
+            return $permissions;
+        }
+        
+        if(isset($permission_table[$group_name]))
+        {
+            foreach($permission_table[$group_name][0] as $field_name=>$field_value)
+            {
+                foreach($permissions as &$permission_group)
+                {
+                    if($permission_group->SetPermission($field_name, $field_value))
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return $permissions;
+    }
 
     /**
      * Generates the data path for a group.
-     * @param string $group_name The group to translate to a 
-     * valid user data file path.
+     * @param string $group_name
+     * @return string
      */
     public static function GetPath($group_name)
     {
         return System::GetDataPath() . "groups/$group_name/data.php";
     }
-
 }
 
 ?>

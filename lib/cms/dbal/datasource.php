@@ -6,6 +6,8 @@
 
 namespace Cms\DBAL;
 
+use Cms\Enumerations\DBDataSource;
+
 class DataSource
 {
     const SQLITE = 'sqlite';
@@ -30,14 +32,14 @@ class DataSource
         if($path)
             $path = rtrim(str_replace('\\', '/', $path), '/') . "/";
         
-        $this->type = self::SQLITE;
+        $this->type = DBDataSource::SQLITE;
         
         $this->dsn = "sqlite:{$path}{$file}";
     }
     
     public function InitAsMySql($database, $username, $password, $host='127.0.0.1', $port='3306')
     {
-        $this->type = self::MYSQL;
+        $this->type = DBDataSource::MYSQL;
         
         $this->username = $username;
         
@@ -48,7 +50,7 @@ class DataSource
     
     public function InitAsPostgreSQL($database, $username, $password, $host='127.0.0.1', $port='5432')
     {
-        $this->type = self::POSTGRESQL;
+        $this->type = DBDataSource::POSTGRESQL;
         
         $this->username = $username;
         

@@ -7,7 +7,8 @@
 namespace Cms\Exceptions\Group;
 
 /**
- * Exception trying to modify a system group.
+ * Exception thrown when trying to modify a system group in
+ * ways that aren't permitted.
  */
 class SystemGroupException extends \Exception {}
 

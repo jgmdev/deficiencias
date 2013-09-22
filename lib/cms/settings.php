@@ -7,7 +7,7 @@
 namespace Cms;
 
 /**
- * Class that facilitate managing configuration settings.
+ * Facilitate management of configurations or settings.
  */
 class Settings
 {

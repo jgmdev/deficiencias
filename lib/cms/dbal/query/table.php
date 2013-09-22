@@ -6,10 +6,9 @@
 
 namespace Cms\DBAL\Query;
 
-use Cms\DBAL\DataSource;
 use Cms\Enumerations\FieldType;
 
-class Table
+class Table extends \Cms\DBAL\Query
 {
     public $fields;
     public $primary_keys;
@@ -61,26 +60,7 @@ class Table
         return $this;
     }
     
-    /**
-     * Generates the sql code to create a table depending on database type.
-     * @param string $type One of the constants from \Cms\DBAL\DataSource
-     */
-    public function GetSQL($type)
-    {
-        switch($type)
-        {
-            case DataSource::SQLITE;
-                return $this->GetSQLiteSQL();
-                
-            case DataSource::MYSQL;
-                return $this->GetMySqlSQL();
-                
-            case DataSource::POSTGRESQL;
-                return $this->GetPostgreSQL();
-        }
-    }
-    
-    private function GetSQLiteSQL()
+    protected function GetSQLiteSQL()
     {
         $sql = 'create table if not exists ';
         $sql .= $this->name . ' ';
@@ -110,9 +90,9 @@ class Table
         
         if(count($this->primary_keys) > 0)
         {
-            $sql .= "PRIMARY KEY (";
+            $sql .= 'PRIMARY KEY (';
             $sql .= implode(',', $this->primary_keys);
-            $sql .= ")";
+            $sql .= ')';
         }
         else
         {
@@ -122,16 +102,6 @@ class Table
         $sql .= ')';
         
         return $sql;
-    }
-    
-    private function GetMySqlSQL()
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    private function GetPostgreSQL()
-    {
-        throw new Exception('Not implemented');
     }
 }
 ?>

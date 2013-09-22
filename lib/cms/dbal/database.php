@@ -6,6 +6,8 @@
 
 namespace Cms\DBAL;
 
+use Cms\Enumerations\DBDataSource;
+
 /**
  * Basic handling of databases while hiding the sql differences of each provider.
  */
@@ -64,12 +66,12 @@ class DataBase
         
         switch($datasource->type)
         {
-            case DataSource::SQLITE:
+            case DBDataSource::SQLITE:
                 $this->pdo = new \PDO($datasource->GetDSN());
                 break;
             
-            case DataSource::MYSQL:
-            case DataSource::POSTGRESQL:
+            case DBDataSource::MYSQL:
+            case DBDataSource::POSTGRESQL:
                 $this->pdo = new \PDO(
                     $datasource->GetDSN(), 
                     $datasource->username, 

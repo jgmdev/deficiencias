@@ -6,6 +6,9 @@
 
 namespace Cms\Data;
 
+use Cms\Enumerations\HTTPStatusCode;
+use Cms\Enumerations\PageRenderingMode;
+
 /**
  * Represents a page
  */
@@ -44,13 +47,13 @@ class Page
     
     /**
      * Time when page was created
-     * @var timestamp
+     * @var int
      */
     public $created_date;
     
     /**
      * Last time the page was modified
-     * @var timestamp
+     * @var int
      */
     public $last_edit_date;
     
@@ -100,9 +103,9 @@ class Page
         
         $this->groups = array();
         
-        $this->rendering_mode = \Cms\Enumerations\PageRenderingMode::NORMAL;
+        $this->rendering_mode = PageRenderingMode::NORMAL;
         
-        $this->http_status_code = \Cms\Enumerations\HTTPStatusCode::OK;
+        $this->http_status_code = HTTPStatusCode::OK;
     }
     
     /**

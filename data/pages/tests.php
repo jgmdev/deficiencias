@@ -33,7 +33,7 @@ row: 0
         
         $select = new \Cms\DBAL\Query\Select('geocodes');
         $select->Select('lat')->Select('lon')->WhereEqual('address', 'wepale', FieldType::TEXT)->Limit(0, 15);
-        print $select->GetSQL(\Cms\DBAL\DataSource::SQLITE);
+        print $select->GetSQL(\Cms\Enumerations\DBDataSource::SQLITE);
         
         $db->Insert($insert);
     ?>

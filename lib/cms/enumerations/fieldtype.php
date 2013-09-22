@@ -7,7 +7,7 @@
 namespace Cms\Enumerations;
 
 /**
- * Enumerations of valid http status codes.
+ * Types used to distinguish a database field.
  */
 class FieldType
 {

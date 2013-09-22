@@ -58,7 +58,7 @@ class System
         
         self::$is_initialized = true;
         
-        self::$settings = new \Cms\Settings("main");
+        self::$settings = new \Cms\Settings('main');
     }
     
     /**
@@ -70,30 +70,30 @@ class System
         if(!self::$data_path)
         {
             //For being able to run scripts from command line
-            if(!isset($_SERVER["HTTP_HOST"]))
+            if(!isset($_SERVER['HTTP_HOST']))
             {
                 //Check if http host was passed on the command line
-                if(isset($_REQUEST["HTTP_HOST"]))
+                if(isset($_REQUEST['HTTP_HOST']))
                 {
-                    $_SERVER["HTTP_HOST"] = $_REQUEST["HTTP_HOST"];
+                    $_SERVER['HTTP_HOST'] = $_REQUEST['HTTP_HOST'];
                 }
 
                 //if not http_host passed then return default
                 else
                 {
-                    self::$data_path = "data/default/";
+                    self::$data_path = 'data/default/';
                 }
             }
 
-            $host = preg_replace("/^www\./", "", $_SERVER["HTTP_HOST"]);
+            $host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
 
-            if(file_exists("data/" . $host))
+            if(file_exists('data/' . $host))
             {
-                self::$data_path = "data/" . $host . "/";
+                self::$data_path = 'data/' . $host . '/';
             }
             else
             {
-                self::$data_path = "data/default/";
+                self::$data_path = 'data/default/';
             }
         }
         
@@ -176,7 +176,7 @@ class System
         
         $language = self::$settings->Get('language');
         
-        return $language ? $language : "en";
+        return $language ? $language : 'en';
     }
     
     /**
@@ -198,7 +198,7 @@ class System
     {
         self::InitializedCheck();
         
-        $home_page = self::$settings->Get("home_uri");
+        $home_page = self::$settings->Get('home_uri');
         
         if($home_page == '')
             return 'home';
@@ -309,7 +309,7 @@ class System
     {
         if(!self::$database)
         {
-            throw new Exception(t("You have to set the data source before getting the database."));
+            throw new Exception(t('You have to set the data source before getting the database.'));
         }
         
         return self::$database;
@@ -327,34 +327,45 @@ class System
         if(strlen($base_url) > 0)
             return $base_url;
         
-        $protocol = self::IsSSLConnection() ? "https" : "http";
+        $protocol = self::IsSSLConnection() ? 'https' : 'http';
 
-        if(strstr($_SERVER["SCRIPT_NAME"], "index.php") !== false)
+        if(strstr($_SERVER['SCRIPT_NAME'], 'index.php') !== false)
         {
-            $paths = explode("/", $_SERVER["SCRIPT_NAME"]);
+            $paths = explode('/', $_SERVER['SCRIPT_NAME']);
             unset($paths[count($paths) - 1]); //Remove index.php
-            $path = implode("/", $paths);
+            $path = implode('/', $paths);
         }
         else
         {
             //Correctly set base url path on hiphop
-            $query = str_replace("p=", "", $_SERVER["QUERY_STRING"]);
-            $query_elements = explode("&", $query);
+            $query = str_replace('p=', '', $_SERVER['QUERY_STRING']);
+            $query_elements = explode('&', $query);
 
             $path = rtrim(
                 str_replace(
                     $query_elements[0],
-                    "",
-                    $_SERVER["SCRIPT_NAME"]
+                    '',
+                    $_SERVER['SCRIPT_NAME']
                 ),
-                "/"
+                '/'
             );
         }
 
-        $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
+        $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'];
         $base_url .= $path;
         
         return $base_url;
+    }
+    
+    /**
+     * Get a reference to the site settings table.
+     * @return \Cms\Settings
+     */
+    public static function &GetSiteSettings()
+    {
+        self::InitializedCheck();
+        
+        return self::$settings;
     }
     
     /**
@@ -366,24 +377,24 @@ class System
         switch($code)
         {
             case 400:
-                header("HTTP/1.1 400 Bad Request", true);
+                header('HTTP/1.1 400 Bad Request', true);
                 break;
             case 401:
-                 header("HTTP/1.1 401 Unauthorized", true);
+                 header('HTTP/1.1 401 Unauthorized', true);
                  break;
             case 403:
-                header("HTTP/1.1 403 Forbidden", true);
+                header('HTTP/1.1 403 Forbidden', true);
                 break;
             case 404:
-                header("HTTP/1.1 404 Not Found", true);
+                header('HTTP/1.1 404 Not Found', true);
                 break;
             case 500:
-                header("HTTP/1.1 500 Internal Server Error", true);
+                header('HTTP/1.1 500 Internal Server Error', true);
                 break;
 
             case 200:
             default:
-                header( "HTTP/1.1 200 OK", true);
+                header('HTTP/1.1 200 OK', true);
         }
     }
     
@@ -408,7 +419,7 @@ class System
     private static function InitializedCheck()
     {
         if(!self::$is_initialized)
-            throw new \Exception("You can not use this function without initializing the System class.");
+            throw new \Exception(t('You can not use this function without initializing the System class.'));
     }
 }
 }

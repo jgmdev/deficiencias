@@ -6,10 +6,9 @@
 
 namespace Cms\DBAL\Query;
 
-use Cms\DBAL\DataSource;
 use Cms\Enumerations\FieldType;
 
-class Update
+class Update extends \Cms\DBAL\Query
 {
     public $table;
     public $columns;
@@ -113,26 +112,17 @@ class Update
         return $this;
     }
     
-    /**
-     * Generates the sql code to create a table depending on database type.
-     * @param string $type One of the constants from \Cms\DBAL\DataSource
-     */
-    public function GetSQL($type)
+    private function CheckColumnNotSet($column)
     {
-        switch($type)
-        {
-            case DataSource::SQLITE;
-                return $this->GetSQLiteSQL();
-                
-            case DataSource::MYSQL;
-                return $this->GetMySqlSQL();
-                
-            case DataSource::POSTGRESQL;
-                return $this->GetPostgreSQL();
-        }
+        if(
+            isset($this->columns[$column]) ||
+            isset($this->increments[$column]) ||
+            isset($this->decrements[$column])
+        )
+            throw new \Exception(t('The column was already assigned.'));
     }
     
-    private function GetSQLiteSQL()
+    protected function GetSQLiteSQL()
     {
         $sql = 'update ';
         
@@ -187,24 +177,24 @@ class Update
             
             foreach($this->where as $where)
             {
-                $sql .= $where["column"] . ' ' . $where['op'] . ' ';
+                $sql .= $where['column'] . ' ' . $where['op'] . ' ';
                 
                 switch($where['type'])
                 {
                     case FieldType::BOOLEAN:
-                        $sql .= ($where["value"]?1:0) . ' and ';
+                        $sql .= ($where['value']?1:0) . ' and ';
                         break;
 
                     case FieldType::INTEGER:
-                        $sql .= intval($where["value"]) . ' and ';
+                        $sql .= intval($where['value']) . ' and ';
                         break;
 
                     case FieldType::REAL:
-                        $sql .= doubleval($where["value"]) . ' and ';
+                        $sql .= doubleval($where['value']) . ' and ';
                         break;
 
                     case FieldType::TEXT:
-                        $sql .= "'" . str_replace("'", "''", $where["value"])."' and ";
+                        $sql .= "'" . str_replace("'", "''", $where['value'])."' and ";
                         break;
                 }
             }
@@ -213,26 +203,6 @@ class Update
         }
         
         return $sql;
-    }
-    
-    private function GetMySqlSQL()
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    private function GetPostgreSQL()
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    private function CheckColumnNotSet($column)
-    {
-        if(
-            isset($this->columns[$column]) ||
-            isset($this->increments[$column]) ||
-            isset($this->decrements[$column])
-        )
-            throw new \Exception(t('The column was already assigned.'));
     }
 }
 ?>

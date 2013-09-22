@@ -19,6 +19,16 @@ class User
     /**
      * @var string
      */
+    public $password;
+    
+    /**
+     * @var string
+     */
+    public $ip;
+    
+    /**
+     * @var string
+     */
     public $email;
     
     /**

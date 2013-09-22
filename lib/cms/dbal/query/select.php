@@ -6,10 +6,9 @@
 
 namespace Cms\DBAL\Query;
 
-use Cms\DBAL\DataSource;
 use Cms\Enumerations\FieldType;
 
-class Select
+class Select extends \Cms\DBAL\Query
 {
     public $table;
     public $columns;
@@ -35,7 +34,7 @@ class Select
         if(!$this->all)
             $this->columns[] = $column;
         else
-            throw new \Exception(t("All columns already selected."));
+            throw new \Exception(t('All columns already selected.'));
         
         return $this;
     }
@@ -45,7 +44,7 @@ class Select
         if(count($this->columns) == 0)
             $this->all = true;
         else
-            throw new \Exception(t("Select all not allowed if columns where previously selected."));
+            throw new \Exception(t('Select all not allowed if columns where previously selected.'));
         
         return $this;
     }
@@ -55,7 +54,7 @@ class Select
         if(!$this->all)
             $this->columns_custom[] = $statement;
         else
-            throw new \Exception(t("All columns already selected."));
+            throw new \Exception(t('All columns already selected.'));
         
         return $this;
     }
@@ -153,26 +152,7 @@ class Select
         return $this;
     }
     
-    /**
-     * Generates the sql code to create a table depending on database type.
-     * @param string $type One of the constants from \Cms\DBAL\DataSource
-     */
-    public function GetSQL($type)
-    {
-        switch($type)
-        {
-            case DataSource::SQLITE;
-                return $this->GetSQLiteSQL();
-                
-            case DataSource::MYSQL;
-                return $this->GetMySqlSQL();
-                
-            case DataSource::POSTGRESQL;
-                return $this->GetPostgreSQL();
-        }
-    }
-    
-    private function GetSQLiteSQL()
+    protected function GetSQLiteSQL()
     {
         $sql = 'select ';
         
@@ -205,24 +185,24 @@ class Select
                     continue;
                 }
                 
-                $sql .= $where["column"] . ' ' . $where['op'] . ' ';
+                $sql .= $where['column'] . ' ' . $where['op'] . ' ';
                 
                 switch($where['type'])
                 {
                     case FieldType::BOOLEAN:
-                        $sql .= ($where["value"]?1:0) . ' and ';
+                        $sql .= ($where['value']?1:0) . ' and ';
                         break;
 
                     case FieldType::INTEGER:
-                        $sql .= intval($where["value"]) . ' and ';
+                        $sql .= intval($where['value']) . ' and ';
                         break;
 
                     case FieldType::REAL:
-                        $sql .= doubleval($where["value"]) . ' and ';
+                        $sql .= doubleval($where['value']) . ' and ';
                         break;
 
                     case FieldType::TEXT:
-                        $sql .= "'" . str_replace("'", "''", $where["value"])."' and ";
+                        $sql .= "'" . str_replace("'", "''", $where['value'])."' and ";
                         break;
                 }
             }
@@ -242,10 +222,10 @@ class Select
                 }
                 else
                 {
-                    $sql .= $order["column"] . ' ';
+                    $sql .= $order['column'] . ' ';
                 }
                 
-                if($order["sort"] == \Cms\Enumerations\Sort::ASCENDING)
+                if($order['sort'] == \Cms\Enumerations\Sort::ASCENDING)
                     $sql .= 'asc, ';
                 else
                     $sql .= 'desc, ';
@@ -260,16 +240,6 @@ class Select
         }
         
         return $sql;
-    }
-    
-    private function GetMySqlSQL()
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    private function GetPostgreSQL()
-    {
-        throw new Exception('Not implemented');
     }
 }
 ?>

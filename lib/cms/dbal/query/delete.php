@@ -6,10 +6,9 @@
 
 namespace Cms\DBAL\Query;
 
-use Cms\DBAL\DataSource;
 use Cms\Enumerations\FieldType;
 
-class Delete
+class Delete extends \Cms\DBAL\Query
 {
     public $table;
     public $where;
@@ -70,26 +69,7 @@ class Delete
         return $this;
     }
     
-    /**
-     * Generates the sql code to create a table depending on database type.
-     * @param string $type One of the constants from \Cms\DBAL\DataSource
-     */
-    public function GetSQL($type)
-    {
-        switch($type)
-        {
-            case DataSource::SQLITE;
-                return $this->GetSQLiteSQL();
-                
-            case DataSource::MYSQL;
-                return $this->GetMySqlSQL();
-                
-            case DataSource::POSTGRESQL;
-                return $this->GetPostgreSQL();
-        }
-    }
-    
-    private function GetSQLiteSQL()
+    protected function GetSQLiteSQL()
     {
         $sql = 'delete from ';
         
@@ -127,16 +107,6 @@ class Delete
         }
         
         return $sql;
-    }
-    
-    private function GetMySqlSQL()
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    private function GetPostgreSQL()
-    {
-        throw new Exception('Not implemented');
     }
 }
 ?>

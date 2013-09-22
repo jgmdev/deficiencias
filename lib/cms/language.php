@@ -42,7 +42,7 @@ class Language
 	public function __construct($directory, $language=null)
 	{
 		if(!file_exists($directory))
-			throw new \Exception('Languages directory not found.');
+			throw new \Exception(t('Languages directory not found.'));
 		
 		$this->translations = null;
 		

@@ -15,9 +15,7 @@ class FileSystem {
     /**
      * Disable constructor
      */
-    private function __construct() {
-        
-    }
+    private function __construct(){}
 
     /**
      * Moves a file to another path and renames it if already a file with the same name
@@ -288,7 +286,7 @@ class FileSystem {
      * @param reference A reference to a variable to store the file extension.
      * @return string The file name with the extension stripped out.
      */
-    function StripFileExtension($filename, &$extension = null) {
+    public static function StripFileExtension($filename, &$extension = null) {
         $file_array = explode(".", $filename);
 
         $extension = $file_array[count($file_array) - 1];

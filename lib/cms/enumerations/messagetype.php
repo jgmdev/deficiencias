@@ -7,7 +7,8 @@
 namespace Cms\Enumerations;
 
 /**
- * Enumeration used to identify a message displayed on a page @see \Cms\Theme::AddMessage()
+ * Identifiers used to display messages on a page.
+ * @see \Cms\Theme::AddMessage()
  */
 class MessageType
 {

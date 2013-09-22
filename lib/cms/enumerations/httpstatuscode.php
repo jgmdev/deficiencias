@@ -7,7 +7,7 @@
 namespace Cms\Enumerations;
 
 /**
- * Enumerations of valid http status codes.
+ * Valid http status codes.
  */
 class HTTPStatusCode
 {
