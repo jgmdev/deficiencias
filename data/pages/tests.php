@@ -8,7 +8,7 @@ row: 0
     
     field: content
     <?php
-        $form = new Cms\Form('login', null, Cms\Enumerations\FormMethod::POST);
+        $form = new Cms\Form('login', null, Cms\Enumerations\FormMethod::GET);
         
         $form->Listen(Cms\Signals\Type\FormSignal::SUBMIT, function($signal_data){
             print $signal_data->form->name . ' ';
@@ -17,7 +17,7 @@ row: 0
         
         $form->AddField(new Cms\Form\TextField('Login', 'username'));
        
-        $form->AddField(new Cms\Form\PasswordField('Password', 'password'));
+        $form->AddField(new Cms\Form\PasswordField('Password', 'password', '', '', '', true));
         
         $form->AddField(new Cms\Form\TextAreaField(
             'Description', 

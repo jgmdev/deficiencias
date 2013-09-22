@@ -33,6 +33,9 @@ class Signal
      */
     public function Send($signal_type, \Cms\Signals\SignalData &$signal_data=null)
     {
+        if(!isset($this->listeners[$signal_type]))
+            return;
+        
         foreach($this->listeners[$signal_type] as $callback_data)
         {
             $callback = $callback_data['callback'];
@@ -72,6 +75,9 @@ class Signal
      */
     public function Unlisten($signal_type, $callback)
     {
+        if(!isset($this->listeners[$signal_type]))
+            return;
+        
         foreach($this->listeners[$signal_type] as $position=>$callback_data)
         {
             $stored_callback = $callback_data['callback'];

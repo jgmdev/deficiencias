@@ -265,7 +265,7 @@ class Form extends Signals\Signal
             {
                 if($field->required)
                 {
-                    if(!isset($_REQUEST[$field->name]))
+                    if(!isset($_REQUEST[$field->name]) || trim($_REQUEST[$field->name]) == '')
                     {
                         $message = str_replace(
                             '{field}', 

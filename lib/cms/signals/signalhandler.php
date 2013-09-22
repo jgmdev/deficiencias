@@ -16,7 +16,7 @@ class SignalHandler
     /**
      * @var array
      */
-    private static $listeners;
+    private static $listeners = array();
     
     /**
      * Disable constructor
@@ -31,9 +31,7 @@ class SignalHandler
      * @param \Cms\Signals\SignalData $signal_data
      */
     public static function Send($signal_type, \Cms\Signals\SignalData &$signal_data=null)
-    {
-        self::InitListeners();
-        
+    {   
         if(!isset(self::$listeners[$signal_type]))
             return;
         
@@ -56,9 +54,7 @@ class SignalHandler
      * @param int $priority
      */
     public static function Listen($signal_type, $callback, $priority=10)
-    {
-        self::InitListeners();
-        
+    {   
         if(!isset(self::$listeners[$signal_type]))
             self::$listeners[$signal_type] = array();
         
@@ -77,9 +73,7 @@ class SignalHandler
      * @param function $callback
      */
     public static function Unlisten($signal_type, $callback)
-    {
-        self::InitListeners();
-        
+    {   
         if(!isset(self::$listeners[$signal_type]))
             return;
         
@@ -99,15 +93,6 @@ class SignalHandler
         
         if(count(self::$listeners[$signal_type]) <= 0)
             unset(self::$listeners[$signal_type]);
-    }
-    
-    /**
-     * Initialize the $listeners variable as array.
-     */
-    private static function InitListeners()
-    {
-        if(!is_array(self::$listeners))
-            self::$listeners = array();
     }
 }
 ?>
