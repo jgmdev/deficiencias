@@ -209,12 +209,12 @@ class Field
     
     public function GetHtml()
     {
+        $request_value = $this->GetRequestValue();
+        
         $html = '';
         
         if($this->IsArray())
-        {
-            $request_value = $this->GetRequestValue();
-            
+        {   
             $html .= '<div class="fields-container" id="'.$this->id.'-fields">' . "\n";
             
             $id = 0;
@@ -277,9 +277,7 @@ class Field
             }
         }
         else
-        {
-            $request_value = $this->GetRequestValue();
-            
+        {   
             if($request_value)
                 $html .= $this->GetSingleHtml($request_value);
             else

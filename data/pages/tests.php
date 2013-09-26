@@ -23,7 +23,13 @@ row: 0
        
         $form->AddField(new Cms\Form\PasswordField('Password', 'password', '', '', '', true, false, 20));
         
-        $form->AddField(new Cms\Form\RadioField('Login', 'username'));
+        $form->AddField(new Cms\Form\RadioField(
+            'Some Options', 
+            'options', 
+            array('num1'=>'num1', 'num2'=>'num2'), 
+            'num2', 
+            "Some number to choose."
+        ));
         
         $group = new \Cms\Form\FieldsGroup('Details', 'The more detailed info of you.');
         $group->AddField(new Cms\Form\TextField('FirstName', 'name[first]'));

@@ -344,6 +344,14 @@ label
     font-size: 24px;
 }
 
+label.radio
+{
+    display: inline;
+    font-size: 14px;
+    margin-bottom: 0;
+    width: auto;
+}
+
 input[type=text], input[type=password], input[type=file], select, textarea
 {
     display: block;
