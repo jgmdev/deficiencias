@@ -20,5 +20,6 @@ class FormFieldType
     const RADIO = 'radio';
     const SELECT = 'select';
     const SUBMIT = 'submit';
+    const RESET = 'reset';
 }
 ?>

@@ -104,6 +104,12 @@ class Field
         return $this;
     }
     
+    /**
+     * Add Attributes to the element when generating the html code.
+     * @param string $name
+     * @param string $value
+     * @return \Cms\Form\Field
+     */
     public function AddAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
@@ -111,6 +117,11 @@ class Field
         return $this;
     }
     
+    /**
+     * Remove attribute.
+     * @param string $name
+     * @return \Cms\Form\Field
+     */
     public function RemoveAttribute($name)
     {
         if(isset($this->attributes[$name]))
@@ -152,6 +163,11 @@ class Field
         return false;
     }
     
+    /**
+     * Set the validator for the element.
+     * @param \Cms\Form\Validator\Validator $validator
+     * @return \Cms\Form\Field
+     */
     public function SetValidator(\Cms\Form\Validator\Validator $validator)
     {
         $this->validator = $validator;
@@ -194,6 +210,10 @@ class Field
         return true;
     }
     
+    /**
+     * Generate the html code for the label of field.
+     * @return string
+     */
     public function GetLabelHtml()
     {
         $html = '<label class="'.$this->type.'" for="'.$this->id.'">';
@@ -207,6 +227,10 @@ class Field
         return $html;
     }
     
+    /**
+     * Generate the html of field with description and some other stuff.
+     * @return string
+     */
     public function GetHtml()
     {
         $request_value = $this->GetRequestValue();
@@ -290,6 +314,11 @@ class Field
         return $html;
     }
     
+    /**
+     * Generates only the html of the field element.
+     * @param string $value
+     * @return string
+     */
     public function GetSingleHtml($value='')
     {
         $html = '<input type="'.$this->type.'" ';
@@ -324,6 +353,11 @@ class Field
         return $html;
     }
     
+    /**
+     * Get name of field without array brackets. 
+     * Example: name[] -> name
+     * @return string
+     */
     public function GetRealName()
     {
         $name = $this->name;
@@ -335,6 +369,10 @@ class Field
         return $real_name;
     }
     
+    /**
+     * Get the value of the field sent when its parent form was submitted.
+     * @return mixed|null
+     */
     public function &GetRequestValue()
     {
         $name = $this->name;

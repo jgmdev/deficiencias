@@ -31,6 +31,14 @@ row: 0
             "Some number to choose."
         ));
         
+        $form->AddField(new Cms\Form\CheckBoxField(
+            'Some Colors', 
+            'checks[]', 
+            array('blue'=>'1', 'yellow'=>'2', 'red'=>'3'), 
+            '', 
+            "Some color to choose.", true
+        ));
+        
         $group = new \Cms\Form\FieldsGroup('Details', 'The more detailed info of you.');
         $group->AddField(new Cms\Form\TextField('FirstName', 'name[first]'));
         $group->AddField(new Cms\Form\TextField('Last Name', 'name[last]'));
