@@ -29,7 +29,7 @@ class Mail
      * 
      * @return bool True if sent false if not.
      */
-    function Send($to, $subject, $html_message, $alt_message = null, $attachments = array(), $reply_to = array(), $bcc = array(), $cc = array(), $from = array())
+    public static function Send($to, $subject, $html_message, $alt_message = null, $attachments = array(), $reply_to = array(), $bcc = array(), $cc = array(), $from = array())
     {
         $mail = new PHPMailer();
 

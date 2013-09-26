@@ -90,8 +90,8 @@ class Field
         $this->attributes = array();
         
         $this->label = $label;
-        $this->id = $name;
         $this->name = $name;
+        $this->id = $this->GetRealName();
         $this->value = $value;
         $this->description = $description;
         $this->type = $type;
@@ -119,6 +119,39 @@ class Field
         return $this;
     }
     
+    /**
+     * Check the field name to see if it was declared using array syntax,
+     * example: field_name[]
+     * @return boolean
+     */
+    public function IsArray()
+    {
+        $name = $this->name;
+
+        $components = explode("[", $name);
+
+        unset($components[0]);
+
+        if(count($components) > 0)
+        {
+            $components_count = count($components);
+            $current_component = 1;
+
+            foreach($components as $component)
+            {
+                if($component == "]")
+                {
+                    if($components_count == $current_component)
+                        return true;
+                }
+
+                $current_component++;
+            }
+        }
+        
+        return false;
+    }
+    
     public function SetValidator(\Cms\Form\Validator\Validator $validator)
     {
         $this->validator = $validator;
@@ -135,10 +168,24 @@ class Field
      */
     public function HasValidValue()
     {
-        $current_value = isset($_REQUEST[$this->name]) ? 
-            $_REQUEST[$this->name] : $this->value;
+        if(!is_object($this->validator))
+            return true;
         
-        if(is_object($this->validator))
+        $current_value = isset($_REQUEST[$this->GetRealName()]) ? 
+            $this->GetRequestValue() : $this->value;
+        
+        if($this->IsArray())
+        {
+            if(is_array($current_value))
+            {
+                foreach($current_value as $value)
+                {
+                    if(!$this->validator->IsValid($value))
+                        return false;
+                }
+            }
+        }
+        else
         {
             if(!$this->validator->IsValid($current_value))
                 return false;
@@ -149,7 +196,7 @@ class Field
     
     public function GetLabelHtml()
     {
-        $html = '<label for="'.$this->id.'">';
+        $html = '<label class="'.$this->type.'" for="'.$this->id.'">';
         $html .= $this->label;
         
         if($this->required)
@@ -161,15 +208,98 @@ class Field
     }
     
     public function GetHtml()
-    {   
+    {
+        $html = '';
+        
+        if($this->IsArray())
+        {
+            $request_value = $this->GetRequestValue();
+            
+            $html .= '<div class="fields-container" id="'.$this->id.'-fields">' . "\n";
+            
+            $id = 0;
+            $original_id = $this->id;
+            
+            if(is_array($request_value))
+            {
+                foreach($request_value as $value)
+                {
+                    if(trim($value) != "")
+                    {
+                        $this->id .= '-' . $id;
+                        $html .= '<div class="field">' . "\n";
+                        $html .= $this->GetSingleHtml($value);
+                        $html .= '<a class="remove" style="cursor: pointer;" onclick="$(this).parent().remove();">[-]</a>' . "\n";
+                        $html .= '</div>' . "\n";
+                        $id++;
+                        $this->id = $original_id;
+                    }
+                }
+            }
+            else
+            {
+                $this->id .= '-' . $id;
+                $html .= '<div class="field">' . "\n";
+                $html .= $this->GetSingleHtml();
+                $html .= '<a class="remove" style="cursor: pointer;" onclick="$(this).parent().remove();">[-]</a>' . "\n";
+                $html .= '</div>' . "\n";
+                $this->id = $original_id;
+                $id++;
+            }
+            
+            $html .= '<div class="count" style="display: none">'.($id-1).'</div>' . "\n";
+            $html .= '</div>' . "\n";
+            
+            if($this->type != FormFieldType::HIDDEN)
+            {
+                $html .= "<hr />";
+
+                $html .= '<a class="add-more" id="'.$this->id."-add".'" style="cursor: pointer; display: block; text-align: right;">Add More</a>';
+
+                \Cms\Theme::AddRawScript(
+                    '$(document).ready(function(){' . "\n" .
+                    "\t" . '$("#'.$this->id.'-add").click(function(){' . "\n" .
+                    "\t\t" . 'var element_id = \''.$this->id.'-\'+(parseInt($("#'.$this->id.'-fields .count").html()) + 1)+\'-limit\';' . "\n" .
+                    "\t\t" . 'var container = $(\'<div class="field"></div>\')' . "\n" .
+                    "\t\t" . 'var element = $(\''.trim($this->GetSingleHtml()).'\');' . "\n" .
+                    "\t\t" . 'var remove = $(\'<a class="remove" style="cursor: pointer;" onclick="$(this).parent().remove();">[-]&nbsp;</a>\')' . "\n" .
+                    "\t\t" . 'element.attr("id", element_id);' . "\n" .
+                    "\t\t" . '$("#'.$this->id.'-fields .count").html(parseInt($("#'.$this->id.'-fields .count").html()) + 1);' . "\n" .
+                    "\t\t" . 'container.hide();' . "\n" .
+                    "\t\t" . 'remove.css("display", "inline");' . "\n" .
+                    "\t\t" . '$(container).append(element);' . "\n" .
+                    "\t\t" . '$(container).append(remove);' . "\n" .
+                    "\t\t" . '$("#'.$this->id.'-fields").append(container);' . "\n" .
+                    "\t\t" . 'container.fadeIn("slow");' . "\n" .
+                    "\t" . '});' . "\n" .
+                    '});'
+                );
+            }
+        }
+        else
+        {
+            $request_value = $this->GetRequestValue();
+            
+            if($request_value)
+                $html .= $this->GetSingleHtml($request_value);
+            else
+                $html .= $this->GetSingleHtml($this->value);
+        }
+        
+        if($this->description)
+            $html .= '<div class="description">'.$this->description.'</div>' . "\n";
+        
+        return $html;
+    }
+    
+    public function GetSingleHtml($value='')
+    {
         $html = '<input type="'.$this->type.'" ';
         $html .= 'id="'.$this->id.'" ';
         $html .= 'name="'.$this->name.'" ';
-        
-        if(isset($_REQUEST[$this->name]))
-            $html .= 'value="'.$_REQUEST[$this->name].'" ';
-        elseif(trim($this->value) != "")
-            $html .= 'value="'.$this->value.'" ';
+
+        if($value)
+            $html .= 'value="'.$value.'" ';
         
         if($this->placeholder)
             $html .= 'placeholder="'.$this->placeholder.'" ';
@@ -193,10 +323,85 @@ class Field
         
         $html .= '/>' . "\n";
         
-        if($this->description)
-            $html .= '<div class="description">'.$this->description.'</div>' . "\n";
-        
         return $html;
+    }
+    
+    public function GetRealName()
+    {
+        $name = $this->name;
+
+        $components = explode("[", $name);
+
+        $real_name = $components[0];
+        
+        return $real_name;
+    }
+    
+    public function &GetRequestValue()
+    {
+        $name = $this->name;
+
+        $components = explode("[", $name);
+
+        $real_name = $components[0];
+
+        unset($components[0]);
+
+        if(!isset($_REQUEST[$real_name]))
+            return null;
+        
+        $reference = &$_REQUEST[$real_name];
+
+        if(count($components) > 0)
+        {
+            $components_count = count($components);
+            $current_component = 1;
+
+            foreach($components as $component)
+            {
+                if($component == "]")
+                {
+                    if($components_count == $current_component)
+                        break;
+
+                    if(isset($reference[0]))
+                    {
+                        if(is_array($reference[0]))
+                        {
+                            $reference = &$reference[0];
+                        }
+                        else
+                        {
+                            $reference = null;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        $reference = null;
+                        break;
+                    }
+                }
+                else
+                {
+                    $index = trim($component, "]");
+
+                    if(isset($reference[$index]))
+                    {
+                        $reference = &$reference[$index];
+                    }
+                    else
+                    {
+                        $reference = null;
+                        break;
+                    }
+                }
+
+                $current_component++;
+            }
+        }
+        
+        return $reference;
     }
 }
 ?>

@@ -157,6 +157,9 @@ class Form extends Signals\Signal
             {
                 if($element instanceof \Cms\Form\FieldsGroup)
                 {
+                    //Scripts that adds collapse capabilities for fieldsets.
+                    Theme::AddScript("scripts/forms.js");
+                    
                     /* @var $group \Cms\Form\FieldsGroup */
                     $group = $element;
                     
@@ -168,14 +171,14 @@ class Form extends Signals\Signal
                     else
                     {
                         $html .= '<fieldset class="collapsible">' . "\n";
-                        $html .= '<legend><a class="collapse" href="javascript:void(0)">'.$group->label.'</a></legend>' . "\n";
+                        $html .= '<legend><a class="collapse" style="cursor: pointer">'.$group->label.'</a></legend>' . "\n";
                     }
 
                     $form .= $legend;
                     
                     foreach($group->fields as $field)
                     {
-                        $field->id = $this->id . '_' . $field->id;
+                        $field->id = $this->id . '-' . $field->id;
                         
                         $html .= $field->GetLabelHtml();
                         $html .= $field->GetHtml();
@@ -193,7 +196,7 @@ class Form extends Signals\Signal
                     /* @var $field \Cms\Form\Field */
                     $field = $element;
                     
-                    $field->id = $this->id . '_' . $field->id;
+                    $field->id = $this->id . '-' . $field->id;
                     
                     $html .= $field->GetLabelHtml();
                     $html .= $field->GetHtml();
@@ -213,6 +216,17 @@ class Form extends Signals\Signal
      */
     public function Render()
     {
+        //Prepare signal data
+        $signal_data = new Signals\SignalData;
+        $signal_data->Add('form', $this);
+
+        //Local signal
+        $this->Send(Signals\Type\FormSignal::RENDER, $signal_data);
+
+        //Global signal
+        Signals\SignalHandler::Send(Signals\Type\FormSignal::RENDER, $signal_data);
+        
+        //If form was submitted validate it
         $this->ValidateFormOnSubmit();
         
         print $this->GetHtml();
@@ -263,9 +277,30 @@ class Form extends Signals\Signal
             
             foreach($this->fields as $field)
             {
+                $request_value = $field->GetRequestValue();
+                
+                //Check if required
                 if($field->required)
                 {
-                    if(!isset($_REQUEST[$field->name]) || trim($_REQUEST[$field->name]) == '')
+                    $is_blank = false;
+                    
+                    if(
+                        ($field->IsArray() && !is_array($request_value)) || 
+                        ($field->IsArray() && count($request_value) <= 0) || 
+                        $request_value == null
+                    )
+                    {
+                        $is_blank = true;
+                    }
+                    elseif(!$field->IsArray())
+                    {
+                        if(!is_string($request_value))
+                            $is_blank = true;
+                        elseif(trim($request_value) == "")
+                            $is_blank = true;
+                    }
+                    
+                    if($is_blank)
                     {
                         $message = str_replace(
                             '{field}', 
@@ -283,7 +318,34 @@ class Form extends Signals\Signal
                 
                 if($field->size > 0)
                 {
-                    if(strlen($_REQUEST[$field->name]) > $field->size)
+                    $is_longer = false;
+                    
+                    if($field->IsArray())
+                    {
+                        if(is_array($request_value))
+                        {
+                            foreach($request_value as $value)
+                            {
+                                if(strlen($value) > $field->size)
+                                {
+                                    $is_longer = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(is_string($request_value))
+                        {
+                            if(strlen($request_value) > $field->size)
+                                $is_longer = true;
+                        }
+                        elseif(!is_null($request_value))
+                            $is_longer = true;
+                    }
+                    
+                    if($is_longer)
                     {
                         $message = str_replace(
                             array('{field}', '{size}'), 
@@ -301,7 +363,7 @@ class Form extends Signals\Signal
                 
                 if($field->readonly)
                 {
-                    if($_REQUEST[$field->name] != $field->value)
+                    if($request_value != $field->value)
                     {
                         $message = str_replace(
                             '{field}', 
@@ -321,7 +383,7 @@ class Form extends Signals\Signal
                 {
                     $errors = true;
                     
-                    $validation_errors[$field->name] = $field->validator->errors;
+                    $validation_errors[$field->GetRealName()] = $field->validator->errors;
                 }
             }
             

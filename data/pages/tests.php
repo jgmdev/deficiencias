@@ -15,13 +15,30 @@ row: 0
             print 'form was submitted!';
         });
         
+        $form->Listen(Cms\Signals\Type\FormSignal::SUBMIT_ERROR, function($signal_data){
+            print "errors were detected.";
+        });
+        
         $form->AddField(new Cms\Form\TextField('Login', 'username'));
        
-        $form->AddField(new Cms\Form\PasswordField('Password', 'password', '', '', '', true));
+        $form->AddField(new Cms\Form\PasswordField('Password', 'password', '', '', '', true, false, 20));
+        
+        $form->AddField(new Cms\Form\RadioField('Login', 'username'));
+        
+        $group = new \Cms\Form\FieldsGroup('Details', 'The more detailed info of you.');
+        $group->AddField(new Cms\Form\TextField('FirstName', 'name[first]'));
+        $group->AddField(new Cms\Form\TextField('Last Name', 'name[last]'));
+        
+        $form->AddGroup($group);
+        
+        $form->AddField(new Cms\Form\TextField(
+            'Attributes', 'attributes[]', '', "List of attributes that better describe you.", "",
+            false, false, 100
+        ));
         
         $form->AddField(new Cms\Form\TextAreaField(
             'Description', 
-            'description', 
+            'description[]', 
             '', 
             'A description', 
             'Write something short about you', 
@@ -29,6 +46,13 @@ row: 0
             false, 
             200
         ));
+        
+        $select = new \Cms\Form\SelectField('Gender', 'gender[sex]', array('Male'=>'male', 'Female'=>'female', 'Other'=>'other'));
+        $select->AddOptionsGroup("Animal", array('Male'=>'a_male', 'Female'=>'a_female', 'Other'=>'a_other'));
+        $select->required = true;
+        
+        
+        $form->AddField($select);
         
         $form->AddField(new Cms\Form\Field(
             '', 'btnSend', 'Send', '', '', Cms\Enumerations\FormFieldType::SUBMIT)
