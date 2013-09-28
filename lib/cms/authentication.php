@@ -15,12 +15,13 @@ class Authentication
      * Login a user to the site if username and password
      * is correct on a form submit.
      * @return bool true on success or false on incorrect login.
+     * @throws \Cms\Exceptions\Users\UserNotExistsException
+     * @throws \Cms\Exceptions\Users\InvalidPasswordException
+     * @throws \Cms\Exceptions\Users\AwaitingApprovalException
      */
-    public static function Login($username = '', $password = '')
+    public static function Login($username, $password)
     {
         $base_url = System::GetBaseUrl();
-
-        $is_logged = false;
 
         //Remove the optional www for problems from www and non www links
         $logged_site = str_replace(array("http://", "https://", "www."), "", $_SESSION["logged"]["site"]);
@@ -30,41 +31,21 @@ class Authentication
         {
             $user_data = false;
 
-            $email_validator = new Form\Validator\EmailValidator($_REQUEST["username"]);
+            $email_validator = new Form\Validator\EmailValidator($username);
             
             if($email_validator->IsValid())
             {
-                try
-                {
-                    $user_data = Users::GetDataByEmail($_REQUEST["username"]);
-                    $_REQUEST["username"] = $user_data->username;
-                }
-                catch(\Cms\Exceptions\Users\UserNotExistsException $e)
-                {
-                    Theme::AddMessage(
-                        t("The username or password you entered is incorrect."), 
-                        Enumerations\MessageType::ERROR
-                    );
-                    return $is_logged;
-                }
+                //This throws a user not exists exception if fails
+                $user_data = Users::GetDataByEmail($username);
+                $username = $user_data->username;
             }
             else
             {
-                try
-                {
-                    $user_data = Users::GetData($_REQUEST["username"]);
-                }
-                catch(\Cms\Exceptions\Users\UserNotExistsException $e)
-                {
-                    Theme::AddMessage(
-                        t("The username or password you entered is incorrect."), 
-                        Enumerations\MessageType::ERROR
-                    );
-                    return $is_logged;
-                }
+                //This throws a user not exists exception if fails
+                $user_data = Users::GetData($username);
             }
-
-            if($user_data && crypt($_REQUEST["password"], $user_data->password) == $user_data->password)
+            
+            if($user_data && crypt($password, $user_data->password) == $user_data->password)
             {
                 $settings = System::GetSiteSettings();
 
@@ -74,11 +55,7 @@ class Authentication
                    ($settings->Get("registration_can_select_group") && $user_data->status == "0" && in_array($user_data->group, $groups_approval))
                 )
                 {
-                    Theme::AddMessage(
-                        t("Your registration is awaiting for approval. If the registration is approved you will receive an email notification.")
-                    );
-
-                    return $is_logged;
+                    throw new Exceptions\Users\AwaitingApprovalException;
                 }
 
                 $_SESSION["logged"]["site"] = $base_url;
@@ -90,26 +67,15 @@ class Authentication
 
                 //Save last ip used
                 $user_data->ip = $_SERVER["REMOTE_ADDR"];
-                Users::Edit($_REQUEST["username"], $user_data);
-
-                $is_logged = true;
+                Users::Edit($username, $user_data);
             }
             else
             {
                 $_SESSION["logged"]["site"] = false;
-                $is_logged = false;
-            }
-
-            if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]) && $is_logged == false)
-            {
-                Theme::AddMessage(
-                    t("The username or password you entered is incorrect."), 
-                    Enumerations\MessageType::ERROR
-                );
+                
+                throw new Exceptions\Users\InvalidPasswordException;
             }
         }
-
-        return $is_logged;
     }
 
     /**
@@ -264,7 +230,7 @@ class Authentication
         {
             return;
         }
-        elseif($count($permissions) > 0)
+        elseif(count($permissions) > 0)
         {
             if(self::GetGroup()->HasPermission($permissions))
             {

@@ -32,7 +32,15 @@ class Pages
         if(file_exists($page_file))
         {
             $data = new Data($page_file);
-            $data_row = $data->GetRow(0, $page_data);
+            $data->GetRow(0, $page_data);
+            
+            if(!is_array($page_data->groups))
+            {
+                if(is_string($page_data->groups))
+                    $page_data->groups = unserialize($page_data->groups);
+                else
+                    $page_data->groups = array();
+            }
         }
         else
         {
@@ -44,9 +52,35 @@ class Pages
 
         return $page_data;
     }
+    
+    /**
+     * Checks if a given page exists.
+     * @param string $uri
+     * @return bool
+     */
+    public static function Exists($uri)
+    {
+        $page_path = self::GetPath($uri);
 
+        if(file_exists($page_path))
+            return true;
+
+        return false;
+    }
+
+    /**
+     * Get file path of a given uri. It can return the path to a system
+     * page or regular site page.
+     * @param string $uri
+     * @return string
+     */
     public static function GetPath($uri)
     {
+        $system_page_uri = 'system/' . Uri::TextToUri($uri, true) . '.php';
+        
+        if(file_exists($system_page_uri))
+            return $system_page_uri;
+        
         $uri = str_replace('/', '-', $uri);
 
         return System::GetDataPath() . 'pages/' . Uri::TextToUri($uri) . '.php';

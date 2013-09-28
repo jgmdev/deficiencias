@@ -359,7 +359,7 @@ input[type=text], input[type=password], input[type=file], select, textarea
     margin-bottom: 7px;
     height: 35px;
     border-radius: 3px;
-    boder: solid 1px #d3d3d3;
+    border: solid 1px #d3d3d3;
     box-shadow: 0px 0px 8px #d3d3d3;
     font-size: 20px;
 }
@@ -394,5 +394,5 @@ input[type=submit]
     font-weight: bold;
     margin: 0 auto 0 auto;
     font-size: 24px;
-    display: inline;
+    display: inline-block;
 }

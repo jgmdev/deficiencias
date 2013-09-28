@@ -27,7 +27,7 @@ class DataBase
     
     /**
      * Type of database we are connected to.
-     * @var string @see \Cms\DBAL\DataSource
+     * @var string @see \Cms\Enumerations\DBDataSource
      */
     public $type;
     
@@ -105,32 +105,58 @@ class DataBase
         return $this->connected;
     }
     
-    public function CreateTable(\Cms\DBAL\Query\Table $table)
+    public function TableExists($name)
     {
         $this->VerifyIsConnected();
         
-        return $this->pdo->exec($table->GetSQL($this->type));
+        switch($this->type)
+        {
+            case DBDataSource::SQLITE:
+            {
+                $this->CustomQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='$name'");
+                
+                $data = $this->FetchArray();
+                
+                if(isset($data['name']))
+                    return true;
+                
+                break;
+            }
+            case DBDataSource::MYSQL:
+            {
+                throw new \Exception(t('Not implemented'));
+                break;
+            }
+            case DBDataSource::POSTGRESQL:
+            {
+                throw new \Exception(t('Not implemented'));
+                break;
+            }
+            default:
+                throw new \Exception(t('Not implemented'));
+        }
+        
+        return false;
+    }
+    
+    public function CreateTable(\Cms\DBAL\Query\Table $table)
+    {
+        return $this->Exec($table);
     }
     
     public function Insert(\Cms\DBAL\Query\Insert $insert)
     {
-        $this->VerifyIsConnected();
-        
-        return $this->pdo->exec($insert->GetSQL($this->type));
+        return $this->Exec($insert);
     }
     
     public function Update(\Cms\DBAL\Query\Update $update)
     {
-        $this->VerifyIsConnected();
-        
-        return $this->pdo->exec($update->GetSQL($this->type));
+        return $this->Exec($update);
     }
     
     public function Delete(\Cms\DBAL\Query\Delete $delete)
     {
-        $this->VerifyIsConnected();
-        
-        return $this->pdo->exec($delete->GetSQL($this->type));
+        return $this->Exec($delete);
     }
     
     public function Select(\Cms\DBAL\Query\Select $select)
@@ -157,11 +183,34 @@ class DataBase
         return false;
     }
     
+    public function Exec(\Cms\DBAL\Query $query)
+    {
+        $this->VerifyIsConnected();
+        
+        $value = $this->pdo->exec($query->GetSQL($this->type));
+        
+        if($value === false)
+        {
+            $error = $this->GetError();
+            throw new \Exception($error[2], $error[1]);
+        }
+        
+        return $value;
+    }
+    
     public function CustomExec($sql)
     {
         $this->VerifyIsConnected();
         
-        return $this->pdo->exec($sql);
+        $value = $this->pdo->exec($sql);
+        
+        if($value === false)
+        {
+            $error = $this->GetError();
+            throw new \Exception($error[2], $error[1]);
+        }
+        
+        return $value;
     }
     
     public function CustomQuery($sql)
@@ -174,6 +223,11 @@ class DataBase
             return true;
         
         return false;
+    }
+    
+    public function GetError()
+    {
+        return $this->pdo->errorInfo();
     }
     
     public function Fetch()

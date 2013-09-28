@@ -72,7 +72,7 @@ class DataSource
      * @param string $host
      * @param string $port
      */
-    public function InitAsMySql($database, $username, $password, $host='127.0.0.1', $port='3306')
+    public function InitAsMySql($database, $username, $password, $host='127.0.0.1', $port='3306', $encoding='utf8')
     {
         $this->type = DBDataSource::MYSQL;
         
@@ -80,7 +80,7 @@ class DataSource
         
         $this->password = $password;
         
-        $this->dsn = "mysql:dbname=$database;host=$host;port=$port;";
+        $this->dsn = "mysql:dbname=$database;host=$host;port=$port;charset=$encoding";
     }
     
     /**
@@ -91,7 +91,7 @@ class DataSource
      * @param string $host
      * @param string $port
      */
-    public function InitAsPostgreSQL($database, $username, $password, $host='127.0.0.1', $port='5432')
+    public function InitAsPostgreSQL($database, $username, $password, $host='127.0.0.1', $port='5432', $encoding='utf8')
     {
         $this->type = DBDataSource::POSTGRESQL;
         
@@ -99,7 +99,7 @@ class DataSource
         
         $this->password = $password;
         
-        $this->dsn = "pgsql:dbname=$database;host=$host;port=$port;";
+        $this->dsn = "pgsql:dbname=$database;host=$host;port=$port;charset=$encoding";
     }
 }
 ?>

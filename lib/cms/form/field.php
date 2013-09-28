@@ -216,6 +216,9 @@ class Field
      */
     public function GetLabelHtml()
     {
+        if(!$this->label)
+            return '';
+        
         $html = '<label class="'.$this->type.'" for="'.$this->id.'">';
         $html .= $this->label;
         

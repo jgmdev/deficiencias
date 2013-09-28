@@ -45,14 +45,14 @@ class Data
     {	
         $this->file = $file;
         
-        //In case file is been write wait to not get empty content
-        $this->WaitIfLock();
-
         if(!file_exists($file))
         {
             $this->data = array();
             return;
         }
+        
+        //In case file is been write wait to not get empty content
+        $this->WaitIfLock();
 
         $arrFile = file($file);
 
@@ -211,7 +211,7 @@ class Data
         
         $this->Parse($this->file);
         
-        if(is_object($object))
+        if(is_object($object) && isset($this->data[$position]))
         {
             foreach($this->data[$position] as $field_name=>$value)
             {
@@ -226,6 +226,8 @@ class Data
      * Appends a new row to a database file and creates the file if doesnt exist.
      * @param array $fields Fields in the format fields["name"] = "value"
      * @return bool False if failed to add data otherwise true.
+     * @throws \Cms\Exception\FileSystem\WriteFileException
+     * @throws \Cms\Exception\FileSystem\InvalidFileException
      */
     public function AddRow($fields)
     {	
@@ -239,6 +241,8 @@ class Data
     /**
      * Delete a row from a database file and all its fields.
      * @param integer $position The position or id of the row to delete.
+     * @throws \Cms\Exception\FileSystem\WriteFileException
+     * @throws \Cms\Exception\FileSystem\InvalidFileException
      */
     public function DeleteRow($position)
     {
@@ -253,6 +257,8 @@ class Data
      * Deletes a row from a database file when a field matches a specific value.
      * @param string $field_name Name of the field to match.
      * @param string $value Value of the field.
+     * @throws \Cms\Exception\FileSystem\WriteFileException
+     * @throws \Cms\Exception\FileSystem\InvalidFileException
      */
     public function DeleteRowByField($field_name, $value)
     {
@@ -273,6 +279,8 @@ class Data
      * @param integer $position The position or id of the row to edit.
      * @param array $new_data Fields in the format fields["name"] = "value"
      * with the new data to be written to the row.
+     * @throws \Cms\Exception\FileSystem\WriteFileException
+     * @throws \Cms\Exception\FileSystem\InvalidFileException
      */
     public function EditRow($position, $new_data)
     {

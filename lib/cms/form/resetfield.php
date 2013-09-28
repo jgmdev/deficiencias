@@ -9,7 +9,7 @@ namespace Cms\Form;
 use Cms\Enumerations\FormFieldType;
 
 class ResetField extends Field
-{   
+{
     /**
      * Default constructor.
      * @param string $label

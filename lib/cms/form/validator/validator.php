@@ -48,6 +48,12 @@ class Validator
     public $errors;
     
     /**
+     * Error message that can be used when value is not valid.
+     * @var string
+     */
+    public $error_message;
+    
+    /**
      * Default constructor.
      * @param string $value
      * @return \Cms\Form\Validator\Validator
@@ -59,6 +65,7 @@ class Validator
         $this->valid_values = array();
         $this->pattern = null;
         $this->errors = array();
+        $this->error_message = '';
         
         $this->value = $value;
         
@@ -111,6 +118,11 @@ class Validator
         $this->pattern = $pattern;
         
         return $this;
+    }
+    
+    public function SetErrorMessage($message)
+    {
+        $this->error_message = $message;
     }
     
     /**

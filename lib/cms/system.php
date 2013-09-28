@@ -298,6 +298,8 @@ class System
         }
         
         self::$database = new DBAL\DataBase($datasource);
+        
+        self::CreateSystemTables();
     }
     
     /**
@@ -410,6 +412,46 @@ class System
         }
 
         return false;
+    }
+    
+    /**
+     * Add required system tables into database if they aren't present yet.
+     * @throws Exception
+     */
+    public static function CreateSystemTables()
+    {
+        if(!self::$database)
+            throw new Exception('System database uninitialized.');
+        
+        if(!self::$database->TableExists('users'))
+        {
+            $users_table = new DBAL\Query\Table('users');
+            $users_table->AddTextField('username')
+                ->AddTextField('email')
+                ->AddIntegerField('register_date')
+                ->AddTextField('user_group') //group is a reserved sql word
+                ->AddTextField('picture')
+                ->AddTextField('ip')
+                ->AddTextField('gender')
+                ->AddIntegerField('birth_date')
+                ->AddTextField('status')
+                ->AddPrimaryKey('username')
+            ;
+        
+            self::$database->CreateTable($users_table);
+            
+            $users_index = new DBAL\Query\Index('users_index', 'users');
+            $users_index->AddFieldDesc('username')
+                ->AddFieldDesc('email')
+                ->AddFieldDesc('register_date')
+                ->AddFieldDesc('user_group')
+                ->AddFieldDesc('gender')
+                ->AddFieldDesc('birth_date')
+                ->AddFieldDesc('status')
+            ;
+            
+            self::$database->Exec($users_index);
+        }
     }
     
     /**
