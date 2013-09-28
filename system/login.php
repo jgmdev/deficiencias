@@ -8,6 +8,9 @@ row: 0
     
     field: content
     <?php
+        if(Cms\Authentication::IsUserLogged())
+            Cms\Uri::Go('user');
+        
         $form = new Cms\Form('login', null, Cms\Enumerations\FormMethod::POST);
         
         $form->Listen(Cms\Signals\Type\FormSignal::SUBMIT, function($signal_data)

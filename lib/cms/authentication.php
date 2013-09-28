@@ -83,7 +83,7 @@ class Authentication
      */
     public static function Logout()
     {
-        unset($_SESSION["logged"]);
+        unset($_SESSION['logged']);
     }
     
     /**
@@ -94,10 +94,14 @@ class Authentication
     public static function IsUserLogged()
     {
         static $user_data;
+        
         $base_url = System::GetBaseUrl();
 
-        if(!isset($_SESSION))
+        if(!isset($_SESSION['logged']))
+        {
+            $user_data = null;
             return false;
+        }
 
         //To reduce file access
         if(!$user_data)
@@ -107,7 +111,7 @@ class Authentication
                 if(Users::Exists($_SESSION["logged"]["username"]))
                     $user_data = Users::GetData($_SESSION["logged"]["username"]);
                 else
-                    $user_data = array();
+                    $user_data = new Data\User();
             }
         }
 
@@ -116,7 +120,7 @@ class Authentication
         $base_url_parsed = str_replace(array("http://", "https://", "www."), "", $base_url);
 
         if($logged_site == $base_url_parsed &&
-                $user_data["password"] == $_SESSION["logged"]["password"] &&
+                $user_data->password == $_SESSION["logged"]["password"] &&
                 ($_SESSION["logged"]["user_agent"] == $_SERVER["HTTP_USER_AGENT"] ||
                 ($_SERVER["HTTP_USER_AGENT"] == "Shockwave Flash" && isset($_FILES)) //Enable flash uploaders that send another agent
                 )
@@ -132,7 +136,7 @@ class Authentication
                 }
             }
 
-            $_SESSION["logged"]["group"] = $user_data["group"];
+            $_SESSION["logged"]["group"] = $user_data->group;
 
             return true;
         }

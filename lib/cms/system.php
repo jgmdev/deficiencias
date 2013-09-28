@@ -42,6 +42,8 @@ class System
      */
     private static $database;
     
+    private static $session_handler = null;
+    
     /**
      * Disable constructor
      */
@@ -51,14 +53,20 @@ class System
      * Initializes the system settings handle.
      */
     public static function Init()
-    {
-        session_start();
-        
+    {   
         self::InitializeDataPath();
         
         self::$is_initialized = true;
         
         self::$settings = new \Cms\Settings('main');
+        
+        if(!self::$session_handler)
+        {
+            self::$session_handler = new Handlers\Session();
+        }
+        
+        session_set_save_handler(self::$session_handler, true);
+        session_start();
     }
     
     /**
@@ -163,7 +171,7 @@ class System
      */
     public static function SetDataPath($path)
     {
-        self::$data_path = rtrim($path, '/') . '/';
+        self::$data_path = rtrim($path, "\\/") . '/';
     }
     
     /**
@@ -300,6 +308,20 @@ class System
         self::$database = new DBAL\DataBase($datasource);
         
         self::CreateSystemTables();
+    }
+    
+    /**
+     * Set the default session handler. Make sure to use 
+     * this before calling System::Init().
+     * @param \SessionHandlerInterface $handler
+     * @throws \Exception
+     */
+    public static function SetSessionHandler(\SessionHandlerInterface $handler)
+    {
+        if(!self::$is_initialized)
+            self::$session_handler = $handler;
+        else
+            throw new \Exception("You have to set the session handler before initializing.");
     }
     
     /**

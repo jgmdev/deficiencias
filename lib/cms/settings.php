@@ -30,12 +30,24 @@ class Settings
     private $tables_array;
     
     /**
+     * Directory where setting tables are stored
+     * @var string
+     */
+    private $table_path;
+    
+    /**
      * Initializes the settings object.
      * @param string $table The name of the settings table, for example: main
+     * @param string $path Path where table resides. Default: data/settings
      */
-    public function __construct($table)
+    public function __construct($table, $path = '')
     {
         $this->tables_array = array();
+        
+        if($path)
+            $this->table_path = rtrim($path, "\\/") . "/";
+        else
+            $this->table_path = System::GetDataPath() . "settings/";
         
         $this->Load($table);
     }
@@ -52,7 +64,7 @@ class Settings
         if(is_string($table))
             $this->table = $table;
         
-        $this->data = new Data(System::GetDataPath() . "settings/$table.php");
+        $this->data = new Data($this->table_path . "$table.php");
     }
     
     /**
@@ -140,76 +152,6 @@ class Settings
         }
 
         return $settings;
-    }
-
-    /**
-     * Checks if settings.php values should be override by data base settings file
-     * main stored on data/settings/main.php.
-     */
-    function settings_override()
-    {
-        global $title, $base_url, $slogan, $footer_message, $theme, $theme_path, $language, $clean_urls, $user_profiles;
-
-        if($settings = get_settings("main"))
-        {
-            if($settings["override"])
-            {
-                $title = $settings["title"]?$settings["title"]:$title;
-
-                if($settings["timezone"])
-                {
-                    date_default_timezone_set($settings["timezone"]);
-                } 
-
-                $protocol = is_ssl_connection() ? "https" : "http";
-
-                if($settings["auto_detect_base_url"] || trim($settings["base_url"]) == "")
-                {
-                    if(
-                        strstr($_SERVER["SCRIPT_NAME"], "index.php") !== false ||
-                        strstr($_SERVER["SCRIPT_NAME"], "cron.php") !== false ||
-                        strstr($_SERVER["SCRIPT_NAME"], "uris.php") !== false ||
-                        strstr($_SERVER["SCRIPT_NAME"], "upload.php") !== false
-                    )
-                    {
-                        $paths = explode("/", $_SERVER["SCRIPT_NAME"]);
-                        unset($paths[count($paths) - 1]); //Remove index.php
-                        $path = implode("/", $paths);
-                    }
-                    else
-                    {
-                        //Correctly set base url path on hiphop
-                        $query = str_replace("p=", "", $_SERVER["QUERY_STRING"]);
-                        $query_elements = explode("&", $query);
-
-                        $path = rtrim(
-                            str_replace(
-                                $query_elements[0],
-                                "",
-                                $_SERVER["SCRIPT_NAME"]
-                            ),
-                            "/"
-                        );
-                    }
-
-                    $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
-                    $base_url .= $path;
-                }
-                else
-                {
-                    $base_url = str_replace("http://", "$protocol://", $settings["base_url"]?$settings["base_url"]:$base_url);
-                }
-
-                $user_profiles = $settings["user_profiles"]?$settings["user_profiles"]:$user_profiles;
-                $slogan = $settings["slogan"]?$settings["slogan"]:$slogan;
-                $footer_message = $settings["footer_message"]?$settings["footer_message"]:$footer_message;
-                $theme = $settings["theme"]?$settings["theme"]:$theme;
-                $language = $settings["language"]?$settings["language"]:$language;
-                $clean_urls = $settings["clean_urls"];
-
-                $theme_path = $base_url . "/themes/" . $theme;
-            }
-        }
     }
 }
 

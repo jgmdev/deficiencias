@@ -1,4 +1,5 @@
 nbproject/private/
+data/sessions
 data/sqlite/deficiencies
 data/sqlite/geocodes
 def_images/*.png
