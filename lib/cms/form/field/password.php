@@ -4,11 +4,11 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
 use Cms\Enumerations\FormFieldType;
 
-class PasswordField extends TextField
+class Password extends Text
 {
     public function __construct($label, $name, $value='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
     {

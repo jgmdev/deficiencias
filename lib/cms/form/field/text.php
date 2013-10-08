@@ -4,11 +4,13 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Theme;
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class TextField extends Field
+class Text extends Field
 {
     public function __construct($label, $name, $value='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
     {
@@ -66,7 +68,7 @@ class TextField extends Field
 
                 $html .= '<a class="add-more" id="'.$this->id."-add".'" style="cursor: pointer; display: block; text-align: right;">Add More</a>';
 
-                \Cms\Theme::AddRawScript(
+                Theme::AddRawScript(
                     '$(document).ready(function(){' . "\n" .
                     "\t" . '$("#'.$this->id.'-add").click(function(){' . "\n" .
                     "\t\t" . 'var element_id = \''.$this->id.'-\'+(parseInt($("#'.$this->id.'-fields .count").html()) + 1)+\'-limit\';' . "\n" .
@@ -117,9 +119,9 @@ class TextField extends Field
         
         if($this->size > 0)
         {
-            \Cms\Theme::AddScript('scripts/optional/jquery.limit.js');
+            Theme::AddScript('scripts/optional/jquery.limit.js');
                 
-            \Cms\Theme::AddRawScript(
+            Theme::AddRawScript(
                 '$(document).ready(function(){' . "\n" .
                 "\t" . '$("#'.$this->id.'").limit("'.$this->size.'", "#'.$this->id.'-limit");' . "\n" .
                 '});'

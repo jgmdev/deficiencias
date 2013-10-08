@@ -18,10 +18,22 @@ class Data
     protected $file;
     
     /**
-     * Representation of current data
+     * Representation of current file data
      * @var array
      */
     protected $data;
+    
+    /**
+     * A file resource.
+     * @var resource
+     */
+    protected $file_resource;
+    
+    /**
+     * Flag that indicates if $file_resource is currently locked.
+     * @var boolean
+     */
+    protected $file_locked;
     
     /**
      * Initializes and optionally parses a file.
@@ -29,10 +41,8 @@ class Data
      */
     public function __construct($file=null)
     {
+        $this->file = $file;
         $this->data = array();
-        
-        if($file)
-            $this->Parse($file);
     }
     
     /**
@@ -52,9 +62,11 @@ class Data
         }
         
         //In case file is been write wait to not get empty content
-        $this->WaitIfLock();
+        $this->LockForReading();
 
         $arrFile = file($file);
+        
+        $this->Unlock();
 
         $row = array();
 
@@ -122,7 +134,7 @@ class Data
                 }
             }
         }
-
+        
         unset($arrFile);
 
         $this->data = $row;
@@ -132,22 +144,16 @@ class Data
      * Writes a php database file with the correct format.
      * @param array $data With the format array[row_number] = array("field_name"=>"field_value")
      * used to populate the content of the file.
-     * @throws \Cms\Exception\FileSystem\WriteFileException
-     * @throws \Cms\Exception\FileSystem\InvalidFileException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public function Write($data)
     {
         if(!$this->file)
-            throw new Exception\FileSystem\InvalidFileException;
+            throw new Exceptions\FileSystem\InvalidFileException;
 
         //Wait if file is been modified
-        $this->WaitIfLock();
-
-        //Check if a file could not be lock and keep trying until locked
-        while(!$this->Lock())
-        {
-            continue;
-        }
+        $this->LockForWriting();
 
         //For security we place this at the top of the file to make it unreadable by
         //external users
@@ -159,10 +165,15 @@ class Data
 
             foreach($fields as $name => $value)
             {
-                if(!is_string($value))
+                if(is_array($value) || is_object($value))
+                {
+                    $value = (array) $value;
                     $value = serialize($value);
+                }
                 else
+                {
                     $value = str_replace(array("\n", "field;"), array("\n\t\t", "\\field;"), $value);
+                }
 
                 $content .= "\tfield: $name\n";
                 $content .= "\t\t" . trim($value);
@@ -177,7 +188,7 @@ class Data
             //Unlock file
             $this->Unlock();
 
-            throw new Exception\FileSystem\WriteFileException;
+            throw new Exceptions\FileSystem\WriteFileException;
         }
 
         //Unlock file
@@ -190,9 +201,6 @@ class Data
      */
     public function GetAllRows()
     {
-        //In case file is been write wait to not get empty content
-        $this->WaitIfLock();
-        
         $this->Parse($this->file);
 
         return $this->data;
@@ -206,9 +214,6 @@ class Data
      */
     public function GetRow($position, $object=null)
     {
-        //In case file is been write wait to not get empty content
-        $this->WaitIfLock();
-        
         $this->Parse($this->file);
         
         if(is_object($object) && isset($this->data[$position]))
@@ -226,8 +231,8 @@ class Data
      * Appends a new row to a database file and creates the file if doesnt exist.
      * @param array $fields Fields in the format fields["name"] = "value"
      * @return bool False if failed to add data otherwise true.
-     * @throws \Cms\Exception\FileSystem\WriteFileException
-     * @throws \Cms\Exception\FileSystem\InvalidFileException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public function AddRow($fields)
     {	
@@ -241,8 +246,8 @@ class Data
     /**
      * Delete a row from a database file and all its fields.
      * @param integer $position The position or id of the row to delete.
-     * @throws \Cms\Exception\FileSystem\WriteFileException
-     * @throws \Cms\Exception\FileSystem\InvalidFileException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public function DeleteRow($position)
     {
@@ -257,8 +262,8 @@ class Data
      * Deletes a row from a database file when a field matches a specific value.
      * @param string $field_name Name of the field to match.
      * @param string $value Value of the field.
-     * @throws \Cms\Exception\FileSystem\WriteFileException
-     * @throws \Cms\Exception\FileSystem\InvalidFileException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public function DeleteRowByField($field_name, $value)
     {
@@ -279,8 +284,8 @@ class Data
      * @param integer $position The position or id of the row to edit.
      * @param array $new_data Fields in the format fields["name"] = "value"
      * with the new data to be written to the row.
-     * @throws \Cms\Exception\FileSystem\WriteFileException
-     * @throws \Cms\Exception\FileSystem\InvalidFileException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public function EditRow($position, $new_data)
     {
@@ -290,59 +295,55 @@ class Data
 
         $this->Write($this->data);
     }
-
+    
     /**
      * Locks a file for write protection.
      * @return bool true on success false on fail.
      */
-    private function Lock()
+    private function LockForReading()
     {
-        //Lock file to block file from modifications.
-        $file_lock = $this->file . ".lock";
-
-        //Create lock file
-        if(file_exists($file_lock))
-        {
-            return false;
-        }
-        else
-        {
-            file_put_contents($file_lock, "");
-        }
-
-        return true;
+        if($this->file_locked)
+            return;
+        
+        $this->file_resource = fopen($this->file, "r+");
+        
+        if(is_resource($this->file_resource))
+            while(!flock($this->file_resource, LOCK_SH));
+                
+        $this->file_locked = true;
     }
-
+    
     /**
-     * Unlocks a write protected file.
-     * @param string $file The path of the file to unlock.
+     * Locks a file for write protection.
+     * @return bool true on success false on fail.
      */
+    private function LockForWriting()
+    {
+        if($this->file_locked)
+            return;
+        
+        $this->file_resource = fopen($this->file, "w+");
+        
+        if(is_resource($this->file_resource))
+            while(!flock($this->file_resource, LOCK_EX));
+        else
+            throw  new Exceptions\FileSystem\WriteFileException;
+                
+        $this->file_locked = true;
+    }
+    
     private function Unlock()
     {
-        //Lock file to block file from modifications.
-        $file_lock = $this->file . ".lock";
-
-        //Delete lock file
-        unlink($file_lock);
-    }
-
-    /**
-     * Checks if a file is been modified and waits until is modified.
-     * @param string $file the file to check.
-     */
-    private function WaitIfLock()
-    {
-        //Lock file to block file from modifications until is modified here first.
-        $file_lock = $this->file . ".lock";
-
-        //Check if $file is not been modified already.
-        if(file_exists($file_lock))
+        if($this->file_locked)
         {
-            //Wait until the file is written by the other process
-            while(file_exists($file_lock))
+            if($this->file_resource)
             {
-                continue;
+                flock($this->file_resource, LOCK_UN);
+                fclose($this->file_resource);
             }
+            
+            $this->file_locked = false;
+            $this->file_resource = null;
         }
     }
 

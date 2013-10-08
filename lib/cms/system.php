@@ -85,12 +85,6 @@ class System
                 {
                     $_SERVER['HTTP_HOST'] = $_REQUEST['HTTP_HOST'];
                 }
-
-                //if not http_host passed then return default
-                else
-                {
-                    self::$data_path = 'data/default/';
-                }
             }
 
             $host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
@@ -151,6 +145,30 @@ class System
                 "    </system.webServer>\n".
                 "</configuration>\n"
             );
+            
+            $admin_group = new Data\Group(
+                'administrator', 
+                'Administrator', 
+                'Users with administrative rights for the site.'
+            );
+            
+            Groups::Add($admin_group);
+            
+            $regular_group = new Data\Group(
+                'regular', 
+                'Regular User', 
+                'Regular user accounts with limited rights.'
+            );
+            
+            Groups::Add($regular_group);
+            
+            $guest_group = new Data\Group(
+                'guest', 
+                'Guest', 
+                'Anyone visiting the website that is not registered.'
+            );
+            
+            Groups::Add($guest_group);
         }
     }
     

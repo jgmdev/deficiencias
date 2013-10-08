@@ -94,6 +94,13 @@ class Page
     public $groups;
     
     /**
+     * A list of permissions needed to access the page.
+     * @see \Cms\Enumerations\Permissions
+     * @var array 
+     */
+    public $permissions;
+    
+    /**
      * Default constructor.
      * @param string $uri
      */
@@ -102,6 +109,8 @@ class Page
         $this->uri = $uri;
         
         $this->groups = array();
+        
+        $this->permissions = array();
         
         $this->rendering_mode = PageRenderingMode::NORMAL;
         
@@ -142,6 +151,24 @@ class Page
             return true;
         
         return false;
+    }
+    
+    /**
+     * Adds a permission that is required to view this page.
+     * @param string $identifier @see \Cms\Enumerations\Permissions
+     */
+    public function AddPermission($identifier)
+    {
+        $this->permissions[$identifier] = $identifier;
+    }
+    
+    /**
+     * Removes a permission that is required to view this page.
+     * @param string $identifier @see \Cms\Enumerations\Permissions
+     */
+    public function RemovePermission($identifier)
+    {
+        unset($this->permissions[$identifier]);
     }
 }
 

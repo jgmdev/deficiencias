@@ -135,7 +135,7 @@ class FileSystem {
             $directory = str_replace("/", "\\", $directory);
         }
 
-        return mkdir($directory, $mode, $recursive);
+        return @ mkdir($directory, $mode, $recursive);
     }
 
     /**

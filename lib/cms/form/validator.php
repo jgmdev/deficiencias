@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-namespace Cms\Form\Validator;
+namespace Cms\Form;
 
 use Cms\Enumerations\ValidatorError;
 

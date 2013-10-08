@@ -34,7 +34,7 @@ class FieldsGroup
      * @param string $description
      * @param bool $collapsed
      */
-    public function __construct($label, $description, $collapsed=false)
+    public function __construct($label, $description='', $collapsed=false)
     {
         $this->label = $label;
         $this->description = $description;

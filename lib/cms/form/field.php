@@ -68,9 +68,14 @@ class Field
     public $attributes;
     
     /**
-     * @var \Cms\Form\Validator\Validator
+     * @var \Cms\Form\Validator
      */
     public $validator;
+    
+    /**
+     * @var \Cms\Form\Filter
+     */
+    public $filter;
     
     /**
      * Default constructor.
@@ -165,12 +170,24 @@ class Field
     
     /**
      * Set the validator for the element.
-     * @param \Cms\Form\Validator\Validator $validator
+     * @param \Cms\Form\Validator $validator
      * @return \Cms\Form\Field
      */
-    public function SetValidator(\Cms\Form\Validator\Validator $validator)
+    public function SetValidator(\Cms\Form\Validator $validator)
     {
         $this->validator = $validator;
+        
+        return $this;
+    }
+    
+    /**
+     * Set the value filter for the element.
+     * @param \Cms\Form\Filter $filter
+     * @return \Cms\Form\Field
+     */
+    public function SetFilter(\Cms\Form\Filter $filter)
+    {
+        $this->filter = $filter;
         
         return $this;
     }
@@ -208,6 +225,34 @@ class Field
         }
         
         return true;
+    }
+    
+    /**
+     * Automatically filters the value send on a form submit and assings it
+     * to the $_REQUEST global var.
+     * @return string
+     */
+    public function FilterValue()
+    {
+        if(!is_object($this->filter) || !isset($_REQUEST[$this->GetRealName()]))
+            return $this;
+        
+        $current_value =& $this->GetRequestValue();
+        
+        if($this->IsArray())
+        {
+            if(is_array($current_value))
+            {
+                foreach($current_value as &$value)
+                {
+                    $value = $this->filter->GetFiltered($value);
+                }
+            }
+            
+            return $this;
+        }
+        
+        $current_value = $this->filter->GetFiltered($current_value);
     }
     
     /**

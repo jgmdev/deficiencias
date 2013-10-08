@@ -4,14 +4,15 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class CheckBoxField extends Field
+class Radio extends Field
 {
     /**
-     * List of checboxes options.
+     * List of radio options.
      * @var array
      */
     public $options;
@@ -29,13 +30,13 @@ class CheckBoxField extends Field
      */
     public function __construct($main_label, $name, array $options=array(), $selected='', $description='', $required=false, $readonly=false, $size=0)
     {
-        parent::__construct($main_label, $name, $selected, $description, null, FormFieldType::CHECKBOX, $required, $readonly, $size);
+        parent::__construct($main_label, $name, $selected, $description, null, FormFieldType::RADIO, $required, $readonly, $size);
         
         $this->options = $options;
     }
     
     /**
-     * Add checkbox option.
+     * Add radio option.
      * @param string $label
      * @param string $option
      */
@@ -55,28 +56,12 @@ class CheckBoxField extends Field
         {
             $checked = false;
             
-            if($this->IsArray())
+            if($request_value == $value)
+                $checked = true;
+            elseif($request_value == null)
             {
-                if(is_array($request_value))
-                {
-                    if(in_array($value, $request_value))
-                        $checked = true;
-                }
-                elseif(is_array($this->value))
-                {
-                    if(in_array($value, $this->value))
-                        $checked = true;
-                }
-            }
-            else
-            {
-                if($request_value == $value)
+                if($this->value == $value)
                     $checked = true;
-                elseif($request_value == null)
-                {
-                    if($this->value == $value)
-                        $checked = true;
-                }
             }
             
             $html .= '<input type="'.$this->type.'" ';
@@ -120,13 +105,18 @@ class CheckBoxField extends Field
     
     public function GetLabelHtml()
     {   
-        $html = '<label>';
-        $html .= $this->label;
+        $html = '';
         
-        if($this->required)
-            $html .= ' <span class="required">*</span>';
-        
-        $html .= '</label>' . "\n";
+        if($this->label)
+        {
+            $html .= '<label>';
+            $html .= $this->label;
+
+            if($this->required)
+                $html .= ' <span class="required">*</span>';
+
+            $html .= '</label>' . "\n";
+        }
         
         return $html;
     }

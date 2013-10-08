@@ -4,14 +4,15 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class RadioField extends Field
+class CheckBox extends Field
 {
     /**
-     * List of radio options.
+     * List of checboxes options.
      * @var array
      */
     public $options;
@@ -29,13 +30,13 @@ class RadioField extends Field
      */
     public function __construct($main_label, $name, array $options=array(), $selected='', $description='', $required=false, $readonly=false, $size=0)
     {
-        parent::__construct($main_label, $name, $selected, $description, null, FormFieldType::RADIO, $required, $readonly, $size);
+        parent::__construct($main_label, $name, $selected, $description, null, FormFieldType::CHECKBOX, $required, $readonly, $size);
         
         $this->options = $options;
     }
     
     /**
-     * Add radio option.
+     * Add checkbox option.
      * @param string $label
      * @param string $option
      */
@@ -55,12 +56,28 @@ class RadioField extends Field
         {
             $checked = false;
             
-            if($request_value == $value)
-                $checked = true;
-            elseif($request_value == null)
+            if($this->IsArray())
             {
-                if($this->value == $value)
+                if(is_array($request_value))
+                {
+                    if(in_array($value, $request_value))
+                        $checked = true;
+                }
+                elseif(is_array($this->value))
+                {
+                    if(in_array($value, $this->value))
+                        $checked = true;
+                }
+            }
+            else
+            {
+                if($request_value == $value)
                     $checked = true;
+                elseif($request_value == null)
+                {
+                    if($this->value == $value)
+                        $checked = true;
+                }
             }
             
             $html .= '<input type="'.$this->type.'" ';
@@ -104,13 +121,18 @@ class RadioField extends Field
     
     public function GetLabelHtml()
     {   
-        $html = '<label>';
-        $html .= $this->label;
+        $html = '';
         
-        if($this->required)
-            $html .= ' <span class="required">*</span>';
-        
-        $html .= '</label>' . "\n";
+        if($this->label)
+        {
+            $html .= '<label>';
+            $html .= $this->label;
+
+            if($this->required)
+                $html .= ' <span class="required">*</span>';
+
+            $html .= '</label>' . "\n";
+        }
         
         return $html;
     }

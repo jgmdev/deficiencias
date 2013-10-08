@@ -4,11 +4,11 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
-use Cms\Enumerations\FormFieldType;
+use Cms\Form\Field;
 
-class CustomField extends Field
+class Custom extends Field
 {   
     /**
      * Custom html code.

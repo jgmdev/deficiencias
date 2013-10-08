@@ -197,7 +197,7 @@ class Users
             $select = new DBAL\Query\Select('users');
 
             $select->Select('username')
-                    ->WhereEqual('email', $email, Enumerations\FieldType::TEXT)
+                ->WhereEqual('email', $email, Enumerations\FieldType::TEXT)
             ;
 
             if($db->Select($select))

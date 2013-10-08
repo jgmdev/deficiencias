@@ -6,25 +6,23 @@
 
 namespace Cms\DBAL\Query;
 
-use Cms\Enumerations\FieldType;
-
+/**
+ * SQL Abstraction layer for querying data from a table.
+ */
 class Select extends \Cms\DBAL\Query
 {
     public $table;
     public $columns;
     public $columns_custom;
     public $all;
-    public $where;
     public $limit;
-    public $order_by;
     
     public function __construct($table)
     {
         $this->table = $table;
         $this->columns = array();
         $this->columns_custom = array();
-        $this->where = array();
-        $this->order_by = array();
+        $this->limit = array();
         
         return $this;
     }
@@ -59,95 +57,9 @@ class Select extends \Cms\DBAL\Query
         return $this;
     }
     
-    public function WhereEqual($column, $value, $type)
-    {
-        $this->where[] = array(
-            'column'=>$column,
-            'value'=>$value,
-            'type'=>$type,
-            'op'=>'='
-        );
-        
-        return $this;
-    }
-    
-    public function WhereNotEqual($column, $value, $type)
-    {
-        $this->where[] = array(
-            'column'=>$column,
-            'value'=>$value,
-            'type'=>$type,
-            'op'=>'!='
-        );
-        
-        return $this;
-    }
-    
-    public function WhereMoreThan($column, $value, $type)
-    {
-        $this->where[] = array(
-            'column'=>$column,
-            'value'=>$value,
-            'type'=>$type,
-            'op'=>'>'
-        );
-        
-        return $this;
-    }
-    
-    public function WhereLessThan($column, $value, $type)
-    {
-        $this->where[] = array(
-            'column'=>$column,
-            'value'=>$value,
-            'type'=>$type,
-            'op'=>'<'
-        );
-        
-        return $this;
-    }
-    
-    public function WhereCustom($statement)
-    {
-        $this->where[] = array(
-            'value'=>$statement,
-            'type'=>'custom',
-        );
-        
-        return $this;
-    }
-    
-    /**
-     * 
-     * @param string $column
-     * @param integer $sort @see \Cms\Enumerations\Sort
-     * @return \Cms\DBAL\Query\Select
-     */
-    public function OrderBy($column, $sort=\Cms\Enumerations\Sort::ASCENDING)
-    {
-        $this->order_by[] = array(
-            'column'=>$column,
-            'sort'=>$sort,
-            'custom'=>false
-        );
-        
-        return $this;
-    }
-    
-    public function OrderByCustom($statement, $sort=\Cms\Enumerations\Sort::ASCENDING)
-    {
-        $this->order_by[] = array(
-            'statement'=>$statement,
-            'sort'=>$sort,
-            'custom'=>true
-        );
-        
-        return $this;
-    }
-    
     public function Limit($from, $to)
     {
-        $this->limit = array($from, $to);
+        $this->limit = array(intval($from), intval($to));
         
         return $this;
     }
@@ -162,7 +74,7 @@ class Select extends \Cms\DBAL\Query
             $sql .= implode(',', $this->columns);
         
         if(!$this->all && count($this->columns_custom) > 0)
-        {   
+        {
             foreach($this->columns_custom as $statement)
             {
                 $sql .= $statement . ', ';
@@ -173,66 +85,7 @@ class Select extends \Cms\DBAL\Query
         
         $sql .= ' from ' . $this->table;
         
-        if(count($this->where) > 0)
-        {
-            $sql .= ' where ';
-            
-            foreach($this->where as $where)
-            {
-                if($where['type'] == 'custom')
-                {
-                    $sql .= $where["value"] . ' ';
-                    continue;
-                }
-                
-                $sql .= $where['column'] . ' ' . $where['op'] . ' ';
-                
-                switch($where['type'])
-                {
-                    case FieldType::BOOLEAN:
-                        $sql .= ($where['value']?1:0) . ' and ';
-                        break;
-
-                    case FieldType::INTEGER:
-                        $sql .= intval($where['value']) . ' and ';
-                        break;
-
-                    case FieldType::REAL:
-                        $sql .= doubleval($where['value']) . ' and ';
-                        break;
-
-                    case FieldType::TEXT:
-                        $sql .= "'" . str_replace("'", "''", $where['value'])."' and ";
-                        break;
-                }
-            }
-            
-            $sql = rtrim($sql, 'and ');
-        }
-        
-        if(count($this->order_by) > 0)
-        {
-            $sql .= ' order by ';
-            
-            foreach($this->order_by as $order)
-            {
-                if($order['custom'])
-                {
-                    $sql .= $order["statement"] . ' ';
-                }
-                else
-                {
-                    $sql .= $order['column'] . ' ';
-                }
-                
-                if($order['sort'] == \Cms\Enumerations\Sort::ASCENDING)
-                    $sql .= 'asc, ';
-                else
-                    $sql .= 'desc, ';
-            }
-            
-            $sql = rtrim($sql, ', ');
-        }
+        $sql .= $this->GetSQLiteOperations();
         
         if(count($this->limit) > 0)
         {

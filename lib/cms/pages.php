@@ -41,6 +41,14 @@ class Pages
                 else
                     $page_data->groups = array();
             }
+            
+            if(!is_array($page_data->permissions))
+            {
+                if(is_string($page_data->permissions))
+                    $page_data->permissions = unserialize($page_data->permissions);
+                else
+                    $page_data->permissions = array();
+            }
         }
         else
         {

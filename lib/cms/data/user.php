@@ -64,6 +64,16 @@ class User
     /**
      * @var string
      */
+    public $personal_text;
+    
+    /**
+     * @var string
+     */
+    public $website;
+    
+    /**
+     * @var string
+     */
     public $picture;
     
     

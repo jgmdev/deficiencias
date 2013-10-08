@@ -4,11 +4,12 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class SelectField extends Field
+class Select extends Field
 {
     /**
      * List of options for the select box.

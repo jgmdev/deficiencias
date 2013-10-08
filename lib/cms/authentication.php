@@ -24,57 +24,53 @@ class Authentication
         $base_url = System::GetBaseUrl();
 
         //Remove the optional www for problems from www and non www links
-        $logged_site = str_replace(array("http://", "https://", "www."), "", $_SESSION["logged"]["site"]);
         $base_url_parsed = str_replace(array("http://", "https://", "www."), "", $base_url);
+  
+        $user_data = false;
 
-        if($logged_site != $base_url_parsed)
+        $email_validator = new Form\Validator\EmailValidator($username);
+
+        if($email_validator->IsValid())
         {
-            $user_data = false;
+            //This throws a user not exists exception if fails
+            $user_data = Users::GetDataByEmail($username);
+            $username = $user_data->username;
+        }
+        else
+        {
+            //This throws a user not exists exception if fails
+            $user_data = Users::GetData($username);
+        }
 
-            $email_validator = new Form\Validator\EmailValidator($username);
-            
-            if($email_validator->IsValid())
+        if($user_data && crypt($password, $user_data->password) == $user_data->password)
+        {
+            $settings = System::GetSiteSettings();
+
+            $groups_approval = unserialize($settings->Get("registration_groups_approval"));
+
+            if(($settings->Get("registration_needs_approval") && $user_data->status == "0" && !$settings->Get("registration_can_select_group")) ||
+               ($settings->Get("registration_can_select_group") && $user_data->status == "0" && in_array($user_data->group, $groups_approval))
+            )
             {
-                //This throws a user not exists exception if fails
-                $user_data = Users::GetDataByEmail($username);
-                $username = $user_data->username;
+                throw new Exceptions\Users\AwaitingApprovalException;
             }
-            else
-            {
-                //This throws a user not exists exception if fails
-                $user_data = Users::GetData($username);
-            }
-            
-            if($user_data && crypt($password, $user_data->password) == $user_data->password)
-            {
-                $settings = System::GetSiteSettings();
 
-                $groups_approval = unserialize($settings->Get("registration_groups_approval"));
+            $_SESSION["logged"]["site"] = $base_url_parsed;
+            $_SESSION["logged"]["username"] = $user_data->username;
+            $_SESSION["logged"]["password"] = $user_data->password;
+            $_SESSION["logged"]["group"] = $user_data->group;
+            $_SESSION["logged"]["ip_address"] = $_SERVER["REMOTE_ADDR"];
+            $_SESSION["logged"]["user_agent"] = $_SERVER["HTTP_USER_AGENT"];
 
-                if(($settings->Get("registration_needs_approval") && $user_data->status == "0" && !$settings->Get("registration_can_select_group")) ||
-                   ($settings->Get("registration_can_select_group") && $user_data->status == "0" && in_array($user_data->group, $groups_approval))
-                )
-                {
-                    throw new Exceptions\Users\AwaitingApprovalException;
-                }
+            //Save last ip used
+            $user_data->ip = $_SERVER["REMOTE_ADDR"];
+            Users::Edit($username, $user_data);
+        }
+        else
+        {
+            $_SESSION["logged"]["site"] = false;
 
-                $_SESSION["logged"]["site"] = $base_url;
-                $_SESSION["logged"]["username"] = $user_data->username;
-                $_SESSION["logged"]["password"] = $user_data->password;
-                $_SESSION["logged"]["group"] = $user_data->group;
-                $_SESSION["logged"]["ip_address"] = $_SERVER["REMOTE_ADDR"];
-                $_SESSION["logged"]["user_agent"] = $_SERVER["HTTP_USER_AGENT"];
-
-                //Save last ip used
-                $user_data->ip = $_SERVER["REMOTE_ADDR"];
-                Users::Edit($username, $user_data);
-            }
-            else
-            {
-                $_SESSION["logged"]["site"] = false;
-                
-                throw new Exceptions\Users\InvalidPasswordException;
-            }
+            throw new Exceptions\Users\InvalidPasswordException;
         }
     }
 
@@ -94,6 +90,13 @@ class Authentication
     public static function IsUserLogged()
     {
         static $user_data;
+        
+        //If username and password was submitted we unset previous user data
+        //in order to get new user password if changed.
+        if(isset($_REQUEST['username']) && isset($_REQUEST['password']))
+        {
+            $user_data = null;
+        }
         
         $base_url = System::GetBaseUrl();
 

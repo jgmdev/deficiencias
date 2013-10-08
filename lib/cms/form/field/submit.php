@@ -4,11 +4,12 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class SubmitField extends Field
+class Submit extends Field
 {   
     /**
      * Default constructor.

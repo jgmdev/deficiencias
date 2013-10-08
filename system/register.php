@@ -1,4 +1,10 @@
-<?php exit; ?>
+<?php
+/** 
+ * @author Jefferson González
+ * @license MIT
+*/
+exit;
+?>
 
 row: 0
 
@@ -8,9 +14,19 @@ row: 0
     
     field: content
     <?php
+        if(Cms\Authentication::IsUserLogged())
+            Cms\Uri::Go('account');
+        
+        //TODO: Temporary disabled
+        /*if(!Cms\System::GetSiteSettings()->Get("new_registrations"))
+        {
+            Cms\Theme::AddMessage(t('Registrations are disabled, sorry for any inconvinience.'), Cms\Enumerations\MessageType::ERROR);
+            Cms\Uri::Go('');
+        }*/
+            
         $form = new Cms\Form('register', null, Cms\Enumerations\FormMethod::POST);
         
-        $form->Listen(Cms\Signals\Type\FormSignal::SUBMIT, function($signal_data)
+        $form->Listen(Cms\Enumerations\Signals\Form::SUBMIT, function($signal_data)
         {   
             if($_REQUEST['password'] == $_REQUEST['password_confirm'])
             {
@@ -29,6 +45,8 @@ row: 0
                 $user = new \Cms\Data\User();
                 $user->username = $_REQUEST['username'];
                 $user->password = $_REQUEST['password'];
+                $user->email = $_REQUEST['email'];
+                $user->status = Cms\Enumerations\UserStatus::ACTIVE;
                 $user->group = 'regular';
                 
                 Cms\Users::Add($user);
@@ -43,20 +61,20 @@ row: 0
             }
         });
         
-        $form->AddField(new Cms\Form\TextField('Username', 'username'));
+        $form->AddField(new Cms\Form\Field\Text('Username', 'username'));
        
-        $form->AddField(new Cms\Form\PasswordField('Password', 'password', '', '', '', true));
+        $form->AddField(new Cms\Form\Field\Password('Password', 'password', '', '', '', true));
         
-        $form->AddField(new Cms\Form\PasswordField('Confirm Password', 'password_confirm', '', '', '', true));
+        $form->AddField(new Cms\Form\Field\Password('Confirm Password', 'password_confirm', '', '', '', true));
         
         $email_validator = new \Cms\Form\Validator\EmailValidator;
         $email_validator->SetErrorMessage(t('Please provide a valid e-mail address.'));
-        $email = new Cms\Form\TextField('E-mail', 'email', '', '', '', true);
+        $email = new Cms\Form\Field\Text('E-mail', 'email', '', '', '', true);
         $email->SetValidator($email_validator);
         
         $form->AddField($email);
         
-        $form->AddField(new Cms\Form\SubmitField(t('Register'), 'register'));
+        $form->AddField(new Cms\Form\Field\Submit(t('Register'), 'register'));
         
         $form->Render();
     ?>

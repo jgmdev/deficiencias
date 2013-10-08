@@ -8,6 +8,9 @@ namespace Cms\DBAL\Query;
 
 use Cms\Enumerations\FieldType;
 
+/**
+ * SQL Abstraction layer for inserting a row into a table.
+ */
 class Insert extends \Cms\DBAL\Query
 {
     public $table;

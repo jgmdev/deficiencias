@@ -352,6 +352,16 @@ label.radio
     width: auto;
 }
 
+fieldset
+{
+    margin-bottom: 5px;
+}
+
+fieldset label a
+{
+    font-size: 24px !important;
+}
+
 input[type=text], input[type=password], input[type=file], select, textarea
 {
     display: block;

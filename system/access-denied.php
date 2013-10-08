@@ -1,4 +1,10 @@
-<?php exit; ?>
+<?php
+/** 
+ * @author Jefferson González
+ * @license MIT
+*/
+exit;
+?>
 
 row: 0
 

@@ -62,7 +62,14 @@ row: 0
             
             if(strlen(trim($_REQUEST['type'])) > 0)
             {
+                if($select->HasWhere())
+                    $select->AndOp();
+                
                 $select->WhereEqual('type', $_REQUEST['type'], FieldType::INTEGER);
+                
+                if($select_count->HasWhere())
+                    $select_count->AndOp();
+                
                 $select_count->WhereEqual('type', $_REQUEST['type'], FieldType::INTEGER);
             }
             

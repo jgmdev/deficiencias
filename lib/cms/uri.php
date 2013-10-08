@@ -38,6 +38,8 @@ class Uri
 
             if(isset($_REQUEST['p']))
             {
+                $_REQUEST['p'] = rtrim($_REQUEST['p'], '/');
+                
                 if($_REQUEST['p'] != '')
                 {
                     $page = $_REQUEST['p'];
@@ -99,12 +101,13 @@ class Uri
      */
     public static function Go($uri, $arguments = null, $ssl=false)
     {
+        ob_clean();
+        
         if(!$ssl)
             header("Location: " . self::GetUrl($uri, $arguments));
         else
             header("Location: " . str_replace("http://", "https://", self::GetUrl($uri, $arguments)));
 
-        ob_clean();
         exit;
     }
 

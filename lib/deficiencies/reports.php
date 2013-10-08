@@ -102,7 +102,7 @@ class Reports
     {
         $select = new \Cms\DBAL\Query\Select('deficiencies');
         $select->SelectAll()
-            ->WhereEqual('id', $_REQUEST['id'], FieldType::INTEGER)
+            ->WhereEqual('id', $id, FieldType::INTEGER)
         ;
 
         $db = \Cms\System::GetRelationalDatabase();
@@ -140,7 +140,9 @@ class Reports
         $select = new \Cms\DBAL\Query\Select('deficiencies');
         $select->SelectAll()
             ->WhereEqual('line1', $data->address->line1, FieldType::TEXT)
+            ->AndOp()
             ->WhereEqual('city', $city, FieldType::TEXT)
+            ->AndOp()
             ->WhereEqual('type', $data->type, FieldType::INTEGER)
         ;
         

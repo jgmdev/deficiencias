@@ -16,10 +16,7 @@ class Users
     /**
      * Disable constructor
      */
-    private function __construct()
-    {
-        
-    }
+    private function __construct(){}
 
     /**
      * Adds a new user into the system.
@@ -53,7 +50,7 @@ class Users
                 ->Insert('ip', $user->ip, Enumerations\FieldType::TEXT)
                 ->Insert('gender', $user->gender, Enumerations\FieldType::TEXT)
                 ->Insert('birth_date', $user->birth_date, Enumerations\FieldType::INTEGER)
-                ->Insert('status', $user->birth_date, Enumerations\FieldType::TEXT)
+                ->Insert('status', $user->status, Enumerations\FieldType::TEXT)
             ;
 
             $db->Insert($insert);
@@ -98,6 +95,8 @@ class Users
      * @param string $username
      * @param \Cms\Data\User $user_data
      * @throws \Cms\Exceptions\Users\UserNotExistsException
+     * @throws \Cms\Exceptions\FileSystem\WriteFileException
+     * @throws \Cms\Exceptions\FileSystem\InvalidFileException
      */
     public static function Edit($username, \Cms\Data\User $user_data)
     {
@@ -206,8 +205,8 @@ class Users
 
             if($db->Select($select))
             {
-                $data = $db->FetchArray();
-                return self::GetData($data['username']);
+                if($data = $db->FetchArray())
+                    return self::GetData($data['username']);
             }
         }
 
@@ -282,19 +281,68 @@ class Users
         return true;
     }
 
+    /**
+     * 
+     * @param type $username
+     * @return string $username
+     * @throws \Cms\Exceptions\Users\UserNotExistsException
+     */
     public static function ResetPasswordByUsername($username)
     {
-        
+        $username = strtolower($username);
+        $password = self::GeneratePassword();
+        $user_data = self::GetData($username);
+        $user_data->password = crypt($password);
+
+        self::Edit($username, $user_data);
+
+        self::SendResetPasswordNotification($user_data, $password);
     }
 
     public static function ResetPasswordByEmail($email)
     {
+        $db = System::GetRelationalDatabase();
+
+        if($db->TableExists('users'))
+        {
+            $user_select = new DBAL\Query\Select('users');
+            $user_select->Select('username')
+                ->WhereEqual('email', $email, Enumerations\FieldType::TEXT)
+            ;
+            
+            if($db->Select($user_select))
+            {
+                $data = $db->FetchArray();
+                
+                if(isset($data['username']))
+                {
+                    if($data['username'] != '')
+                    {
+                        $password = self::GeneratePassword();
+                        $username = $data['username'];
+                        $user_data = self::GetData($username);
+                        $user_data->password = crypt($password);
+
+                        self::Edit($username, $user_data);
+
+                        self::SendResetPasswordNotification($user_data, $password);
+
+                        return;
+                    }
+                }
+            }
+        }
         
+        throw new Exceptions\Users\UserNotExistsException;
     }
 
     public static function GeneratePassword()
     {
-        $password = str_replace(array('$', '.', '/'), '', crypt(uniqid(rand(), 1)));
+        $password = str_replace(
+            array('$', '.', '/'), 
+            '', 
+            crypt(uniqid(rand(), true))
+        );
 
         if(strlen($password) > 10)
         {
@@ -304,18 +352,108 @@ class Users
         return $password;
     }
 
-    public static function SendResetPasswordNotification($username, $user_data, $password)
+    /**
+     * 
+     * @param \Cms\Data\User $user_data
+     * @param string $password
+     * @return boolean
+     */
+    public static function SendResetPasswordNotification(\Cms\Data\User $user_data, $password)
     {
+        $username = $user_data->username;
+        $to[$user_data->fullname] = $user_data->email;
+        $subject = t('Your password has been reset.');
+
+        $url = Uri::GetUrl('login');
+
+        $message = t('Hi') . ' ' . $user_data->fullname . '<br /><br />';
+        $message .= t('Your current username is:') . ' <b>' . $username . '</b><br />';
+        $message .= t('The new password for your account is:') . ' <b>' . $password . '</b><br />';
+        $message .= t('Is recommended that you log in and change the password as soon as possible.') . '<br />';
+        $message .= t('To log in access the following url:') . ' <a href="'.$url.'">' . $url . '</a>';
+
+        return Mail::Send($to, $subject, $message);
+    }
+    
+    /**
+     * Function that generates the content of user page and sends a signal
+     * for modules to be able to modify user page content.
+     */
+    function GenerateUserPage()
+    {
+        $tabs[t('Edit My Account')] = array(
+            'uri' => 'account/profile'
+        );
+
+        if(System::GetSiteSettings()->Get('user_profiles'))
+        {
+            $tabs[t('View My Profile')] = array(
+                'uri' => 'user/' . Authentication::GetUser()->username
+            );
+        }
+
+        if(Authentication::GetGroup()->HasPermission(Enumerations\Permissions\Groups::CREATE))
+        {
+            $tabs[t('My Content')] = array('uri' => 'account/content');
+        }
+
+        $content = '';
+
+        if(Authentication::IsAdminLogged())
+        {
+            $tabs[t('Control Center')] = array('uri' => 'admin');
+
+            $content = t('Welcome Administrator!') . '<br /><br />' . 
+                t('Now that you are logged in you can start modifying the website as you need.')
+            ;
+        }
+        else
+        {
+            $content = t('Welcome') . ' ' . Authentication::GetUser()->username . '!' . 
+                '<br /><br />' . 
+                t('Now that you are logged in you can enjoy the privileges of registered users on') . 
+                ' ' . str_replace(array("http://", "https://"), "", System::GetBaseUrl()) . '.'
+            ;
+        }
         
+        // Send user page generation signal
+        $signal_data = new Signals\SignalData();
+        $signal_data->content = $content;
+        $signal_data->tabs = $tabs;
+        
+        Signals\SignalHandler::Send(Enumerations\Signals\User::GENERATE_PAGE, $signal_data);
+
+        // Add tabs to user page
+        foreach($tabs as $title => $data)
+        {
+            if(!isset($data['arguments']))
+            {
+                Theme::AddTab($title, $data['uri'], null, $data['row'] ? $data['row'] : 0);
+            }
+            else
+            {
+                Theme::AddTab($title, $data['uri'], $data['arguments'], $data['row'] ? $data['row'] : 0);
+            }
+        }
+
+        Theme::AddTab(t('Logout'), 'logout');
+
+        return $content;
     }
 
+    /**
+     * Get the path of a given user files by $username and $group.
+     * @param string $username
+     * @param string $group
+     * @return string
+     */
     public static function GetPath($username, $group)
     {
         $username = strtolower($username);
 
         return System::GetDataPath() . "users/$group/{$username{0}}/" .
             "{$username{0}}{$username{1}}/" .
-            "/{$username{0}}{$username{1}}{$username{2}}/"
+            "$username/"
         ;
     }
 }

@@ -38,14 +38,14 @@ class Groups {
             $group_data = new Data($group_data_path);
 
             $row = (array) $group;
-            $group_data->Write($row);
+            $group_data->AddRow($row);
 
             //Create user group directory
             FileSystem::MakeDir(System::GetDataPath() . "users/$group_name", 0755, true);
         }
         else
         {
-            throw new Exceptions\FileSystem\GroupExistsException;
+            throw new Exceptions\Group\GroupExistsException;
         }
     }
 
@@ -104,7 +104,7 @@ class Groups {
                 //If the new group name already exist skip
                 if (file_exists(System::GetDataPath() . "groups/{$group_data->machine_name}"))
                 {
-                    throw new Exceptions\FileSystem\GroupExistsException;
+                    throw new Exceptions\Group\GroupExistsException;
                 }
 
                 //Move group and data files
@@ -137,8 +137,8 @@ class Groups {
             $data = new Data($group_data_path);
 
             $group_data = $data->GetRow(0);
-            $group_object->name = trim($group_data[0]['name']);
-            $group_object->description = trim($group_data[0]['description']);
+            $group_object->name = trim($group_data['name']);
+            $group_object->description = trim($group_data['description']);
 
             return $group_object;
         }
@@ -186,12 +186,14 @@ class Groups {
      */
     public static function GetList()
     {
-        $dir_handle = opendir(System::GetDataPath() . 'groups');
+        $groups_directory = System::GetDataPath() . 'groups';
+        
+        $dir_handle = opendir($groups_directory);
         $groups = array();
 
         while (($group_directory = readdir($dir_handle)) !== false)
         {
-            if(!is_dir($dir_handle . '/' . $group_directory))
+            if(!is_dir($groups_directory . '/' . $group_directory))
                 continue;
 
             //just check directories inside and skip the guest user group

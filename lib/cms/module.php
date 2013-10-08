@@ -30,6 +30,19 @@ class Module
     }
     
     /**
+     * Function to retrieve the uri of a page installed with a module. This function
+     * is used in case the page installed with a module had to be renamed to another
+     * uri since it already existed.
+     * @param string $original_uri Original uri of the page installed.
+     * @param string Machine name of the module.
+     * @return string New uri of the page installed or the original one.
+     */
+    public static function GetUri($original_uri, $module_name)
+    {
+        return $original_uri;
+    }
+    
+    /**
      * Get information of a module.
      * @param string $name
      * @return \Cms\Data\ModuleInfo

@@ -8,6 +8,9 @@ namespace Cms\DBAL\Query;
 
 use Cms\Enumerations\FieldType;
 
+/**
+ * SQL Abstraction layer for creating tables.
+ */
 class Table extends \Cms\DBAL\Query
 {
     public $fields;

@@ -5,15 +5,16 @@
  * @license MIT
  */
 
-namespace Cms\Form;
+namespace Cms\Form\Field;
 
+use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
-class HiddenField extends Field
+class Hidden extends Field
 {
     public function __construct($name, $value)
     {
-        parent::__construct('', $name, $value, '', '', FormFieldType::HIDDEN, false, false, 0);
+        parent::__construct('', $name, $value, '', '', FormFieldType::HIDDEN, true, false, 0);
     }
     
     public function GetLabelHtml()

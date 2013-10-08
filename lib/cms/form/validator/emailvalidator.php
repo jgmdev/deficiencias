@@ -6,6 +6,8 @@
 
 namespace Cms\Form\Validator;
 
+use Cms\Form\Validator;
+
 class EmailValidator extends Validator
 {
     /**

@@ -7,6 +7,8 @@
 
 namespace Cms\Form\Validator;
 
+use Cms\Form\Validator;
+
 class BoolValidator extends Validator
 {
     public function IsValid($value)

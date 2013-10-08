@@ -8,7 +8,7 @@ row: 0
 	field;
 
 	field: password
-		$6$3sUz2jB9CSRJ$lfWXJQRKz.Mv0p1XxY2uKkO9eE1jBERRQryOwxMbFAjKmxkx.tEChDeupUd4P36w.PA5Uawj8EzCgKfkqmyKJ0
+		$6$gGD83HgqsEqC$gpNo2IzQuPGmoBZuWY7/y4ylcZ84uxLP8CfxgpxtN3oAMlGUclq/lGbLpt/ck5VCFc6bOGMbk/v1S3YyAylBC.
 	field;
 
 	field: ip
@@ -16,11 +16,11 @@ row: 0
 	field;
 
 	field: email
-		N;
+		jgmdev@gmail.com
 	field;
 
 	field: fullname
-		N;
+		Jefferson Gonzalez
 	field;
 
 	field: group
@@ -28,23 +28,31 @@ row: 0
 	field;
 
 	field: status
-		N;
+		
 	field;
 
 	field: registration_date
-		N;
+		
 	field;
 
 	field: gender
-		N;
+		m
 	field;
 
 	field: birth_date
-		N;
+		463204800
+	field;
+
+	field: personal_text
+		Test
+	field;
+
+	field: website
+		jgmdev@gmail.com
 	field;
 
 	field: picture
-		N;
+		
 	field;
 
 row;

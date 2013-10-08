@@ -8,6 +8,9 @@ namespace Cms\DBAL\Query;
 
 use Cms\Enumerations\Sort;
 
+/**
+ * SQL Abstraction layer for indexing a database table.
+ */
 class Index extends \Cms\DBAL\Query
 {
     /**
