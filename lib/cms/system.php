@@ -65,6 +65,8 @@ class System
             self::$session_handler = new Handlers\Session();
         }
         
+        date_default_timezone_set('UTC');
+        
         session_set_save_handler(self::$session_handler, true);
         session_start();
     }
