@@ -32,17 +32,23 @@ row: 0
             {
                 if(Cms\Users::Exists($_REQUEST['username']))
                 {
-                    Cms\Theme::AddMessage(t('The username you provided has already been taken.'), \Cms\Enumerations\MessageType::ERROR);
+                    Cms\Theme::AddMessage(
+                        t('The username you provided has already been taken.'), 
+                        Cms\Enumerations\MessageType::ERROR
+                    );
                     return;
                 }
                 
                 if(Cms\Users::EmailTaken($_REQUEST['email']))
                 {
-                    Cms\Theme::AddMessage(t('The e-mail you provided has already been taken.'), \Cms\Enumerations\MessageType::ERROR);
+                    Cms\Theme::AddMessage(
+                        t('The e-mail you provided has already been taken.'), 
+                        Cms\Enumerations\MessageType::ERROR
+                    );
                     return;
                 }
                 
-                $user = new \Cms\Data\User();
+                $user = new Cms\Data\User();
                 $user->username = $_REQUEST['username'];
                 $user->password = $_REQUEST['password'];
                 $user->email = $_REQUEST['email'];
@@ -51,23 +57,32 @@ row: 0
                 
                 Cms\Users::Add($user);
                 
-                Cms\Theme::AddMessage(t('Your account was created, you can login now.'));
+                Cms\Theme::AddMessage(
+                    t('Your account was created, you can login now.')
+                );
                 
                 Cms\Uri::Go('login');
             }
             else
             {
-                Cms\Theme::AddMessage(t('Password and Confirm Password doesn\'t match.'), \Cms\Enumerations\MessageType::ERROR);
+                Cms\Theme::AddMessage(
+                    t('Password and Confirm Password doesn\'t match.'), 
+                    Cms\Enumerations\MessageType::ERROR
+                );
             }
         });
         
         $form->AddField(new Cms\Form\Field\Text('Username', 'username'));
        
-        $form->AddField(new Cms\Form\Field\Password('Password', 'password', '', '', '', true));
+        $form->AddField(new Cms\Form\Field\Password(
+            'Password', 'password', '', '', '', true
+        ));
         
-        $form->AddField(new Cms\Form\Field\Password('Confirm Password', 'password_confirm', '', '', '', true));
+        $form->AddField(new Cms\Form\Field\Password(
+            'Confirm Password', 'password_confirm', '', '', '', true
+        ));
         
-        $email_validator = new \Cms\Form\Validator\EmailValidator;
+        $email_validator = new Cms\Form\Validator\EmailValidator;
         $email_validator->SetErrorMessage(t('Please provide a valid e-mail address.'));
         $email = new Cms\Form\Field\Text('E-mail', 'email', '', '', '', true);
         $email->SetValidator($email_validator);

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Jefferson González
  * @license MIT

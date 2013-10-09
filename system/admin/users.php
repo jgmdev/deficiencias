@@ -68,43 +68,43 @@ row: 0
         print '<div class="cmsgui">' . "\n";
         print '<div class="admin-users">' . "\n";
 
-        print "<form method=\"get\" action=\"" . Cms\Uri::GetUrl("admin/users") . "\">\n";
+        print '<form method="get" action="' . Cms\Uri::GetUrl('admin/users') . '">' . "\n";
 
-        print t("Filter view by group:") . " <select name=\"group\">\n";
-        print "<option value=\"\">" . t("All") . "</option>\n";
+        print t('Filter view by group:') . ' <select name="group">'. "\n";
+        print '<option value="">' . t('All') . '</option>' . "\n";
         foreach($groups_array as $group)
         {
-            $selected = "";
+            $selected = '';
 
-            if($_REQUEST["group"] == $group->machine_name)
+            if($_REQUEST['group'] == $group->machine_name)
             {
-                $selected = "selected=\"selected\"";
+                $selected = 'selected="selected"';
             }
 
             print "<option $selected value=\"{$group->machine_name}\">{$group->name}</option>\n";
         }
-        print "</select>\n";
+        print '</select>' . "\n";
 
-        print t(" status:") . " <select name=\"status\">\n";
-        print "<option value=\"\">" . t("All") . "</option>\n";
+        print t(' status:') . ' <select name="status">' . "\n";
+        print '<option value="">' . t('All') . '</option>' . "\n";
         foreach(Cms\Enumerations\UserStatus::GetAll() as $status_id)
         {
             $selected = "";
 
-            if(''.$_REQUEST["status"].'' == ''.$status_id.'')
+            if(''.$_REQUEST['status'].'' == ''.$status_id.'')
             {
-                $selected = "selected=\"selected\"";
+                $selected = 'selected="selected"';
             }
             
             $status_label = Cms\Enumerations\UserStatus::GetLabel($status_id);
 
             print "<option $selected value=\"$status_id\">$status_label</option>\n";
         }
-        print "</select>\n";
+        print '</select>' . "\n";
 
-        print "<input type=\"submit\" value=\"".t("View")."\" />";
+        print '<input type="submit" value="'.t('View').'" />';
 
-        print "</form>\n";
+        print '</form>' . "\n";
 
         $db = Cms\System::GetRelationalDatabase();
         

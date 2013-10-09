@@ -1,13 +1,8 @@
 <?php
 /**
- * Copyright 2008, Jefferson González (JegoYalu.com)
- * This file is part of Jaris CMS and licensed under the GPLPP,
- * check the LICENSE.txt file for version and details or visit
- * http://gplpp.org/license.
- *
- * @file Database file that stores the user edit page.
+ * @author Jefferson González
+ * @license MIT
  */
-//For security the file content is skipped from the world eyes :)
 exit;
 ?>
 
