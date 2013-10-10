@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Jefferson González
  * @license MIT
@@ -9,7 +8,7 @@ namespace Cms;
 
 /**
  * Form generator.
- * Sends signals FormSignal::SUBMIT and FormSignal::SUBMIT_ERROR.
+ * Sends signals Signals\Form::SUBMIT and Signals\Form::SUBMIT_ERROR.
  */
 class Form extends Signals\Signal
 {
@@ -302,6 +301,9 @@ class Form extends Signals\Signal
         return false;
     }
 
+    /**
+     * Check all field values are valid when the form is submitted.
+     */
     protected function ValidateFormOnSubmit()
     {
         if(!$this->CheckIfSubmit())
@@ -430,7 +432,10 @@ class Form extends Signals\Signal
                     $validation_errors[$field->GetRealName()] = $field->validator->errors;
                     
                     if($field->validator->error_message)
-                        Theme::AddMessage($field->validator->error_message);
+                        Theme::AddMessage(
+                            $field->validator->error_message,
+                            Enumerations\MessageType::ERROR
+                        );
                 }
             }
             

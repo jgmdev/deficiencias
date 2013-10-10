@@ -8,18 +8,18 @@ exit;
 
 row: 0
     field: title
-        <?=t("Delete User")?>
+        <?=t("Delete Group")?>
     field;
 
     field: content
     <?php
-        Cms\Authentication::ProtectPage(Cms\Enumerations\Permissions\Users::DELETE);
+        Cms\Authentication::ProtectPage(Cms\Enumerations\Permissions\Groups::DELETE);
 
-        Cms\Theme::AddTab(t('Edit'), 'account/profile', array(
-            'username'=>$_REQUEST['username']
+        Cms\Theme::AddTab(t('Edit'), 'admin/groups/edit', array(
+            'group'=>$_REQUEST['group']
         ));
         
-        $form = new Cms\Form('delete-user');
+        $form = new Cms\Form('delete-group');
         
         $form->Listen(Cms\Enumerations\Signals\Form::SUBMIT, function()
         {
@@ -27,9 +27,9 @@ row: 0
             {
                 try
                 {
-                    Cms\Users::Delete($_REQUEST['username']);
+                    Cms\Groups::Delete($_REQUEST['group']);
                     
-                    Cms\Theme::AddMessage(t('User successfully deleted.'));
+                    Cms\Theme::AddMessage(t('Group successfully deleted.'));
                 }
                 catch(Exception $e)
                 {
@@ -39,30 +39,30 @@ row: 0
                     );
                 }
 
-                Cms\Uri::Go('admin/users');
+                Cms\Uri::Go('admin/groups');
             }
             elseif(isset($_REQUEST['btnNo']))
             {
-                Cms\Uri::Go('account/profile', array(
-                    'username'=>$_REQUEST['username']
+                Cms\Uri::Go('admin/groups', array(
+                    'group'=>$_REQUEST['group']
                 ));
             }
             
         });
         
         $html = '<div class="cmsgui">' .
-            '<div class="admin-users-delete">' .
+            '<div class="admin-groups-delete">' . 
             '<p>' .
-            t('This action will also delete all users content.') . ' ' . 
-            t('Are you sure you want to delete the user?') .
+            t('This action will also delete all group settings.') . ' ' . 
+            t('Are you sure you want to delete the group?') .
             '</p>' .
-            '<div><strong>'.t("Username:").' '.$_REQUEST["username"].'</strong></div>' .
+            '<div><strong>'.t("Group:").' '.$_REQUEST["group"].'</strong></div>' .
             '</div></div>' . "\n"
         ;
         
         $form->AddField(new Cms\Form\Field\Custom($html));
         
-        $form->AddField(new Cms\Form\Field\Hidden('username', $_REQUEST['username']));
+        $form->AddField(new Cms\Form\Field\Hidden('group', $_REQUEST['group']));
         
         $form->AddField(new Cms\Form\Field\Submit(t('Yes'), 'btnYes'));
 

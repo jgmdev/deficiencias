@@ -120,6 +120,11 @@ class Validator
         return $this;
     }
     
+    /**
+     * Set a default error message that is automatically displayed
+     * when a form is validating an invalid field submitted data.
+     * @param string $message
+     */
     public function SetErrorMessage($message)
     {
         $this->error_message = $message;
@@ -229,10 +234,10 @@ class Validator
         if(!$this->pattern)
             return true;
         
-        if(preg_match($this->pattern, $this->value))
-            return true;
+        if(preg_replace($this->pattern, "", $this->value) != "")
+            return false;
         
-        return false;
+        return true;
     }
 }
 ?>

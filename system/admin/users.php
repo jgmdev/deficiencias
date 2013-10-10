@@ -38,13 +38,27 @@ row: 0
         {
             $is_regular = $_REQUEST['group']=='regular' ? true : false;
 
-            $users_select->WhereEqual('user_group', $_REQUEST['group'], Cms\Enumerations\FieldType::TEXT);
-            $users_count->WhereEqual('user_group', $_REQUEST['group'], Cms\Enumerations\FieldType::TEXT);
+            $users_select->WhereEqual(
+                'user_group', $_REQUEST['group'], 
+                Cms\Enumerations\FieldType::TEXT
+            );
+            
+            $users_count->WhereEqual(
+                'user_group', $_REQUEST['group'], 
+                Cms\Enumerations\FieldType::TEXT
+            );
             
             if($is_regular)
             {
-                $users_select->OrOp()->WhereEqual('user_group', '', Cms\Enumerations\FieldType::TEXT);
-                $users_count->OrOp()->WhereEqual('user_group', '', Cms\Enumerations\FieldType::TEXT);
+                $users_select->OrOp()->WhereEqual(
+                    'user_group', '', 
+                    Cms\Enumerations\FieldType::TEXT
+                );
+                
+                $users_count->OrOp()->WhereEqual(
+                    'user_group', '', 
+                    Cms\Enumerations\FieldType::TEXT
+                );
             }
         }
 
@@ -52,13 +66,27 @@ row: 0
         {
             if($users_select->HasWhere())
             {
-                $users_select->AndOp()->WhereEqual('status', $_REQUEST['status'], Cms\Enumerations\FieldType::TEXT);
-                $users_count->AndOp()->WhereEqual('status', $_REQUEST['status'], Cms\Enumerations\FieldType::TEXT);
+                $users_select->AndOp()->WhereEqual(
+                    'status', $_REQUEST['status'], 
+                    Cms\Enumerations\FieldType::TEXT
+                );
+                
+                $users_count->AndOp()->WhereEqual(
+                    'status', $_REQUEST['status'], 
+                    Cms\Enumerations\FieldType::TEXT
+                );
             }
             else
             {
-                $users_select->WhereEqual('status', $_REQUEST['status'], Cms\Enumerations\FieldType::TEXT);
-                $users_count->WhereEqual('status', $_REQUEST['status'], Cms\Enumerations\FieldType::TEXT);
+                $users_select->WhereEqual(
+                    'status', $_REQUEST['status'], 
+                    Cms\Enumerations\FieldType::TEXT
+                );
+                
+                $users_count->WhereEqual(
+                    'status', $_REQUEST['status'], 
+                    Cms\Enumerations\FieldType::TEXT
+                );
             }
                 
         }
@@ -127,14 +155,14 @@ row: 0
             )
         );
 
-        print '<table class="navigation-list">' . "\n";
+        print '<table class="list">' . "\n";
         print '<thead>' . "\n";
         print '<tr>' . "\n";
-        print '<td>' . t('Username') . '</td>' . "\n";
-        print '<td>' . t('E-mail') . '</td>' . "\n";
-        print '<td>' . t('Status') . '</td>' . "\n";
-        print '<td>' . t('Register date') . '</td>' . "\n";
-        print '<td>' . t('Operation') . '</td>' . "\n";
+        print '<td class="username">' . t('Username') . '</td>' . "\n";
+        print '<td class="email">' . t('E-mail') . '</td>' . "\n";
+        print '<td class="status">' . t('Status') . '</td>' . "\n";
+        print '<td class="register-date">' . t('Register date') . '</td>' . "\n";
+        print '<td class="operation">' . t('Operation') . '</td>' . "\n";
         print '</tr>' . "\n";
         print '</thead>' . "\n";
 
@@ -143,24 +171,24 @@ row: 0
         {
             $username = $user_row['username'];
             
-            $user_data = \Cms\Users::GetData($username);
+            $user_data = Cms\Users::GetData($username);
 
             print '<tr>';
 
-            print '<td>' . $username . '</td>';
+            print '<td class="username">' . $username . '</td>';
 
-            print '<td>' . $user_data->email . '</td>';
+            print '<td class="email">' . $user_data->email . '</td>';
 
-            print '<td>' . Cms\Enumerations\UserStatus::GetLabel($user_data->status) . '</td>';
+            print '<td class="status">' . Cms\Enumerations\UserStatus::GetLabel($user_data->status) . '</td>';
 
-            print '<td>' . date('m/d/Y g:i:s a', intval($user_data->registration_date)) . '</td>';
+            print '<td class="register-date">' . date('m/d/Y g:i:s a', intval($user_data->registration_date)) . '</td>';
 
             $edit_url = Cms\Uri::GetUrl('account/profile', array('username'=>$username));
             $delete_url = Cms\Uri::GetUrl('admin/users/delete', array('username'=>$username));
 
-            print '<td>' . 
-            "<a href=\"$edit_url\">" . t('Edit') . '</a> ' .
-            "<a href=\"$delete_url\">" . t('Delete') . '</a>' .					
+            print '<td class="operation">' . 
+            "<a class=\"edit\" href=\"$edit_url\">" . t('Edit') . '</a> ' .
+            "<a class=\"delete\" href=\"$delete_url\">" . t('Delete') . '</a>' .					
             '</td>';
 
             print '</tr>';

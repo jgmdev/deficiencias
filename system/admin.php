@@ -74,7 +74,7 @@ row: 0
         
         foreach($groups as $group_name=>$pages)
         {
-            print '<div class="group">' . "\n";
+            print '<div class="section">' . "\n";
             
             print '<h2>' . $group_name . '</h2>' . "\n";
             

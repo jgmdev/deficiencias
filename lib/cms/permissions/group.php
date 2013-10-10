@@ -11,9 +11,9 @@ use Cms\Data\PermissionsList;
 use Cms\Enumerations\Permissions\Groups;
 
 /**
- * List of user management permissions.
+ * List of group management permissions.
  */
-class GroupPermissions extends PermissionsList
+class Group extends PermissionsList
 {
     public function __construct()
     {

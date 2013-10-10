@@ -237,8 +237,8 @@ class Groups {
 
         $permissions = array();
         
-        $permissions[] = new Permissions\UserPermissions;
-        $permissions[] = new Permissions\GroupPermissions;
+        $permissions[] = new Permissions\User;
+        $permissions[] = new Permissions\Group;
         
         if($group_name == 'administrator')
         {

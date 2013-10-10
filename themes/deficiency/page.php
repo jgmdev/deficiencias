@@ -61,9 +61,10 @@ $(document).ready(function(){
 	
 	<h1><?=$content_title?></h1>
 	
-	<a title="add report" class="add-report" href="<?=$base_url?>/reports/add">
-	    <img src="<?=$theme_url?>/images/add-deficiency.png" />
+	<a title="user account" class="user-account" href="<?=$base_url?>/login">
+	    <img src="<?=$theme_url?>/images/user-account.png" />
 	</a>
+    
 	<div style="clear: both"></div>
     </div>
 </div>

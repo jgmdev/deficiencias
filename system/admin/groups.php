@@ -8,7 +8,7 @@ exit;
 
 row: 0
     field: title
-    <?= t('Groups') ?>
+    <?=t('Groups')?>
     field;
 
     field: content
@@ -30,9 +30,9 @@ row: 0
         print '<thead>' . "\n";
         print '<tr>' . "\n";
 
-        print '<td>' . t('Name') . '</td>' . "\n";
-        print '<td>' . t('Description') . '</td>' . "\n";
-        print '<td>' . t('Operation') . '</td>' . "\n";
+        print '<td class="name">' . t('Name') . '</td>' . "\n";
+        print '<td class="description">' . t('Description') . '</td>' . "\n";
+        print '<td class="operation">' . t('Operation') . '</td>' . "\n";
 
         print '</tr>' . "\n";
         print '</thead>' . "\n";
@@ -42,8 +42,8 @@ row: 0
         {
             print "<tr>\n";
 
-            print '<td>' . t($group->name) . '</td>' . "\n";
-            print '<td>' . t($group->description) . '</td>' . "\n";
+            print '<td class="name">' . t($group->name) . '</td>' . "\n";
+            print '<td class="description">' . t($group->description) . '</td>' . "\n";
 
             $edit_url = Cms\Uri::GetUrl(
                 'admin/groups/edit', 
@@ -64,10 +64,10 @@ row: 0
             $permissions_text = t('Permissions');
             $delete_text = t('Delete');
 
-            print '<td>' .
-                '<a href="'.$edit_url.'">'.$edit_text.'</a>&nbsp;' .
-                '<a href="'.$permissions_url.'">'.$permissions_text.'</a>&nbsp;' .
-                '<a href="'.$delete_url.'">'.$delete_text.'</a>' .
+            print '<td class="operation">' .
+                '<a class="edit" href="'.$edit_url.'">'.$edit_text.'</a> ' .
+                '<a class="permissions" href="'.$permissions_url.'">'.$permissions_text.'</a> ' .
+                '<a class="delete" href="'.$delete_url.'">'.$delete_text.'</a>' .
                 '</td>' . "\n"
             ;
 

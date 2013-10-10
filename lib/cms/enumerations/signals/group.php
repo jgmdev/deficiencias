@@ -15,6 +15,7 @@ class Group
     const EDIT = 'group_edit';
     const DELETE = 'group_delete';
     const GET = 'group_get';
+    const GET_PERMISSIONS = 'group_get_permissions';
 }
 
 ?>

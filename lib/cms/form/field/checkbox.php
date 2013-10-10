@@ -22,7 +22,7 @@ class CheckBox extends Field
      * @param string $main_label
      * @param string $name
      * @param array $options
-     * @param string $selected
+     * @param string|array $selected
      * @param string $description
      * @param boolean $required
      * @param boolean $readonly

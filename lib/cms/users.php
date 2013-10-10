@@ -25,6 +25,8 @@ class Users
      */
     public static function Add(\Cms\Data\User $user)
     {
+        $user->username = strtolower($user->username);
+        
         $path = self::GetPath($user->username, $user->group);
 
         if(file_exists($path))
@@ -33,6 +35,9 @@ class Users
         FileSystem::MakeDir($path, 0755, true);
         
         $user->password = crypt($user->password);
+        
+        if(!$user->registration_date)
+            $user->registration_date = time();
 
         $user_data = new Data($path . 'data.php');
         $user_data->AddRow($user);
@@ -64,6 +69,8 @@ class Users
      */
     public static function Delete($username)
     {
+        $username = strtolower($username);
+        
         $user_exists = self::Exists($username);
 
         if(!is_array($user_exists))

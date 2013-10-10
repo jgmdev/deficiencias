@@ -9,6 +9,9 @@ namespace Cms\Form;
 
 use Cms\Enumerations\FormFieldType;
 
+/**
+ * Represents a form field.
+ */
 class Field
 {
     /**

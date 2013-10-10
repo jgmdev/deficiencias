@@ -8,12 +8,12 @@ namespace Cms\Form\Validator;
 
 use Cms\Form\Validator;
 
-class EmailValidator extends Validator
+class Email extends Validator
 {
     /**
      * Default constructor.
      * @param string $value
-     * @return \Cms\Form\Validator\EmailValidator
+     * @return \Cms\Form\Validator\Email
      */
     public function __construct($value = null)
     {

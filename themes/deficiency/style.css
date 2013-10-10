@@ -6,7 +6,7 @@ body
 
 body *
 {
-    font:normal 14px tahoma, arial, helvetica, sans-serif;
+    font:normal 18px tahoma, arial, helvetica, sans-serif;
     text-align: left;
 }
 
@@ -60,7 +60,7 @@ table, td
     float: left;
 }
 
-#header-menu .add-report
+#header-menu .user-account
 {
     float: right;
 }
@@ -352,12 +352,31 @@ label.radio
     width: auto;
 }
 
+fieldset.collapsed
+{
+	border-bottom-width: 0;
+  	border-left-width: 0;
+  	border-right-width: 0;
+  	margin-bottom: 0;
+}
+
+fieldset.collapsed *
+{
+	display: none;
+}
+
+fieldset.collapsed legend,
+fieldset.collapsed legend *
+{
+	display: inline;
+}
+
 fieldset
 {
     margin-bottom: 5px;
 }
 
-fieldset label a
+fieldset legend a
 {
     font-size: 24px !important;
 }
@@ -405,4 +424,151 @@ input[type=submit]
     margin: 0 auto 0 auto;
     font-size: 24px;
     display: inline-block;
+}
+
+#tabs-menu
+{
+    display: table;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#tabs-menu ul
+{
+    display: table-row;
+    width: auto;
+}
+
+#tabs-menu ul li
+{
+    display: table-cell;
+    list-style: none;
+}
+
+#tabs-menu ul li a
+{
+    display: block;
+    color: #fff;
+    background-color: #468EBE;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    padding: 15px;
+    border-right: solid 3px #4d4d4d;
+    border-left: solid 1px #fff;
+}
+
+#tabs-menu ul li.first a
+{
+    border-left: 0;
+}
+
+#tabs-menu ul li.last a
+{
+    border-right: 0;
+}
+
+#tabs-menu ul li a:hover
+{
+    background-color: #4d4d4d;
+    border-left-color: #4d4d4d;
+}
+
+.cmsgui .admin h2
+{
+    border-bottom: solid 3px #468EBE;
+    font-size: 24px;
+}
+
+.cmsgui .admin a
+{
+   display: block;
+   text-align: center;
+   background-color: #4d4d4d;
+   padding: 5px;
+   color: #fff;
+   margin: 4px 0 4px 0;
+   font-size: 20px;
+}
+
+.cmsgui .admin .description
+{
+   display: block;
+   border-bottom: dashed 1px #d3d3d3;
+   margin-bottom: 5px;
+}
+
+.cmsgui .list td
+{
+    padding: 5px 5px 5px 5px;
+}
+
+.cmsgui .list thead td
+{
+    font-weight: bold;
+    border-bottom: solid 1px #000;
+}
+
+.cmsgui .list tbody tr td
+{
+    border-bottom: dashed 1px #d3d3d3;
+}
+
+.cmsgui .list tbody tr:hover
+{
+    background-color: #d3d3d3;
+}
+
+@media (max-width: 600px) {
+    #header-menu h1
+    {
+        font-size: 24px;
+    }
+
+    input[type=checkbox]
+    {
+        -ms-transform: scale(2.5);
+        -moz-transform: scale(2.5);
+        -webkit-transform: scale(2.5);
+        -o-transform: scale(2.5);
+        padding: 10px;
+    }
+    
+    #tabs-menu ul
+    {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #tabs-menu ul li
+    {
+        display: block;
+        margin-bottom: 3px;
+    }
+    
+    #tabs-menu ul li a
+    {
+        border: 0;
+    }
+    
+    .cmsgui .admin-users .list td.email,
+    .cmsgui .admin-users .list td.status,
+    .cmsgui .admin-users .list td.register-date,
+    .cmsgui .admin-groups .list td.description
+    {
+        display: none;
+    }
+    
+    .cmsgui .list td.operation a
+    {
+        display: block;
+        padding: 5px 0 5px 0;
+        text-align: center;
+        background-color: #4d4d4d;
+        color: #fff;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
 }

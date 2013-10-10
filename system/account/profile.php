@@ -7,6 +7,7 @@ exit;
 ?>
 
 row: 0
+
     field: title
     <?php
         if(!isset($_REQUEST['username']))
@@ -20,13 +21,15 @@ row: 0
         }
         else
         {
-            print t('My Account Details');
+            print t('My Details');
         }
     ?>
     field;
 
     field: content
     <?php
+        use Cms\Enumerations\Permissions;
+
         if(!Cms\Authentication::IsUserLogged())
         {
             Cms\Authentication::ProtectPage();
@@ -38,11 +41,11 @@ row: 0
         }
         elseif(Cms\Authentication::GetUser()->username != $_REQUEST['username'])
         {
-            Cms\Authentication::ProtectPage(Cms\Enumerations\Permissions\Users::EDIT);
+            Cms\Authentication::ProtectPage(Permissions\Users::EDIT);
         }
 
         $form = new \Cms\Form('edit-user');
-        
+
         $form->SetGlobalFilter(new Cms\Form\Filter\Html());
 
         $form->Listen(Cms\Enumerations\Signals\Form::SUBMIT, function()
@@ -61,7 +64,7 @@ row: 0
                 $previous_password = $user_data->password;
                 $previous_user_status = $user_data->status;
 
-                if(Cms\Authentication::GetGroup()->HasPermission(Cms\Enumerations\Permissions\Groups::EDIT))
+                if(Cms\Authentication::GetGroup()->HasPermission(Permissions\Groups::EDIT))
                 {
                     $user_data->group = $_REQUEST['group'] ? $_REQUEST['group'] : $user_data->group;
                     $user_data->status = $_REQUEST['status'] ? $_REQUEST['status'] : $user_data->status;
@@ -75,7 +78,11 @@ row: 0
                 }
                 elseif($_REQUEST['password'] != '' && $_REQUEST['password'] != $_REQUEST['confirm_password'])
                 {
-                    Cms\Theme::AddMessage(t('The New password and Verify password doesn\'t match.'), Cms\Enumerations\MessageType::ERROR);
+                    Cms\Theme::AddMessage(
+                        t('The New password and Verify password doesn\'t match.'), 
+                        Cms\Enumerations\MessageType::ERROR
+                    );
+
                     $error = true;
                 }
 
@@ -85,19 +92,22 @@ row: 0
                     try
                     {   
                         $username = Cms\Authentication::GetUser()->username;
-                        
+
                         Cms\Users::Edit($_REQUEST['username'], $user_data);
-                        
+
                         Cms\Theme::AddMessage(t('Your changes have been successfully saved.'));
-                        
+
                         if($user_data->password != $previous_password && 
                             $username == $_REQUEST['username']
                         )
                         {
-                            Cms\Authentication::Login($_REQUEST['username'], $_REQUEST['password']);
+                            Cms\Authentication::Login(
+                                $_REQUEST['username'], 
+                                $_REQUEST['password']
+                            );
                         }
 
-                        if(Cms\Authentication::GetGroup()->HasPermission(Cms\Enumerations\Permissions\Users::EDIT))
+                        if(Cms\Authentication::GetGroup()->HasPermission(Permissions\Users::EDIT))
                         {
                             //Send notification email to user if account was activated
                             if($previous_user_status == '0' && $_REQUEST['status'] == '1')
@@ -107,7 +117,9 @@ row: 0
 
                                 $html_message = t('Your account has been activated.') . '<br /><br />';
                                 $html_message .= t('Username:') . " " . $_REQUEST['username'] . '<br /><br />';
-                                $html_message .= t('Login by visiting:') . ' <a target="_blank" href="' . Cms\Uri::GetUrl('login') . '">' . Cms\Uri::GetUrl('login') . '</a>';
+                                $html_message .= t('Login by visiting:') . ' <a target="_blank" href="' . 
+                                    Cms\Uri::GetUrl('login') . '">' . Cms\Uri::GetUrl('login') . '</a>'
+                                ;
 
                                 Cms\Mail::Send($to, t('Account Activated'), $html_message);
                             }
@@ -115,14 +127,20 @@ row: 0
                     }
                     catch(Exception $e)
                     {
-                        Cms\Theme::AddMessage($e->getMessage(), Cms\Enumerations\MessageType::ERROR);
+                        Cms\Theme::AddMessage(
+                            $e->getMessage(), 
+                            Cms\Enumerations\MessageType::ERROR
+                        );
                     }
                 }
 
                 if($_REQUEST['username'] == Cms\Authentication::GetUser()->username)
                     Cms\Uri::Go('account/profile');
                 else
-                    Cms\Uri::Go('account/profile', array('username' => $_REQUEST["username"]));
+                    Cms\Uri::Go(
+                        'account/profile', 
+                        array('username' => $_REQUEST["username"])
+                    );
             }
             elseif(isset($_REQUEST["btnCancel"]))
             {
@@ -140,7 +158,7 @@ row: 0
             }
         });
 
-        if(Cms\Authentication::GetGroup()->HasPermission(Cms\Enumerations\Permissions\Users::DELETE))
+        if(Cms\Authentication::GetGroup()->HasPermission(Permissions\Users::DELETE))
         {
             Cms\Theme::AddTab(
                 t('Delete'),
@@ -168,7 +186,7 @@ row: 0
             t('Writing displayed on your profile page.'), '', false, false, 300
         ));
 
-        if(Cms\Authentication::GetGroup()->HasPermission(Cms\Enumerations\Permissions\Users::EDIT))
+        if(Cms\Authentication::GetGroup()->HasPermission(Permissions\Users::EDIT))
         {
             $form->AddField(new Cms\Form\Field\Text(
                 t('E-mail'), 'email', $user_data->email,
@@ -178,7 +196,7 @@ row: 0
         }
         else
         {
-            $email_validator = new \Cms\Form\Validator\EmailValidator;
+            $email_validator = new Cms\Form\Validator\Email;
             $email_validator->SetErrorMessage(t('Please provide a valid e-mail address.'));
             $email = new Cms\Form\Field\Text(
                 t('E-mail'), 'email', $user_data->email,
@@ -186,7 +204,7 @@ row: 0
                 '', true
             );
             $email->SetValidator($email_validator);
-            
+
             $form->AddField($email);
         }
 
@@ -206,29 +224,29 @@ row: 0
         ));
 
         $gender_group = new Cms\Form\FieldsGroup(t('Gender'));
-        $gender_group->AddField(new \Cms\Form\Field\Radio(
+        $gender_group->AddField(new Cms\Form\Field\Radio(
             '', 'gender', array(t('Male')=>'m', t('Female')=>'f'),
             (trim($user_data->gender)!=''?$user_data->gender:'m'), '', true
         ));
 
         $form->AddGroup($gender_group);
-        
+
         $day = date("j", intval($user_data->birth_date));
         $month = date("n", intval($user_data->birth_date));
         $year = date("Y", intval($user_data->birth_date));
 
         $birthdate_group = new Cms\Form\FieldsGroup(t('Birthdate'));
-        
+
         $birthdate_group->AddField(new Cms\Form\Field\Select(
             t('Day'), 'day', Cms\Utilities\Date::GetDays(),
             $day, '', '', true
         ));
-        
+
         $birthdate_group->AddField(new Cms\Form\Field\Select(
             t('Month'), 'month', Cms\Utilities\Date::GetMonths(),
             $month, '', '', true
         ));
-        
+
         $birthdate_group->AddField(new Cms\Form\Field\Select(
             t('Year'), 'year', Cms\Utilities\Date::GetYears(),
             $year, '', '', true
@@ -237,21 +255,21 @@ row: 0
         $form->AddGroup($birthdate_group);
 
         //Display user group and status selector if user has permissions
-        if(Cms\Authentication::GetGroup()->HasPermission(Cms\Enumerations\Permissions\Users::EDIT))
+        if(Cms\Authentication::GetGroup()->HasPermission(Permissions\Users::EDIT))
         {
-            $groups_list = \Cms\Groups::GetList();
+            $groups_list = Cms\Groups::GetList();
             $groups = array();
             foreach($groups_list as $group)
             {
                 $groups[$group->name] = $group->machine_name;
             }
-            
+
             $status_codes = array();
             foreach(Cms\Enumerations\UserStatus::GetAll() as $status_code)
             {
                 $status_codes[Cms\Enumerations\UserStatus::GetLabel($status_code)] = $status_code;
             }
-            
+
             $form->AddField(new Cms\Form\Field\Select(
                 t('Group'), 'group', $groups,
                 $user_data->group, t('The group where the user belongs.')
@@ -275,4 +293,5 @@ row: 0
         $form->Render();
     ?>
     field;
+
 row;

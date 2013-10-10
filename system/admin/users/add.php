@@ -13,9 +13,9 @@ row: 0
 
     field: content
     <?php
-        \Cms\Authentication::ProtectPage(Cms\Enumerations\Permissions\Users::CREATE);
+        Cms\Authentication::ProtectPage(Cms\Enumerations\Permissions\Users::CREATE);
 
-        $form = new \Cms\Form('add-user');
+        $form = new Cms\Form('add-user');
         
         $form->SetGlobalFilter(new Cms\Form\Filter\Html());
 
@@ -43,7 +43,7 @@ row: 0
                         return;
                     }
 
-                    $user = new \Cms\Data\User();
+                    $user = new Cms\Data\User();
                     $user->username = $_REQUEST['username'];
                     $user->password = $_REQUEST['password'];
                     $user->email = $_REQUEST['email'];
@@ -62,10 +62,13 @@ row: 0
                 }
                 else
                 {
-                    Cms\Theme::AddMessage(t('Password and Confirm Password doesn\'t match.'), \Cms\Enumerations\MessageType::ERROR);
+                    Cms\Theme::AddMessage(
+                        t('Password and Confirm Password doesn\'t match.'), 
+                        Cms\Enumerations\MessageType::ERROR
+                    );
                 }
             }
-            elseif(isset($_REQUEST["btnCancel"]))
+            elseif(isset($_REQUEST['btnCancel']))
             {
                 Cms\Uri::Go('admin/users');
             }
@@ -108,7 +111,7 @@ row: 0
         ));
 
         $gender_group = new Cms\Form\FieldsGroup(t('Gender'));
-        $gender_group->AddField(new \Cms\Form\Field\Radio(
+        $gender_group->AddField(new Cms\Form\Field\Radio(
             '', 'gender', array(t('Male')=>'m', t('Female')=>'f'),
             'm', '', true
         ));
@@ -134,7 +137,7 @@ row: 0
 
         $form->AddGroup($birthdate_group);
 
-        $groups_list = \Cms\Groups::GetList();
+        $groups_list = Cms\Groups::GetList();
         $groups = array();
         foreach($groups_list as $group)
         {

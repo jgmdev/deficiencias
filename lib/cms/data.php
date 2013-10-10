@@ -138,6 +138,8 @@ class Data
         unset($arrFile);
 
         $this->data = $row;
+        
+        return $this->data;
     }
 
     /**

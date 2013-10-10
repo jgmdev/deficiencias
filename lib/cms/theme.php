@@ -270,7 +270,7 @@ class Theme
                         {
                             $list_class = ' class="first" ';
                         }
-                        else if($index+1 == $total_tabs)
+                        elseif($index+1 == $total_tabs)
                         {
                             $list_class = ' class="last" ';
                         }
@@ -285,12 +285,12 @@ class Theme
                         {
                             $tabs .= "\t<li{$list_class}><span><a href=\"$url\">$name</a></span></li>\n";
                         }
+                        
+                        $index++;
                     }
                 }
 
                 $tabs .= '</ul>'."\n";
-
-                $tabs .= '<div class="clear tabs-clear"></div>'."\n";
             }
         }
 

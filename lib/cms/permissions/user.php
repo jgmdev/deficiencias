@@ -13,7 +13,7 @@ use Cms\Enumerations\Permissions\Users;
 /**
  * List of user management permissions.
  */
-class UserPermissions extends PermissionsList
+class User extends PermissionsList
 {
     public function __construct()
     {

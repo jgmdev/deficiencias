@@ -113,8 +113,8 @@ class Utilities
             return '';
         }
 
-        $html .= '<div class="search-results">' . "\n";
-        $html .= "\t" . '<div class="navigation">' . "\n";
+        $html .= '<div class="pages-navigation">' . "\n";
+        $html .= "\t" . '<div class="pages">' . "\n";
         
         if($page != 1)
         {

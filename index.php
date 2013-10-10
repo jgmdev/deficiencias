@@ -20,6 +20,9 @@ $datasource->InitAsSQLite('deficiencies', \Cms\System::GetDataPath() . "sqlite")
 
 Cms\System::SetDataSource($datasource);
 
+//Initialize the deficiencies module
+Deficiencies\Setup::Init();
+
 //Setup the deficiency databse
 Deficiencies\Setup::Database();
 

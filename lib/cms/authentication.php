@@ -28,7 +28,7 @@ class Authentication
   
         $user_data = false;
 
-        $email_validator = new Form\Validator\EmailValidator($username);
+        $email_validator = new Form\Validator\Email($username);
 
         if($email_validator->IsValid())
         {

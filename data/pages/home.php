@@ -7,13 +7,15 @@ row: 0
     
     field: content
         <?php 
-            Cms\Theme::AddStyle("styles/jquery.loadmask.css");
+            Cms\Theme::AddStyle('styles/jquery.loadmask.css');
             
             Cms\Theme::AddScript('scripts/jquery.geolocation.js');
-            Cms\Theme::AddScript("scripts/jquery.loadmask.js");
+            Cms\Theme::AddScript('scripts/jquery.loadmask.js');
             Cms\Theme::AddScript('http://maps.google.com/maps/api/js?sensor=false&amp;language=en');
             Cms\Theme::AddScript('scripts/jquery.gmap3.js');
             Cms\Theme::AddScript('script/reports/list');
+            
+            Cms\Theme::AddTab(t('Add Report'), 'reports/add');
         ?>
     
         <audio id="alert-sound" loop preload="auto">
