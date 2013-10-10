@@ -35,9 +35,9 @@ class UserStatus
         switch($status_code)
         {
             case 0:
-                return t('Active');
-            case 1:
                 return t('Pending Approval');
+            case 1:
+                return t('Active');
             case 2:
                 return t('Blocked');
         }

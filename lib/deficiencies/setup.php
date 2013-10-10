@@ -26,6 +26,11 @@ class Setup
             Cms\Theme::AddTab(t('My Reports'), 'my-reports');
         });
         
+        Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Group::GET_PERMISSIONS, function($signal_data)
+        {
+            $signal_data->permissions[] = new PermissionsList;
+        });
+        
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Gui::GENERATE_CONTROL_CENTER, function($signal_data)
         {
             /* @var $page_groups \Cms\Data\PagesGroupList */
@@ -36,9 +41,17 @@ class Setup
             $page_view->description = t('All deficiencies reported.');
             $page_view->AddPermission(Permissions::VIEW);
             
+            $page_attendants = new Cms\Data\Page('admin/deficiencies/attendants');
+            $page_attendants->title = t('Attendants');
+            $page_attendants->description = t('Set the groups that will be in charge of attending the reported deficiencies.');
+            $page_attendants->AddPermission(Permissions::ADMINISTRATOR);
+            
             $page_groups->AddGroupBefore(
                 t('Deficiencies'),
-                array('admin/deficiencies'=>$page_view),
+                array(
+                    'admin/deficiencies'=>$page_view,
+                    'admin/deficiencies/attendants'=>$page_attendants
+                ),
                 t('Users')
             );
         });

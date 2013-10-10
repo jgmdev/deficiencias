@@ -240,6 +240,15 @@ class Groups {
         $permissions[] = new Permissions\User;
         $permissions[] = new Permissions\Group;
         
+        //Send signal
+        $signal_data = new Signals\SignalData();
+        $signal_data->Add('permissions', $permissions);
+        
+        Signals\SignalHandler::Send(
+            Enumerations\Signals\Group::GET_PERMISSIONS, 
+            $signal_data
+        );
+        
         if($group_name == 'administrator')
         {
             foreach($permissions as &$permission_group)

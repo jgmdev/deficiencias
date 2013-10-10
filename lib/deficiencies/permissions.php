@@ -15,5 +15,7 @@ class Permissions
     const VIEW = 'deficiencies_view';
     const EDIT = 'deficiencies_edit';
     const DELETE = 'deficiencies_delete';
+    const ASSIGN = 'deficiencies_assign';
+    const ADMINISTRATOR = 'deficiencies_administrator';
 }
 ?>

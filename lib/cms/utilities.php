@@ -84,7 +84,7 @@ class Utilities
      * @param integer $amount Optional amount of results to display per page, Default: 30
      * @param array $arguments Optional arguments to pass to the navigation links.
      */
-    function GenerateNavigation($total_count, $page, $uri, $module = "", $amount = 30, $arguments = array())
+    public static function GenerateNavigation($total_count, $page, $uri, $module = "", $amount = 30, $arguments = array())
     {
         $html = '';
         
