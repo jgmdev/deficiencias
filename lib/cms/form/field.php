@@ -299,7 +299,7 @@ class Field
             {
                 foreach($request_value as $value)
                 {
-                    if(trim($value) != "")
+                    if(trim($value))
                     {
                         $this->id .= '-' . $id;
                         $html .= '<div class="field">' . "\n";
@@ -376,7 +376,7 @@ class Field
         $html .= 'id="'.$this->id.'" ';
         $html .= 'name="'.$this->name.'" ';
 
-        if($value)
+        if(trim($value) != '')
             $html .= 'value="'.$value.'" ';
         
         if($this->placeholder)

@@ -14,27 +14,56 @@ row: 0
     field: content
     <?php
         Cms\Authentication::ProtectPage(
-            Cms\Enumerations\Permissions\Groups::VIEW
+            Deficiencies\Permissions::ADMINISTRATOR
         );
 
-        Cms\Theme::AddTab(t('Users'), 'admin/users');
-        Cms\Theme::AddTab(t('Create Group'), 'admin/groups/add');
+        $groups = Deficiencies\Attendants::Get();
 
-        $form = new \Cms\Form('deficiency-attendants');
+        print '<div class="cmsgui">' . "\n";
+        print '<div class="admin-deficiencies-attendants">' . "\n";
         
-        $groups = Cms\Groups::GetList();
-        
-        $options = array();
-        foreach ($groups as $group)
+        print '<table class="list">' . "\n";
+
+        print '<thead>' . "\n";
+        print '<tr>' . "\n";
+
+        print '<td class="name">' . t('Name') . '</td>' . "\n";
+        print '<td class="description">' . t('Description') . '</td>' . "\n";
+        print '<td class="operation">' . t('Operation') . '</td>' . "\n";
+
+        print '</tr>' . "\n";
+        print '</thead>' . "\n";
+
+        print '<tbody>' . "\n";
+        foreach ($groups as $machine_name)
         {
-            $options[$group->name] = $group->machine_name;
+            $group = Cms\Groups::GetData($machine_name);
+            
+            print "<tr>\n";
+
+            print '<td class="name">' . t($group->name) . '</td>' . "\n";
+            print '<td class="description">' . t($group->description) . '</td>' . "\n";
+            
+            $cities_url = Cms\Uri::GetUrl(
+                'admin/deficiencies/attendants/cities', 
+                array('group' => $machine_name)
+            );
+            
+            $cities_text = t('Assign Cities');
+
+            print '<td class="operation">' .
+                '<a class="cities" href="'.$cities_url.'">'.$cities_text.'</a> ' .
+                '</td>' . "\n"
+            ;
+
+            print '</tr>' . "\n";
         }
+        print '</tbody>' . "\n";
+
+        print '</table>' . "\n";
         
-        $form->AddField(new \Cms\Form\Field\CheckBox(
-            t('Groups'), 'groups[]', $options, $selected, 
-            t('Select the groups that will have a role of attendant. This group users will be displayed on the assign to field.'), 
-            true, false
-        ));
+        print '</div>' . "\n";
+        print '</div>' . "\n";
     ?>
     field;
 row;

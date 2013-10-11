@@ -15,7 +15,25 @@ row: 0
     field: content
     <?php
         if(Cms\Authentication::IsUserLogged())
-            Cms\Uri::Go('account');
+        {   
+            if(isset($_SESSION["return_url"]))
+            {
+                $url = $_SESSION["return_url"];
+                unset($_SESSION["return_url"]);
+
+                Cms\Uri::Go($url);
+            }
+            else
+            {
+                Cms\Uri::Go('account');
+            }
+        }
+        
+        //Store return url
+        if(isset($_REQUEST["return"]))
+        {
+            $_SESSION["return_url"] = $_REQUEST["return"];
+        }
         
         $form = new Cms\Form('login', null, Cms\Enumerations\FormMethod::POST);
         
@@ -25,7 +43,7 @@ row: 0
             {
                 Cms\Authentication::Login($_REQUEST['username_email'], $_REQUEST['password']);
                 
-                Cms\Uri::Go('account');
+                Cms\Uri::Go('login');
             }
             catch(\Cms\Exceptions\Users\AwaitingApprovalException $e)
             {
@@ -51,17 +69,12 @@ row: 0
             t('Forgot Password?') .
         '</a>';
         
-        print "</div>";
-        
         //Register link
-        if(Cms\System::GetSiteSettings()->Get('new_registrations'))
+        if(!Cms\System::GetSiteSettings()->Get('new_registrations'))
         {
-            print '<h2>' . t('Create Account') . '</h2>';
-            print '<a class="register-link" href="' . 
-                Cms\Uri::GetUrl('register', array(
-                    'return'=>$_REQUEST['return'])
-                ) . '">' . 
-                t('Register') . 
+            print ' | <a class="register-link" href="' . 
+                Cms\Uri::GetUrl('register') . '">' . 
+                t('Create Account') . 
             "</a>";
             
             $benefits = Cms\System::GetSiteSettings()->Get('registration_benefits');
@@ -69,6 +82,8 @@ row: 0
             if($benefits)
                 print Cms\Utilities::PHPEval($benefits);
         }
+        
+        print "</div>";
     ?>
     field;
     

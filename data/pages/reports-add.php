@@ -7,8 +7,24 @@ row: 0
     
     field: content
         <?php
-            if(isset($_REQUEST["btnSave"]))
+            if(isset($_SESSION['deficiency_add_report']))
             {
+                $_REQUEST = $_SESSION['deficiency_add_report'];
+                unset($_SESSION['deficiency_add_report']);
+            }
+            
+            if(isset($_REQUEST['btnSave']))
+            {
+                //If submitter is not logged in save report data and
+                //redirect it to login page.
+                //TODO: also save photo for report creation after user logins.
+                if(!Cms\Authentication::IsUserLogged())
+                {
+                    $_SESSION['deficiency_add_report'] = $_REQUEST;
+                    Cms\Theme::AddMessage(t('Please login or create an account in order to finish the submission of the report'));
+                    Cms\Uri::Go('login', array('return'=>'reports/add'));
+                }
+                
                 $valid = true;
                 $has_photo = false;
                 
@@ -24,15 +40,16 @@ row: 0
                 
                 if ($valid) {
                     $deficiency = new Deficiencies\Deficiency;
-                    $deficiency->type = $_REQUEST["type"];
-                    $deficiency->latitude = $_REQUEST["lat"];
-                    $deficiency->longitude = $_REQUEST["lon"];
-                    $deficiency->comments = $_REQUEST["comments"];
+                    $deficiency->type = $_REQUEST['type'];
+                    $deficiency->latitude = $_REQUEST['lat'];
+                    $deficiency->longitude = $_REQUEST['lon'];
+                    $deficiency->comments = $_REQUEST['comments'];
                     
-                    $deficiency->address->line1 = $_REQUEST["address"];
-                    $deficiency->address->zipcode = $_REQUEST["zip"];
-                    $deficiency->address->city = $_REQUEST["city"];
+                    $deficiency->address->line1 = $_REQUEST['address'];
+                    $deficiency->address->zipcode = $_REQUEST['zip'];
+                    $deficiency->address->city = $_REQUEST['city'];
                     $deficiency->address->country = 'Puerto Rico';
+                    $deficiency->username = Cms\Authentication::GetUser()->username;
                     
                     if(\Deficiencies\Reports::Exists($deficiency))
                     {
@@ -55,6 +72,8 @@ row: 0
                         $id = \Deficiencies\Reports::Add($deficiency);
 
                         Cms\Theme::AddMessage(sprintf(t('The report has been submitted. Thanks for your collaboration. (ID: %s)'), $id));
+                        
+                        Cms\Uri::Go('account');
                     }
                 } else {
                     Cms\Theme::AddMessage(t('A valid file is an image with max file size of 2MB.'));

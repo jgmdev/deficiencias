@@ -26,9 +26,13 @@ Deficiencies\Setup::Init();
 //Setup the deficiency databse
 Deficiencies\Setup::Database();
 
+Cms\Signals\SignalHandler::Send(Cms\Enumerations\Signals\System::INIT);
+
 $page = Cms\Pages::Load(Cms\Uri::GetCurrent());
 
 //Display the page
 Cms\Theme::Render($page);
+
+Cms\Signals\SignalHandler::Send(Cms\Enumerations\Signals\System::UNINIT);
 
 ?>

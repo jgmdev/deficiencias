@@ -79,10 +79,10 @@ class Settings
         
         $fields['name'] = $name;
         
-        if(is_string($value))
-            $fields['value'] = $value;
-        else
+        if(is_array($value) || is_object($value))
             $fields['value'] = serialize($value);
+        else
+            $fields['value'] = $value;
         
         $current_settings = $this->data->GetAllRows();
 

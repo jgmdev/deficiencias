@@ -168,11 +168,11 @@ msgstr "El campo no está definido."
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:21
 msgid "Unfixed"
-msgstr "Sin fijar"
+msgstr "Sin solucionar"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:22
 msgid "Fixed"
-msgstr "Fijo"
+msgstr "Solucionado"
 
 #: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:23
 msgid "In process"

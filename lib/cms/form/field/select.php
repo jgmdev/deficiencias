@@ -127,7 +127,7 @@ class Select extends Field
                 }
                 else
                 {
-                    if($request_value)
+                    if(trim($request_value))
                     {
                         if($request_value == $option_value)
                             $html .= 'selected ';
@@ -167,7 +167,7 @@ class Select extends Field
             }
             else
             {
-                if($request_value)
+                if(trim($request_value) != '')
                 {
                     if($request_value == $value)
                         $html .= 'selected ';

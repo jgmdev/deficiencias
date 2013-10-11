@@ -52,6 +52,11 @@ class Deficiency {
     public $comments;
     
     /**
+     * @var string
+     */
+    public $work_comments;
+    
+    /**
      * @Column(type="integer")
      */
     public $reports_count;
@@ -60,6 +65,26 @@ class Deficiency {
      * @Column(type="string")
      */
     public $status;
+    
+    /**
+     * @var int
+     */
+    public $resolution_status;
+    
+    /**
+     * @var int
+     */
+    public $priority;
+    
+    /**
+     * @var string
+     */
+    public $assigned_to;
+    
+    /**
+     * @var int
+     */
+    public $reopened_count;
     
     /**
      * @Column(type="datetime")
@@ -76,6 +101,11 @@ class Deficiency {
      * @Column(type="datetime")
      */
     public $last_update;
+    
+    /**
+     * @var string
+     */
+    public $last_update_by;
     
     public function __construct()
     {

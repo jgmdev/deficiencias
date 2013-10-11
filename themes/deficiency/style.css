@@ -335,6 +335,11 @@ table, td
     font-size: 16px;
 }
 
+form .description
+{
+    margin: 10px 0 5px 0;
+}
+
 label
 {
     font-weight: bold;
@@ -344,11 +349,11 @@ label
     font-size: 24px;
 }
 
-label.radio
+label.radio, label.checkbox
 {
-    display: inline;
+    display: inline-block;
     font-size: 14px;
-    margin-bottom: 0;
+    margin: 0 6px 0 0;
     width: auto;
 }
 
@@ -474,28 +479,78 @@ input[type=submit]
     border-left-color: #4d4d4d;
 }
 
+.pages-navigation
+{
+    margin-top: 40px;
+}
+
+.pages-navigation .pages
+{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.pages-navigation .pages .page
+{
+    padding: 10px;
+    color: #545454;
+    font-size: 18px;
+    background-color: #d9d9d9;
+}
+
+.pages-navigation .pages .current-page
+{
+    font-weight: bold;
+    color: #000000;
+}
+
+.pages-navigation .pages .previous, .pages-navigation .pages .next
+{
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px 10px 15px 10px;
+    border-radius: 7px;
+    background-color: #D9D9D9;
+    margin: 5px;
+    color: #2C3D4E;
+    text-transform: uppercase;
+}
+
+.pages-navigation .pages .current-page
+{
+    font-weight: bold;
+    color: #000000;
+}
+
 .cmsgui .admin h2
 {
     border-bottom: solid 3px #468EBE;
     font-size: 24px;
+    font-weight: bold;
 }
 
 .cmsgui .admin a
 {
-   display: block;
-   text-align: center;
-   background-color: #4d4d4d;
-   padding: 5px;
-   color: #fff;
-   margin: 4px 0 4px 0;
-   font-size: 20px;
+    display: block;
+    color: #fff;
+    background-color: #4d4d4d;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    padding: 15px;
+}
+
+.cmsgui .admin a:hover
+{
+    background-color: #777;
 }
 
 .cmsgui .admin .description
 {
    display: block;
    border-bottom: dashed 1px #d3d3d3;
-   margin-bottom: 5px;
+   margin-bottom: 8px;
+   font-style: italic;
 }
 
 .cmsgui .list td
@@ -532,6 +587,11 @@ input[type=submit]
         -webkit-transform: scale(2.5);
         -o-transform: scale(2.5);
         padding: 10px;
+    }
+    
+    label.checkbox
+    {
+        padding: 15px;
     }
     
     #tabs-menu ul

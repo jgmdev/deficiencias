@@ -7,7 +7,7 @@ row: 0
     field;
     
     field: content
-        //<script>
+    //<script>
         var page = 0;
         var cityVal = '';
         var typeVal = '';
@@ -375,6 +375,7 @@ row: 0
             });
             
         });
+    //</script>
     field;
     
     field: rendering_mode

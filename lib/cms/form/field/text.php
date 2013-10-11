@@ -99,7 +99,7 @@ class Text extends Field
         {
             $request_value = $this->GetRequestValue();
             
-            if($request_value)
+            if(trim($request_value) != '')
                 $html .= $this->GetSingleHtml($request_value);
             else
                 $html .= $this->GetSingleHtml($this->value);

@@ -469,6 +469,7 @@ class System
         {
             $users_table = new DBAL\Query\Table('users');
             $users_table->AddTextField('username')
+                ->AddTextField('fullname')
                 ->AddTextField('email')
                 ->AddIntegerField('register_date')
                 ->AddTextField('user_group') //group is a reserved sql word

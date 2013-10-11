@@ -90,7 +90,6 @@ class Utilities
         
         $page_count = 0;
         $remainder_pages = 0;
-        $arguments = array();
 
         if($total_count <= $amount)
         {

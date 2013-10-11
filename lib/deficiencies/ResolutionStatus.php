@@ -9,21 +9,19 @@ namespace Deficiencies;
 /**
  * List of deficiency status.
  */
-class DeficiencyStatus
+class ResolutionStatus
 {
 
     const UNFIXED = 0;
-    const ASSIGNED = 1;
+    const FIXED = 1;
     const IN_PROCESS = 2;
-    const FIXED = 3;
 
     public static function getAll()
     {
         $def_status = array(
             self::UNFIXED => t('Unfixed'),
-            self::ASSIGNED => t('Assigned'),
+            self::FIXED => t('Fixed'),
             self::IN_PROCESS => t('In process'),
-            self::FIXED => t('Fixed')
         );
 
         return $def_status;

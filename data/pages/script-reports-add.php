@@ -91,12 +91,18 @@ row: 0
                 fail: function(position){
                     $.geolocation.stop(coordsGet);
                     
-                    alert("No se pudo obtener su ubicación.\nEntre la dirección física del área lo mas certero posible.");
+                    alert(
+                        "No se pudo obtener su ubicación.\n" + 
+                        "Encienda su dispositivo GPS e intente refrescar la página nuevamente\n" + 
+                        "para poder auto-detectar su ubicación actual.\n" + 
+                        "También puede entrar la dirección física del área lo más certero posible."
+                    );
                     $('#address-container').show();
                     $('body').unmask();
                 }
             });
         });
+    //</script>
     field;
     
     field: rendering_mode

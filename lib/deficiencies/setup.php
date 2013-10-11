@@ -21,9 +21,28 @@ class Setup
     
     public static function Init()
     {
+        Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\System::INIT, function()
+        {
+            if(Cms\Uri::GetCurrent() == 'admin/groups/edit')
+            {
+                if(Cms\Authentication::GetGroup()->HasPermission(Permissions::ADMINISTRATOR))
+                {
+                    if(isset($_REQUEST['group']))
+                    {
+                        if(Attendants::GroupIsAttendant($_REQUEST['group']))                        
+                            Cms\Theme::AddTab(
+                                t('Assigned Cities'), 
+                                'admin/deficiencies/attendants/cities',
+                                array('group'=>$_REQUEST['group'])
+                            );
+                    }
+                }
+            }
+        });
+        
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\User::GENERATE_PAGE, function()
         {
-            Cms\Theme::AddTab(t('My Reports'), 'my-reports');
+            Cms\Theme::AddTab(t('My Reports'), 'account/reports');
         });
         
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Group::GET_PERMISSIONS, function($signal_data)
@@ -43,7 +62,7 @@ class Setup
             
             $page_attendants = new Cms\Data\Page('admin/deficiencies/attendants');
             $page_attendants->title = t('Attendants');
-            $page_attendants->description = t('Set the groups that will be in charge of attending the reported deficiencies.');
+            $page_attendants->description = t('Manage the attendant cities.');
             $page_attendants->AddPermission(Permissions::ADMINISTRATOR);
             
             $page_groups->AddGroupBefore(
@@ -72,14 +91,18 @@ class Setup
             ->AddTextField('photo')
             ->AddTextField('comments')
             ->AddIntegerField('reports_count')
+            ->AddIntegerField('reopened_count')
             ->AddIntegerField('priority')
             ->AddTextField('assigned_to')
+            ->AddIntegerField('resolution_status')
             ->AddIntegerField('status')
+            ->AddTextField('work_comments')
             ->AddIntegerField('report_timestamp')
             ->AddIntegerField('report_day')
             ->AddIntegerField('report_month')
             ->AddIntegerField('report_year')
             ->AddIntegerField('last_update')
+            ->AddTextField('last_update_by')
             ->AddTextField('line1')
             ->AddTextField('line2')
             ->AddTextField('zipcode')

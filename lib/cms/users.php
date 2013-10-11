@@ -48,6 +48,7 @@ class Users
         {
             $insert = new DBAL\Query\Insert('users');
             $insert->Insert('username', $user->username, Enumerations\FieldType::TEXT)
+                ->Insert('fullname', $user->fullname, Enumerations\FieldType::TEXT)
                 ->Insert('email', $user->email, Enumerations\FieldType::TEXT)
                 ->Insert('register_date', $user->registration_date, Enumerations\FieldType::INTEGER)
                 ->Insert('user_group', $user->group, Enumerations\FieldType::TEXT)
@@ -144,6 +145,7 @@ class Users
             {   
                 $update = new DBAL\Query\Update('users');
                 $update->Update('email', $user_data->email, Enumerations\FieldType::TEXT)
+                    ->Update('fullname', $user_data->fullname, Enumerations\FieldType::TEXT)
                     ->Update('register_date', $user_data->registration_date, Enumerations\FieldType::INTEGER)
                     ->Update('user_group', $user_data->group, Enumerations\FieldType::TEXT)
                     ->Update('picture', $user_data->picture, Enumerations\FieldType::TEXT)

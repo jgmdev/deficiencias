@@ -15,7 +15,7 @@ row: 0
     field: content
     <?php
         if(Cms\Authentication::IsUserLogged())
-            Cms\Uri::Go('account');
+            Cms\Uri::Go('login');
         
         //TODO: Temporary disabled
         /*if(!Cms\System::GetSiteSettings()->Get("new_registrations"))
@@ -61,9 +61,7 @@ row: 0
                 
                 Cms\Users::Add($user);
                 
-                Cms\Theme::AddMessage(
-                    t('Your account was created, you can login now.')
-                );
+                Cms\Authentication::Login($_REQUEST['username'], $_REQUEST['password']);
                 
                 Cms\Uri::Go('login');
             }

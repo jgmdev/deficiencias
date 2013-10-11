@@ -17,8 +17,6 @@ class Reports
     {
         $db = \Cms\System::GetRelationalDatabase();
         
-        date_default_timezone_set('UTC');
-        
         $insert = new \Cms\DBAL\Query\Insert('deficiencies');
         $insert->Insert('type', $data->type, FieldType::INTEGER)
             ->Insert('latitude', $data->latitude, FieldType::REAL)
@@ -26,6 +24,7 @@ class Reports
             ->Insert('status', \Deficiencies\DeficiencyStatus::UNFIXED, FieldType::INTEGER)
             ->Insert('comments', $data->comments, FieldType::TEXT)
             ->Insert('reports_count', 1, FieldType::INTEGER)
+            ->Insert('reopened_count', 0, FieldType::INTEGER)
             ->Insert('report_timestamp', time(), FieldType::INTEGER)
             ->Insert('report_day', date('d', time()), FieldType::INTEGER)
             ->Insert('report_month', date('n', time()), FieldType::INTEGER)
@@ -46,6 +45,8 @@ class Reports
             ->Insert('country', $data->address->country, FieldType::TEXT)
             ->Insert('zipcode', $data->address->zipcode, FieldType::TEXT)
             ->Insert('photo', $data->photo, FieldType::TEXT)
+            ->Insert('username', $data->username, FieldType::TEXT)
+            ->Insert('priority', $data->priority, FieldType::INTEGER)
         ;
         
         $db->Insert($insert);
@@ -64,19 +65,25 @@ class Reports
         $db->Update($update);
     }
     
-    public static function Edit($id, $data)
+    /**
+     * Edit a reported deficiency.
+     * @param int $id
+     * @param \Deficiencies\Deficiency $data
+     */
+    public static function Edit($id, \Deficiencies\Deficiency $data)
     {
         $db = \Cms\System::GetRelationalDatabase();
-        
-        date_default_timezone_set('UTC');
         
         $update = new \Cms\DBAL\Query\Update('deficiencies');
         $update->Update('type', $data->type, FieldType::INTEGER)
             ->Update('latitude', $data->latitude, FieldType::REAL)
             ->Update('longitude', $data->longitude, FieldType::REAL)
-            ->Update('status', \Deficiencies\DeficiencyStatus::UNFIXED, FieldType::INTEGER)
+            ->Update('status', $data->status, FieldType::INTEGER)
+            ->Update('resolution_status', $data->resolution_status, FieldType::INTEGER)
             ->Update('comments', $data->comments, FieldType::TEXT)
+            ->Update('work_comments', $data->work_comments, FieldType::TEXT)
             ->Update('last_update', time(), FieldType::INTEGER)
+            ->Update('last_update_by', $data->last_update_by, FieldType::TEXT)
             ->Update('line1', $data->address->line1, FieldType::TEXT)
             ->Update(
                 'city', 
@@ -92,6 +99,8 @@ class Reports
             ->Update('country', $data->address->country, FieldType::TEXT)
             ->Update('zipcode', $data->address->zipcode, FieldType::TEXT)
             ->Update('photo', $data->photo, FieldType::TEXT)
+            ->Update('priority', $data->priority, FieldType::INTEGER)
+            ->Update('assigned_to', $data->assigned_to, FieldType::INTEGER)
             ->WhereEqual('id', $id, FieldType::INTEGER)
         ;
         

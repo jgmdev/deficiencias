@@ -17,5 +17,6 @@ class Permissions
     const DELETE = 'deficiencies_delete';
     const ASSIGN = 'deficiencies_assign';
     const ADMINISTRATOR = 'deficiencies_administrator';
+    const ATTENDANT = 'deficiencies_attendant';
 }
 ?>

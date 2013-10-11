@@ -20,7 +20,13 @@ class PermissionsList extends \Cms\Data\PermissionsList
         $this->AddPermission(new Permission(
             Permissions::ADMINISTRATOR,
             t('Administrator'),
-            t('Has administrative permissions like selecting attendant groups etc...')
+            t('Has administrative permissions like selecting attendant cities...')
+        ));
+        
+        $this->AddPermission(new Permission(
+            Permissions::ATTENDANT,
+            t('Attendant'),
+            t('Has rights to work with reported deficiencies.')
         ));
         
         $this->AddPermission(new Permission(
