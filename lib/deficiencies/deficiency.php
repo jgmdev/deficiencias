@@ -7,47 +7,50 @@
 namespace Deficiencies;
 
 /**
- * @Entity(repositoryClass="Deficiency") @Table(name="deficiency")
+ * A deficiency that has been reported.
  */
 class Deficiency {
+    
     /**
-     * @Id @Column(type="integer") @GeneratedValue
+     * @var int
      */
     public $id;
     
     /**
-     * @Column(type="integer")
+     * Type of deficiency like signal light, power line, etc...
+     * @var int
      */
     public $type;
     
     /**
-     * Physical address of the report.
+     * Physical address of the deficiency.
      * @var \Deficiencies\Address;
      */
     public $address;
     
     /**
-     * @Column(type="string")
+     * Person who created the report.
+     * @var string
      */
     public $username;
     
     /**
-     * @Column(type="string")
+     * @var float
      */
     public $latitude;
     
     /**
-     * @Column(type="string")
+     * @var float
      */
     public $longitude;
     
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $photo;
     
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $comments;
     
@@ -57,16 +60,19 @@ class Deficiency {
     public $work_comments;
     
     /**
-     * @Column(type="integer")
+     * The amount of times this deficiency has been reported.
+     * @var int
      */
     public $reports_count;
     
     /**
-     * @Column(type="string")
+     * Current administrative status.
+     * @var int
      */
     public $status;
     
     /**
+     * Status of the deficiency like unfixed, fixed, etc...
      * @var int
      */
     public $resolution_status;
@@ -77,39 +83,65 @@ class Deficiency {
     public $priority;
     
     /**
+     * Username of the person in charge of giving follow up to the report.
      * @var string
      */
     public $assigned_to;
     
     /**
+     * If the report was closed but a same one was submitted this value
+     * is incremented.
      * @var int
      */
     public $reopened_count;
     
     /**
-     * @Column(type="datetime")
+     * The full timestamp of the date the report was created.
+     * @var int
      */
     public $report_timestamp;
     
+    /**
+     * Day the report was opened
+     * @var int
+     */
     public $report_day;
     
+    /**
+     * Month the report was opened
+     * @var int
+     */
     public $report_month;
     
+    /**
+     * Year the report was opened
+     * @var int
+     */
     public $report_year;
     
     /**
-     * @Column(type="datetime")
+     * A
+     * @var int
      */
     public $last_update;
     
     /**
+     * Username of the last person that modified the report.
      * @var string
      */
     public $last_update_by;
     
+    /**
+     * Default constructor.
+     */
     public function __construct()
     {
         $this->address = new Address;
+    }
+    
+    public function GetPicturePath()
+    {
+        
     }
 }
 

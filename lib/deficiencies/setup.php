@@ -43,6 +43,9 @@ class Setup
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\User::GENERATE_PAGE, function()
         {
             Cms\Theme::AddTab(t('My Reports'), 'account/reports');
+            
+            if(Attendants::GroupIsAttendant(\Cms\Authentication::GetGroup()->machine_name))
+                Cms\Theme::AddTab(t('Assigned Reports'), 'account/reports');
         });
         
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Group::GET_PERMISSIONS, function($signal_data)

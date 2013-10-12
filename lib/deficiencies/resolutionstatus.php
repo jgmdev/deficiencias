@@ -15,6 +15,8 @@ class ResolutionStatus
     const UNFIXED = 0;
     const FIXED = 1;
     const IN_PROCESS = 2;
+    const DUPLICATE = 3;
+    const INVALID = 4;
 
     public static function getAll()
     {
@@ -22,6 +24,8 @@ class ResolutionStatus
             self::UNFIXED => t('Unfixed'),
             self::FIXED => t('Fixed'),
             self::IN_PROCESS => t('In process'),
+            self::DUPLICATE => t('Duplicate'),
+            self::INVALID => t('Invalid')
         );
 
         return $def_status;

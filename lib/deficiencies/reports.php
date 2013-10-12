@@ -9,10 +9,15 @@ namespace Deficiencies;
 use Cms\Enumerations\FieldType;
 
 /**
- * Function to handle reports
+ * Functions to handle deficiency reports.
  */
 class Reports
 {
+    /**
+     * Add a new deficiency report to the database.
+     * @param \Deficiencies\Deficiency $data
+     * @return int Id of the created report.
+     */
     public static function Add(\Deficiencies\Deficiency $data)
     {
         $db = \Cms\System::GetRelationalDatabase();
@@ -21,7 +26,8 @@ class Reports
         $insert->Insert('type', $data->type, FieldType::INTEGER)
             ->Insert('latitude', $data->latitude, FieldType::REAL)
             ->Insert('longitude', $data->longitude, FieldType::REAL)
-            ->Insert('status', \Deficiencies\DeficiencyStatus::UNFIXED, FieldType::INTEGER)
+            ->Insert('status', $data->status, FieldType::INTEGER)
+            ->Insert('resolution_status', $data->resolution_status, FieldType::INTEGER)
             ->Insert('comments', $data->comments, FieldType::TEXT)
             ->Insert('reports_count', 1, FieldType::INTEGER)
             ->Insert('reopened_count', 0, FieldType::INTEGER)
@@ -29,8 +35,8 @@ class Reports
             ->Insert('report_day', date('d', time()), FieldType::INTEGER)
             ->Insert('report_month', date('n', time()), FieldType::INTEGER)
             ->Insert('report_year', date('Y', time()), FieldType::INTEGER)
-            ->Insert('last_update', 0, FieldType::INTEGER)
             ->Insert('line1', $data->address->line1, FieldType::TEXT)
+            ->Insert('line2', $data->address->line2, FieldType::TEXT)
             ->Insert(
                 'city', 
                 str_ireplace(
@@ -47,6 +53,10 @@ class Reports
             ->Insert('photo', $data->photo, FieldType::TEXT)
             ->Insert('username', $data->username, FieldType::TEXT)
             ->Insert('priority', $data->priority, FieldType::INTEGER)
+            ->Insert('assigned_to', $data->assigned_to, FieldType::TEXT)
+            ->Insert('last_update', $data->last_update, FieldType::INTEGER)
+            ->Insert('last_update_by', $data->last_update_by, FieldType::TEXT)
+            ->Insert('work_comments', $data->work_comments, FieldType::TEXT)
         ;
         
         $db->Insert($insert);
@@ -54,6 +64,10 @@ class Reports
         return $db->LastInsertID();
     }
     
+    /**
+     * Increment the reports count of a deficiency.
+     * @param type $id
+     */
     public static function AddConfirm($id)
     {
         $update = new \Cms\DBAL\Query\Update('deficiencies');
@@ -82,9 +96,10 @@ class Reports
             ->Update('resolution_status', $data->resolution_status, FieldType::INTEGER)
             ->Update('comments', $data->comments, FieldType::TEXT)
             ->Update('work_comments', $data->work_comments, FieldType::TEXT)
-            ->Update('last_update', time(), FieldType::INTEGER)
+            ->Update('last_update', $data->last_update, FieldType::INTEGER)
             ->Update('last_update_by', $data->last_update_by, FieldType::TEXT)
             ->Update('line1', $data->address->line1, FieldType::TEXT)
+            ->Update('line2', $data->address->line2, FieldType::TEXT)
             ->Update(
                 'city', 
                 str_ireplace(
@@ -100,13 +115,20 @@ class Reports
             ->Update('zipcode', $data->address->zipcode, FieldType::TEXT)
             ->Update('photo', $data->photo, FieldType::TEXT)
             ->Update('priority', $data->priority, FieldType::INTEGER)
-            ->Update('assigned_to', $data->assigned_to, FieldType::INTEGER)
+            ->Update('assigned_to', $data->assigned_to, FieldType::TEXT)
+            ->Update('reopened_count', $data->reopened_count, FieldType::INTEGER)
+            ->Update('reports_count', $data->reports_count, FieldType::INTEGER)
             ->WhereEqual('id', $id, FieldType::INTEGER)
         ;
         
         $db->Update($update);
     }
     
+    /**
+     * Gets a deficiency data.
+     * @param int $id
+     * @return \Deficiencies\Deficiency|bool
+     */
     public static function GetData($id)
     {
         $select = new \Cms\DBAL\Query\Select('deficiencies');
@@ -117,9 +139,45 @@ class Reports
         $db = \Cms\System::GetRelationalDatabase();
         $db->Select($select);
 
-        return $db->FetchArray();
+        $data = $db->FetchArray();
+        
+        if(!is_array($data))
+            return $data;
+        
+        $deficiency = new Deficiency();
+        $deficiency->assigned_to = $data['assigned_to'];
+        $deficiency->comments = $data['comments'];
+        $deficiency->id = $data['id'];
+        $deficiency->last_update = $data['last_update'];
+        $deficiency->last_update_by = $data['last_update_by'];
+        $deficiency->latitude = $data['latitude'];
+        $deficiency->longitude = $data['longitude'];
+        $deficiency->photo = $data['photo'];
+        $deficiency->priority = $data['priority'];
+        $deficiency->reopened_count = $data['reopened_count'];
+        $deficiency->report_day = $data['report_day'];
+        $deficiency->report_month = $data['report_month'];
+        $deficiency->report_timestamp = $data['report_timestamp'];
+        $deficiency->report_year = $data['report_year'];
+        $deficiency->reports_count = $data['reports_count'];
+        $deficiency->resolution_status = $data['resolution_status'];
+        $deficiency->status = $data['status'];
+        $deficiency->type = $data['type'];
+        $deficiency->username = $data['username'];
+        $deficiency->work_comments = $data['work_comments'];
+        $deficiency->address->city = $data['city'];
+        $deficiency->address->country = $data['country'];
+        $deficiency->address->line1 = $data['line1'];
+        $deficiency->address->line2 = $data['line2'];
+        $deficiency->address->zipcode = $data['zipcode'];
+        
+        return $deficiency;
     }
     
+    /**
+     * Delete a deficiency from the database.
+     * @param int $id
+     */
     public static function Delete($id)
     {
         $delete = new \Cms\DBAL\Query\Delete('deficiencies');

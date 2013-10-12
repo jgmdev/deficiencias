@@ -35,46 +35,6 @@ class Utilities
     }
     
     /**
-     * Get the amount of time in a easy to read human format.
-     * @param int $timestamp
-     * @return string
-     */
-    public static function GetTimeElapsed($timestamp)
-    {
-        $etime = time() - $timestamp;
-
-        if ($etime < 1)
-        {
-            return t('0 seconds');
-        }
-
-        $a = array(
-            12 * 30 * 24 * 60 * 60 => array(t('year'), t('years')),
-            30 * 24 * 60 * 60 => array(t('month'), t('months')),
-            24 * 60 * 60 => array(t('day'), t('days')),
-            60 * 60 => array(t('hour'), t('hours')),
-            60 => array(t('minute'), t('minutes')),
-            1 => array(t('second'), t('seconds'))
-        );
-
-        foreach ($a as $secs => $labels)
-        {
-            $d = $etime / $secs;
-            if ($d >= 1)
-            {
-                $time = round($d);
-
-                if($time > 1)
-                    $period = $labels[1];
-                else
-                    $period = $labels[0];
-
-                return str_replace(array('{time}', '{period}'), array($time, $period), t('{time} {period} ago'));
-            }
-        }
-    }
-    
-    /**
      * Generates a generic navigation bar for any kind of results
      * 
      * @param integer $total_count The total amount of results.

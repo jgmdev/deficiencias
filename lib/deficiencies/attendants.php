@@ -10,7 +10,7 @@ use Cms;
 
 /**
  * Facilitate the management of attendants which are groups of people 
- * responsible to follow up the reported deficiencies.
+ * responsible to follow up the reported deficiencies by city.
  */
 class Attendants
 {
@@ -119,7 +119,7 @@ class Attendants
                 
                 $select = new \Cms\DBAL\Query\Select('users');
                 $select->SelectAll()
-                    ->WhereEqual('group', $machine_name, Cms\Enumerations\FieldType::TEXT)
+                    ->WhereEqual('user_group', $machine_name, Cms\Enumerations\FieldType::TEXT)
                 ;
                 
                 $db->Select($select);

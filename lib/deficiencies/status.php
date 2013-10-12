@@ -9,21 +9,25 @@ namespace Deficiencies;
 /**
  * List of deficiency status.
  */
-class DeficiencyStatus
+class Status
 {
 
-    const UNFIXED = 0;
+    const ISNEW = 0;
     const ASSIGNED = 1;
-    const IN_PROCESS = 2;
-    const FIXED = 3;
+    const PENDING = 2;
+    const CLOSED = 3;
+    const REJECTED = 4;
+    const REOPEN = 5;
 
     public static function getAll()
     {
         $def_status = array(
-            self::UNFIXED => t('Unfixed'),
+            self::ISNEW => t('New'),
             self::ASSIGNED => t('Assigned'),
-            self::IN_PROCESS => t('In process'),
-            self::FIXED => t('Fixed')
+            self::PENDING => t('Pending'),
+            self::CLOSED => t('Closed'),
+            self::REJECTED => t('Rejected'),
+            self::REOPEN => t('Re-opened')
         );
 
         return $def_status;

@@ -93,7 +93,10 @@ class Field
      * @param int $size
      * @return \Cms\Form\Field
      */
-    public function __construct($label, $name, $value='', $description='', $placeholder='', $type=FormFieldType::TEXT, $required=false, $readonly=false, $size=0)
+    public function __construct(
+        $label, $name, $value='', $description='', $placeholder='', 
+        $type=FormFieldType::TEXT, $required=false, $readonly=false, $size=0
+    )
     {
         $this->attributes = array();
         

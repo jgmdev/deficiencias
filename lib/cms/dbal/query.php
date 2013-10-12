@@ -293,14 +293,33 @@ class Query
         $where_statement = false;
         $order_by_statement = false;
         
-        foreach($this->operations as $operation)
+        //Handle where clause
+        foreach($this->operations as $op_index=>$operation)
         {
             if($operation['code'] == self::BEGIN_EXPRESSION)
             {
+                if(
+                    $this->operations[$op_index+1]['code'] == self::WHERE &&
+                    !$where_statement
+                )
+                {
+                    $sql .= ' where ';
+                    $where_statement = true;
+                }
+                
                 $sql .= ' (';
             }
             elseif($operation['code'] == self::END_EXPRESSION)
             {
+                if(
+                    $this->operations[$op_index+1]['code'] == self::WHERE &&
+                    !$where_statement
+                )
+                {
+                    $sql .= ' where ';
+                    $where_statement = true;
+                }
+                
                 $sql .= ') ';
             }
             elseif($operation['code'] == self::AND_EXPRESSION)
@@ -347,7 +366,12 @@ class Query
                         break;
                 }
             }
-            elseif($operation['code'] == self::ORDER_BY)
+        }
+        
+        //Handle order by clause
+        foreach($this->operations as $operation)
+        {
+            if($operation['code'] == self::ORDER_BY)
             {
                 if(!$order_by_statement)
                 {

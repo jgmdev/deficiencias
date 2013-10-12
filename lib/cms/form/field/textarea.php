@@ -10,9 +10,15 @@ use Cms\Enumerations\FormFieldType;
 
 class TextArea extends Text
 {
-    public function __construct($label, $name, $value='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
+    public function __construct(
+        $label, $name, $value='', $description='', $placeholder='', 
+        $required=false, $readonly=false, $size=0
+    )
     {
-        parent::__construct($label, $name, $value, $description, $placeholder, $required, $readonly, $size);
+        parent::__construct(
+            $label, $name, $value, $description, $placeholder, $required, 
+            $readonly, $size
+        );
         
         $this->type = FormFieldType::TEXTAREA;
     }

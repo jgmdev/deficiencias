@@ -44,6 +44,9 @@ row: 0
                     $deficiency->latitude = $_REQUEST['lat'];
                     $deficiency->longitude = $_REQUEST['lon'];
                     $deficiency->comments = $_REQUEST['comments'];
+                    $deficiency->status = Deficiencies\Status::ISNEW;
+                    $deficiency->resolution_status = Deficiencies\ResolutionStatus::UNFIXED;
+                    $deficiency->priority = Deficiencies\Priority::MEDIUM;
                     
                     $deficiency->address->line1 = $_REQUEST['address'];
                     $deficiency->address->zipcode = $_REQUEST['zip'];
@@ -95,7 +98,7 @@ row: 0
             <label for="type"><?=t('Type')?></label>
             <select id="type" name="type">
             <?php
-                foreach(\Deficiencies\DeficiencyTypes::getAll() as $label=>$value)
+                foreach(\Deficiencies\Types::getAll() as $label=>$value)
                 {
                     print "<option value=\"$label\">$value</option>";
                 }

@@ -9,6 +9,9 @@ namespace Cms\Form\Field;
 use Cms\Form\Field;
 use Cms\Enumerations\FormFieldType;
 
+/**
+ * A form select element.
+ */
 class Select extends Field
 {
     /**
@@ -23,20 +26,26 @@ class Select extends Field
     public $option_groups;
     
     /**
-     * 
-     * @param type $label
-     * @param type $name
+     * Default constructor.
+     * @param string $label
+     * @param string $name
      * @param array $options
      * @param string|array $selected
-     * @param type $description
-     * @param type $placeholder
-     * @param type $required
-     * @param type $readonly
-     * @param type $size
+     * @param string $description
+     * @param string $placeholder
+     * @param string $required
+     * @param string $readonly
+     * @param string $size
      */
-    public function __construct($label, $name, array $options=array(), $selected='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
+    public function __construct(
+        $label, $name, array $options=array(), $selected='', $description='', 
+        $placeholder='', $required=false, $readonly=false, $size=0
+    )
     {
-        parent::__construct($label, $name, $selected, $description, $placeholder, FormFieldType::TEXT, $required, $readonly, $size);
+        parent::__construct(
+            $label, $name, $selected, $description, $placeholder, 
+            FormFieldType::TEXT, $required, $readonly, $size
+        );
         
         $this->options = $options;
         
@@ -132,7 +141,7 @@ class Select extends Field
                         if($request_value == $option_value)
                             $html .= 'selected ';
                     }
-                    elseif($this->value)
+                    elseif(trim($this->value) != '')
                     {
                         if($this->value == $option_value)
                             $html .= 'selected ';
@@ -172,7 +181,7 @@ class Select extends Field
                     if($request_value == $value)
                         $html .= 'selected ';
                 }
-                elseif($this->value)
+                elseif(trim($this->value) != '')
                 {
                     if($this->value == $value)
                         $html .= 'selected ';

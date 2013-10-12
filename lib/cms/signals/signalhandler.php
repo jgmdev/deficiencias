@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Jefferson González
  * @license MIT
@@ -13,16 +12,17 @@ namespace Cms\Signals;
  */
 class SignalHandler
 {
+
     /**
      * @var array
      */
     private static $listeners = array();
-    
+
     /**
      * Disable constructor
      */
     private function __construct(){}
-    
+
     /**
      * Calls all callbacks listening for a given signal type.
      * The $var1-$var6 are optional parameters passed to the callback.
@@ -30,22 +30,22 @@ class SignalHandler
      * @param string $signal_type
      * @param \Cms\Signals\SignalData $signal_data
      */
-    public static function Send($signal_type, \Cms\Signals\SignalData &$signal_data=null)
-    {   
+    public static function Send($signal_type, \Cms\Signals\SignalData &$signal_data = null)
+    {
         if(!isset(self::$listeners[$signal_type]))
             return;
-        
+
         foreach(self::$listeners[$signal_type] as $callback_data)
         {
             $callback = $callback_data['callback'];
-            
+
             if(is_object($signal_data))
                 $callback($signal_data);
             else
                 $callback();
         }
     }
-    
+
     /**
      * Add a callback that listens to a specific signal.
      * @see \Cms\Signals\Type
@@ -53,19 +53,21 @@ class SignalHandler
      * @param function $callback
      * @param int $priority
      */
-    public static function Listen($signal_type, $callback, $priority=10)
-    {   
+    public static function Listen($signal_type, $callback, $priority = 10)
+    {
         if(!isset(self::$listeners[$signal_type]))
             self::$listeners[$signal_type] = array();
-        
+
         self::$listeners[$signal_type][] = array(
-            'callback'=>$callback,
-            'priority'=>$priority
+            'callback' => $callback,
+            'priority' => $priority
         );
-        
-         self::$listeners[$signal_type] = \Cms\Data::Sort(self::$listeners[$signal_type], 'priority');
+
+        self::$listeners[$signal_type] = \Cms\Data::Sort(
+            self::$listeners[$signal_type], 'priority'
+        );
     }
-    
+
     /**
      * Remove a callback from listening a given signal type.
      * @see \Cms\Signals\Type
@@ -73,16 +75,16 @@ class SignalHandler
      * @param function $callback
      */
     public static function Unlisten($signal_type, $callback)
-    {   
+    {
         if(!isset(self::$listeners[$signal_type]))
             return;
-        
+
         if(is_array(self::$listeners[$signal_type]))
         {
-            foreach(self::$listeners[$signal_type] as $position=>$callback_data)
+            foreach(self::$listeners[$signal_type] as $position => $callback_data)
             {
                 $stored_callback = $callback_data['callback'];
-                
+
                 if($callback == $stored_callback)
                 {
                     unset(self::$listeners[$signal_type][$position]);
@@ -90,9 +92,11 @@ class SignalHandler
                 }
             }
         }
-        
+
         if(count(self::$listeners[$signal_type]) <= 0)
             unset(self::$listeners[$signal_type]);
     }
+
 }
+
 ?>

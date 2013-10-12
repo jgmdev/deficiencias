@@ -12,9 +12,15 @@ use Cms\Enumerations\FormFieldType;
 
 class Text extends Field
 {
-    public function __construct($label, $name, $value='', $description='', $placeholder='', $required=false, $readonly=false, $size=0)
+    public function __construct(
+        $label, $name, $value='', $description='', $placeholder='', 
+        $required=false, $readonly=false, $size=0
+    )
     {
-        parent::__construct($label, $name, $value, $description, $placeholder, FormFieldType::TEXT, $required, $readonly, $size);
+        parent::__construct(
+            $label, $name, $value, $description, $placeholder, 
+            FormFieldType::TEXT, $required, $readonly, $size
+        );
     }
     
     public function GetHtml()

@@ -8,7 +8,7 @@ row: 0
 	field;
 
 	field: value
-		a:0:{}
+		a:1:{i:0;s:7:"naguabo";}
 	field;
 
 row;

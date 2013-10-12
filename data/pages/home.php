@@ -44,7 +44,7 @@ row: 0
                     <select id="type">
                         <option value=""><?=t('All')?></option>
                         <?php
-                            foreach(\Deficiencies\DeficiencyTypes::getAll() as $label=>$value)
+                            foreach(\Deficiencies\Types::getAll() as $label=>$value)
                             {
                                 print "<option value=\"$label\">$value</option>";
                             }

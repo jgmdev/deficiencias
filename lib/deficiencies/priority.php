@@ -17,16 +17,22 @@ class Priority
     const HIGH = 3;
     const URGENT = 4;
     
-    public static function GetLabels()
+    public static function getAll()
     {
-        $priorities = array(
-            t('Low')=>1,
-            t('Medium')=>2,
-            t('High')=>3,
-            t('Urgent')=>4
+        $def_status = array(
+            self::LOW => t('Low'),
+            self::MEDIUM => t('Medium'),
+            self::HIGH => t('High'),
+            self::URGENT => t('Urgent')
         );
-        
-        return $priorities;
+
+        return $def_status;
+    }
+
+    public static function getStatus($id)
+    {
+        $def_status = self::getAll();
+        return (isset($def_status[$id])) ? $def_status[$id] : null;
     }
 }
 ?>

@@ -75,6 +75,21 @@ class Pages
 
         return false;
     }
+    
+    /**
+     * Checks if a given uri is from a system page.
+     * @param type $uri
+     * @return boolean
+     */
+    public static function IsSystem($uri)
+    {
+        $system_page_uri = 'system/' . Uri::TextToUri($uri, true) . '.php';
+        
+        if(file_exists($system_page_uri))
+            return true;
+        
+        return false;
+    }
 
     /**
      * Get file path of a given uri. It can return the path to a system

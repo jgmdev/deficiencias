@@ -7,32 +7,32 @@
 namespace Deficiencies;
 
 /**
- * @Entity(repositoryClass="Address") @Table(name="address")
+ * Represents the physical address of a reported deficiency.
  */
 class Address 
 {
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $line1;
     
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $line2;
     
     /**
-     * @Column(type="integer")
+     * @var string
      */
     public $zipcode;
     
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $city;
     
     /**
-     * @Column(type="string")
+     * @var string
      */
     public $country;
 }

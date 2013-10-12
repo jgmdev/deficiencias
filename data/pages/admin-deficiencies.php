@@ -14,35 +14,75 @@ row: 0
     
     field: content
     <?php
+        Cms\Authentication::ProtectPage(Deficiencies\Permissions::ADMINISTRATOR);
+                
         use Cms\Enumerations\FieldType;
+        
+        if(!isset($_REQUEST['status']))
+            $_REQUEST['status'] = Deficiencies\Status::ISNEW;
+        
+        if(!isset($_REQUEST['resolution_status']))
+            $_REQUEST['resolution_status'] = Deficiencies\ResolutionStatus::UNFIXED;
         
         print '<div class="cmsgui">' . "\n";
         print '<div class="admin-deficiencies">' . "\n";
         
         $form = new Cms\Form('admin-deficiencies', null, Cms\Enumerations\FormMethod::GET);
         
+        $filter_group = new \Cms\Form\FieldsGroup(t('Filters'), '', true);
+        
         $cities = Deficiencies\Towns::GetAll();
         $cities = array(t('All')=>'') + $cities;
         
-        $form->AddField(new Cms\Form\Field\Select(
-            t('City'), 'city', $cities, '', '', 'City'
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('City'), 'city', $cities
         ));
         
-        $types = array_flip(Deficiencies\DeficiencyTypes::getAll());
+        $types = array_flip(Deficiencies\Types::getAll());
         $types = array(t('All')=>'') + $types;
         
-        $form->AddField(new Cms\Form\Field\Select(
-            t('Type'), 'type', $types, '', '', 'Type'
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('Type'), 'type', $types
         ));
         
-        $status = array_flip(Deficiencies\DeficiencyStatus::getAll());
+        $status = array_flip(Deficiencies\Status::getAll());
         $status = array(t('All')=>'') + $status;
         
-        $form->AddField(new Cms\Form\Field\Select(
-            t('Status'), 'status', $status, '', '', 'Status'
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('Status'), 'status', $status
         ));
         
-        $form->AddField(new \Cms\Form\Field\Submit('Filter', 'btnFilter'));
+        $resolution_status = array_flip(Deficiencies\ResolutionStatus::getAll());
+        $resolution_status = array(t('All')=>'') + $resolution_status;
+        
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('Resolution Status'), 'resolution_status', $resolution_status
+        ));
+        
+        $priority = array_flip(Deficiencies\Priority::getAll());
+        $priority = array(t('All')=>'') + $priority;
+        
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('Priority'), 'priority', $priority
+        ));
+        
+        $order_by = array(
+            t('None')=>'',
+            t('Reports count ascending')=>'rcount_asc',
+            t('Reports count descending')=>'rcount_desc',
+            t('Date ascending')=>'date_asc',
+            t('Date descending')=>'date_desc',
+            t('Re-open count ascending')=>'rocount_asc',
+            t('Re-open count descending')=>'rocount_desc'
+        );
+        
+        $filter_group->AddField(new Cms\Form\Field\Select(
+            t('Order by'), 'order_by', $order_by
+        ));
+        
+        $filter_group->AddField(new \Cms\Form\Field\Submit('Filter', 'btnFilter'));
+        
+        $form->AddGroup($filter_group);
         
         $form->Render();
 
@@ -87,6 +127,53 @@ row: 0
 
             $select_count->WhereEqual('status', $_REQUEST['status'], FieldType::INTEGER);
         }
+        
+        if(trim($_REQUEST['resolution_status']) != '')
+        {
+            if($select->HasWhere())
+                $select->AndOp();
+
+            $select->WhereEqual('resolution_status', $_REQUEST['resolution_status'], FieldType::INTEGER);
+
+            if($select_count->HasWhere())
+                $select_count->AndOp();
+
+            $select_count->WhereEqual('resolution_status', $_REQUEST['resolution_status'], FieldType::INTEGER);
+        }
+        
+        if(trim($_REQUEST['priority']) != '')
+        {
+            if($select->HasWhere())
+                $select->AndOp();
+
+            $select->WhereEqual('priority', $_REQUEST['priority'], FieldType::INTEGER);
+
+            if($select_count->HasWhere())
+                $select_count->AndOp();
+
+            $select_count->WhereEqual('priority', $_REQUEST['priority'], FieldType::INTEGER);
+        }
+        
+        if(trim($_REQUEST['order_by']) != '')
+        {
+            if($_REQUEST['order_by'] == 'rcount_asc')
+                $select->OrderBy('reports_count');
+            
+            elseif($_REQUEST['order_by'] == 'rcount_desc')
+                $select->OrderBy('reports_count', Cms\Enumerations\Sort::DESCENDING);
+            
+            elseif($_REQUEST['order_by'] == 'date_asc')
+                $select->OrderBy('report_timestamp');
+            
+            elseif($_REQUEST['order_by'] == 'date_desc')
+                $select->OrderBy('report_timestamp', Cms\Enumerations\Sort::DESCENDING);
+            
+            elseif($_REQUEST['order_by'] == 'rocount_asc')
+                $select->OrderBy('reopened_count');
+            
+            elseif($_REQUEST['order_by'] == 'rocount_desc')
+                $select->OrderBy('reopened_count', Cms\Enumerations\Sort::DESCENDING);
+        }
 
         $limit_start = 0;
 
@@ -120,9 +207,8 @@ row: 0
         print '<tr>' . "\n";
 
         print '<td class="icon"></td>' . "\n";
-        print '<td class="name">' . t('Address') . '</td>' . "\n";
-        print '<td class="description">' . t('Status') . '</td>' . "\n";
-        print '<td class="operation">' . t('Operation') . '</td>' . "\n";
+        print '<td class="address">' . t('Address') . '</td>' . "\n";
+        print '<td class="status">' . t('Status') . '</td>' . "\n";
 
         print '</tr>' . "\n";
         print '</thead>' . "\n";
@@ -152,27 +238,27 @@ row: 0
                     break;
             }
 
-            print '<td><a class="location" style="'.$style.'" href="reports/view?id='.$report['id'].'"></a></td>';
+            print '<td>';
+            print '<a class="location" style="'.$style.'" href="'.
+                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                '"></a>';
+            print '</td>';
 
             print '<td class="details">';
-            print '<a href="reports/view?id='.$report['id'].'">';
+            print '<a href="'.
+                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                '">';
             print '<div class="route">'.$report['line1'].'</div>';
             print '<span class="city">';
             print $cities[$report['city']] . ', ' . 'PR';
             print '</span>';
-            print '<div class="type">'.Deficiencies\DeficiencyTypes::getType($report['type']).'</div>';
+            print '<div class="type">'.Deficiencies\Types::getType($report['type']).'</div>';
             print '</a>';
             print '</td>';
             
             print '<td class="status">';
-            print Deficiencies\DeficiencyStatus::getStatus($report['status']);
-            print '</td>';
-            
-            print '<td class="operation">';
-            print '<a class="edit" href="'.
-                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).'">'.
-                t('Edit').
-                '</a>';
+            //print Deficiencies\Status::getStatus($report['status']);
+            print Cms\Utilities\Date::GetTimeElapsed($report['report_timestamp']);
             print '</td>';
 
             print '</tr>';
@@ -188,7 +274,10 @@ row: 0
             array(
                 'city'=>$_REQUEST['city'],
                 'type'=>$_REQUEST['type'],
-                'status'=>$_REQUEST['status']
+                'status'=>$_REQUEST['status'],
+                'resolution_status'=>$_REQUEST['resolution_status'],
+                'priority'=>$_REQUEST['priority'],
+                'order_by'=>$_REQUEST['order_by']
             )
         );
         

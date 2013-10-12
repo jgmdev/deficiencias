@@ -16,7 +16,7 @@ if($mobile_detect->isMobile()){
 <?php if($messages){ ?>
 <script>
 $(document).ready(function(){
-   $('#messages').fadeOut(10000);
+   $('#messages').fadeOut(30000);
 });
 </script>
 <?php } ?>

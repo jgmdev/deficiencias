@@ -26,7 +26,7 @@ class PermissionsList extends \Cms\Data\PermissionsList
         $this->AddPermission(new Permission(
             Permissions::ATTENDANT,
             t('Attendant'),
-            t('Has rights to work with reported deficiencies.')
+            t('Has rights to work with reported deficiencies that has been assigned.')
         ));
         
         $this->AddPermission(new Permission(

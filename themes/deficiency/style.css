@@ -357,35 +357,6 @@ label.radio, label.checkbox
     width: auto;
 }
 
-fieldset.collapsed
-{
-	border-bottom-width: 0;
-  	border-left-width: 0;
-  	border-right-width: 0;
-  	margin-bottom: 0;
-}
-
-fieldset.collapsed *
-{
-	display: none;
-}
-
-fieldset.collapsed legend,
-fieldset.collapsed legend *
-{
-	display: inline;
-}
-
-fieldset
-{
-    margin-bottom: 5px;
-}
-
-fieldset legend a
-{
-    font-size: 24px !important;
-}
-
 input[type=text], input[type=password], input[type=file], select, textarea
 {
     display: block;
@@ -429,6 +400,35 @@ input[type=submit]
     margin: 0 auto 0 auto;
     font-size: 24px;
     display: inline-block;
+}
+
+fieldset.collapsed
+{
+	border-bottom-width: 0;
+  	border-left-width: 0;
+  	border-right-width: 0;
+  	margin-bottom: 0;
+}
+
+fieldset.collapsed *
+{
+	display: none;
+}
+
+fieldset.collapsed legend,
+fieldset.collapsed legend *
+{
+	display: inline;
+}
+
+fieldset
+{
+    margin-bottom: 5px;
+}
+
+fieldset legend a
+{
+    font-size: 24px !important;
 }
 
 #tabs-menu

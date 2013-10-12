@@ -83,20 +83,26 @@ row: 0
                     break;
             }
 
-            print '<td><a class="location" style="'.$style.'" href="reports/view?id='.$report['id'].'"></a></td>';
+            print '<td>';
+            print '<a class="location" style="'.$style.'" href="'.
+                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                '"></a>';
+            print '</td>';
 
             print '<td class="details">';
-            print '<a href="reports/view?id='.$report['id'].'">';
+            print '<a href="'.
+                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                '">';
             print '<div class="route">'.$report['line1'].'</div>';
             print '<span class="city">';
             print $cities[$report['city']] . ', ' . 'PR';
             print '</span>';
-            print '<div class="type">'.Deficiencies\DeficiencyTypes::getType($report['type']).'</div>';
+            print '<div class="type">'.Deficiencies\Types::getType($report['type']).'</div>';
             print '</a>';
             print '</td>';
             
             print '<td class="status">';
-            print Deficiencies\DeficiencyStatus::getStatus($report['status']);
+            print Deficiencies\Status::getStatus($report['status']);
             print '</td>';
 
             print '</tr>';

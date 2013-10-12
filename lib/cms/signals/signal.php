@@ -64,7 +64,9 @@ class Signal
             'priority'=>$priority
         );
         
-        $this->listeners[$signal_type] = \Cms\Data::Sort($this->listeners[$signal_type], 'priority');
+        $this->listeners[$signal_type] = \Cms\Data::Sort(
+            $this->listeners[$signal_type], 'priority'
+        );
     }
     
     /**
