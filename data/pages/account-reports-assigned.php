@@ -9,23 +9,33 @@ exit;
 row: 0
 
     field: title
-        <?=t('Reported Deficiencies')?>
+        <?=t('Assigned Reports')?>
     field;
     
     field: content
     <?php
-        Cms\Authentication::ProtectPage(Deficiencies\Permissions::ADMINISTRATOR);
+        if(!Cms\Authentication::GetGroup()->HasPermission(Deficiencies\Permissions::ADMINISTRATOR))
+            Cms\Authentication::ProtectPage(Deficiencies\Permissions::ATTENDANT);
+        
+        $username = Cms\Authentication::GetUser()->username;
+        
+        if(Cms\Authentication::GetGroup()->HasPermission(Deficiencies\Permissions::ADMINISTRATOR))
+        {
+            if(isset($_REQUEST['username']))
+                $username = trim($_REQUEST['username']);
+        }
                 
         use Cms\Enumerations\FieldType;
         
-        if(!isset($_REQUEST['status']))
-            $_REQUEST['status'] = Deficiencies\Status::ISNEW;
-        
-        if(!isset($_REQUEST['resolution_status']))
-            $_REQUEST['resolution_status'] = Deficiencies\ResolutionStatus::UNFIXED;
-        
         print '<div class="cmsgui">' . "\n";
-        print '<div class="admin-deficiencies">' . "\n";
+        print '<div class="accounts-reports-assigned">' . "\n";
+        
+        if(Cms\Authentication::GetGroup()->HasPermission(Deficiencies\Permissions::ADMINISTRATOR))
+        {
+            if(isset($_REQUEST['username']))
+                print '<strong>'.t('Reports assigned to:').'</strong> ' .
+                Cms\Users::GetData($_REQUEST['username'])->fullname;
+        }
         
         $form = new Cms\Form('admin-deficiencies', null, Cms\Enumerations\FormMethod::GET);
         
@@ -154,6 +164,16 @@ row: 0
             $select_count->WhereEqual('priority', $_REQUEST['priority'], FieldType::INTEGER);
         }
         
+        if($select->HasWhere())
+                $select->AndOp();
+
+        $select->WhereEqual('assigned_to', $username, FieldType::TEXT);
+
+        if($select_count->HasWhere())
+            $select_count->AndOp();
+
+        $select_count->WhereEqual('assigned_to', $username, FieldType::TEXT);
+        
         if(trim($_REQUEST['order_by']) != '')
         {
             if($_REQUEST['order_by'] == 'rcount_asc')
@@ -211,7 +231,7 @@ row: 0
         print '<td class="status">' . t('Status') . '</td>' . "\n";
         print '<td class="resolution">' . t('Resolution') . '</td>' . "\n";
         print '<td class="priority">' . t('Priority') . '</td>' . "\n";
-        print '<td class="date">' . t('Date') . '</td>' . "\n";
+        print '<td class="status">' . t('Date') . '</td>' . "\n";
 
         print '</tr>' . "\n";
         print '</thead>' . "\n";

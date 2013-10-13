@@ -140,7 +140,7 @@ row: 0
             <input type="submit" id="report" name="btnSave" value="<?=t('Send')?>" />
         </form>
         
-        <? } ?>
+        <?php } ?>
         
     field;
     

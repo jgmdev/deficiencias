@@ -13,6 +13,19 @@ row: 0
         if(!Cms\Authentication::IsUserLogged())
             Cms\Authentication::ProtectPage();
         
+        $username = Cms\Authentication::GetUser()->username;
+        
+        if( Cms\Authentication::GetGroup()->HasPermission(
+                Deficiencies\Permissions::ADMINISTRATOR
+            )
+        )
+        {
+            if(trim($_REQUEST['username']) != '')
+            {
+                $username = $_REQUEST['username'];
+            }
+        }
+        
         $page = 1;
 			
         if(isset($_REQUEST['page']))
@@ -24,7 +37,7 @@ row: 0
         $select->SelectAll()
             ->WhereEqual(
                 'username', 
-                Cms\Authentication::GetUser()->username, 
+                $username, 
                 Cms\Enumerations\FieldType::TEXT
             )
         ;
@@ -32,7 +45,7 @@ row: 0
         $select_count = new Cms\DBAL\Query\Count('deficiencies', 'id', 'reports_count');
         $select_count->WhereEqual(
                 'username', 
-                Cms\Authentication::GetUser()->username, 
+                $username, 
                 Cms\Enumerations\FieldType::TEXT
         );
         
@@ -85,13 +98,13 @@ row: 0
 
             print '<td>';
             print '<a class="location" style="'.$style.'" href="'.
-                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                Cms\Uri::GetUrl('reports/view', array('id'=>$report['id'])).
                 '"></a>';
             print '</td>';
 
             print '<td class="details">';
             print '<a href="'.
-                Cms\Uri::GetUrl('admin/deficiencies/edit', array('id'=>$report['id'])).
+                Cms\Uri::GetUrl('reports/view', array('id'=>$report['id'])).
                 '">';
             print '<div class="route">'.$report['line1'].'</div>';
             print '<span class="city">';

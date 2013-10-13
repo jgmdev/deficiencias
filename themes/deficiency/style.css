@@ -616,7 +616,8 @@ fieldset legend a
     .cmsgui .admin-users .list td.email,
     .cmsgui .admin-users .list td.status,
     .cmsgui .admin-users .list td.register-date,
-    .cmsgui .admin-groups .list td.description
+    .cmsgui .admin-groups .list td.description,
+    .cmsgui .admin-deficiencies-attendants .list td.description
     {
         display: none;
     }
@@ -630,5 +631,59 @@ fieldset legend a
         color: #fff;
         font-weight: bold;
         margin-bottom: 4px;
+    }
+    
+    .cmsgui .admin-deficiencies .list thead tr,
+    .cmsgui .accounts-reports-assigned .list thead tr
+    {
+        display: none;
+    }
+    
+    .cmsgui .admin-deficiencies .list tbody td.icon,
+    .cmsgui .admin-deficiencies .list tbody td.details,
+    .cmsgui .admin-deficiencies .list tbody td.status,
+    .cmsgui .admin-deficiencies .list tbody td.resolution,
+    .cmsgui .admin-deficiencies .list tbody td.priority,
+    .cmsgui .admin-deficiencies .list tbody td.date,*
+    .cmsgui .accounts-reports-assigned .list tbody td.icon,
+    .cmsgui .accounts-reports-assigned .list tbody td.details,
+    .cmsgui .accounts-reports-assigned .list tbody td.status,
+    .cmsgui .accounts-reports-assigned .list tbody td.resolution,
+    .cmsgui .accounts-reports-assigned .list tbody td.priority,
+    .cmsgui .accounts-reports-assigned .list tbody td.date
+    {
+        display: block;
+        border-bottom: 0;
+    }
+    
+    .cmsgui .admin-deficiencies .list tbody td.icon,
+    .cmsgui .admin-deficiencies .list tbody td.status,
+    .cmsgui .admin-deficiencies .list tbody td.resolution,
+    .cmsgui .admin-deficiencies .list tbody td.priority,*
+    .cmsgui .accounts-reports-assigned .list tbody td.icon,
+    .cmsgui .accounts-reports-assigned .list tbody td.status,
+    .cmsgui .accounts-reports-assigned .list tbody td.resolution,
+    .cmsgui .accounts-reports-assigned .list tbody td.priority
+    {
+        float: left;
+    }
+    
+    .cmsgui .admin-deficiencies .list tbody td.status,
+    .cmsgui .admin-deficiencies .list tbody td.resolution,
+    .cmsgui .admin-deficiencies .list tbody td.priority,*
+    .cmsgui .accounts-reports-assigned .list tbody td.status,
+    .cmsgui .accounts-reports-assigned .list tbody td.resolution,
+    .cmsgui .accounts-reports-assigned .list tbody td.priority
+    {
+        margin-right: 10px;
+        border-right: solid 1px #000;
+        padding-right: 10px !important;
+    }
+    
+    .cmsgui .admin-deficiencies .list tbody td.date,
+    .cmsgui .accounts-reports-assigned .list tbody td.date
+    {
+        display: block;
+        border-bottom: dashed 1px #d3d3d3;
     }
 }

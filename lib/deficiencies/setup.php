@@ -38,14 +38,48 @@ class Setup
                     }
                 }
             }
+            
+            elseif(Cms\Uri::GetCurrent() == 'account/profile')
+            {
+                if(Cms\Authentication::GetGroup()->HasPermission(Permissions::ADMINISTRATOR))
+                {
+                    if(isset($_REQUEST['username']))
+                    {                   
+                        Cms\Theme::AddTab(
+                            t('Reports'), 
+                            'account/reports',
+                            array('username'=>$_REQUEST['username'])
+                        );
+                    }
+                    
+                    if(isset($_REQUEST['username']))
+                    {
+                        if(Attendants::UserIsAttendant($_REQUEST['username']))                        
+                            Cms\Theme::AddTab(
+                                t('Assigned Reports'), 
+                                'account/reports/assigned',
+                                array('username'=>$_REQUEST['username'])
+                            );
+                    }
+                }
+            }
         });
         
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\User::GENERATE_PAGE, function()
         {
             Cms\Theme::AddTab(t('My Reports'), 'account/reports');
             
-            if(Attendants::GroupIsAttendant(\Cms\Authentication::GetGroup()->machine_name))
-                Cms\Theme::AddTab(t('Assigned Reports'), 'account/reports');
+            if(Attendants::GroupIsAttendant(Cms\Authentication::GetGroup()->machine_name))
+                Cms\Theme::AddTab(
+                    t('Assigned Reports'), 
+                    'account/reports/assigned'
+                );
+            
+            if(
+                Cms\Authentication::GetGroup()->HasPermission(Permissions::ADMINISTRATOR) &&
+                !Cms\Authentication::IsAdminLogged()
+            )
+                Cms\Theme::AddTab (t('Control Center'), 'admin');
         });
         
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Group::GET_PERMISSIONS, function($signal_data)
@@ -61,18 +95,24 @@ class Setup
             $page_view = new Cms\Data\Page('admin/deficiencies');
             $page_view->title = t('View');
             $page_view->description = t('All deficiencies reported.');
-            $page_view->AddPermission(Permissions::VIEW);
+            $page_view->AddPermission(Permissions::ADMINISTRATOR);
             
             $page_attendants = new Cms\Data\Page('admin/deficiencies/attendants');
             $page_attendants->title = t('Attendants');
             $page_attendants->description = t('Manage the attendant cities.');
             $page_attendants->AddPermission(Permissions::ADMINISTRATOR);
             
+            $page_stats = new Cms\Data\Page('admin/deficiencies/stats');
+            $page_stats->title = t('Statistics');
+            $page_stats->description = t('View overall reports data.');
+            $page_stats->AddPermission(Permissions::ADMINISTRATOR);
+            
             $page_groups->AddGroupBefore(
                 t('Deficiencies'),
                 array(
                     'admin/deficiencies'=>$page_view,
-                    'admin/deficiencies/attendants'=>$page_attendants
+                    'admin/deficiencies/attendants'=>$page_attendants,
+                    'admin/deficiencies/stats'=>$page_stats
                 ),
                 t('Users')
             );
@@ -81,10 +121,10 @@ class Setup
     
     public static function Database()
     {
-        $db = \Cms\System::GetRelationalDatabase();
+        $db = Cms\System::GetRelationalDatabase();
         
         //Deficiency Table
-        $deficiency_table = new \Cms\DBAL\Query\Table('deficiencies');
+        $deficiency_table = new Cms\DBAL\Query\Table('deficiencies');
         
         $deficiency_table->AddIntegerField('id')
             ->AddIntegerField('type')

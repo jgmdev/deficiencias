@@ -24,23 +24,20 @@ row: 0
             {
                 $deficiency = Deficiencies\Reports::GetData($_REQUEST['id']);
                 
-                $deficiency->assigned_to = $_REQUEST['assigned_to'];
+                if(Cms\Authentication::GetGroup()->HasPermission(Deficiencies\Permissions::ASSIGN))
+                {
+                    $deficiency->assigned_to = $_REQUEST['assigned_to'];
+                }
+                
                 $deficiency->comments = $_REQUEST['comments'];
                 $deficiency->last_update = time();
                 $deficiency->last_update_by = Cms\Authentication::GetUser()->username;
                 $deficiency->latitude = $_REQUEST['latitude'];
                 $deficiency->longitude = $_REQUEST['longitude'];
                 $deficiency->priority = $_REQUEST['priority'];
-                //$deficiency->reopened_count = $_REQUEST['reopened_count'];
-                //$deficiency->report_day = $_REQUEST['report_day'];
-                //$deficiency->report_month = $_REQUEST['report_month'];
-                //$deficiency->report_timestamp = $_REQUEST['report_timestamp'];
-                //$deficiency->report_year = $_REQUEST['report_year'];
-                //$deficiency->reports_count = $_REQUEST['reports_count'];
                 $deficiency->resolution_status = $_REQUEST['resolution_status'];
                 $deficiency->status = $_REQUEST['status'];
                 $deficiency->type = $_REQUEST['type'];
-                //$deficiency->username = $_REQUEST['username'];
                 $deficiency->work_comments = $_REQUEST['work_comments'];
                 $deficiency->address->city = $_REQUEST['city'];
                 $deficiency->address->country = $_REQUEST['country'];
@@ -71,28 +68,6 @@ row: 0
             t('Id'), 'id', $_REQUEST['id'], '', '', true, true
         ));
         
-        if($report->last_update)
-        {
-            $form->AddField(new Cms\Form\Field\Text(
-                t('Last update'), 'last_update', 
-                date('j/n/Y', $report->last_update), 
-                '', '', false, true
-            ));
-            
-            if($report->last_update_by)
-            {
-                $fullname = Cms\Users::GetData($report->last_update_by)->fullname;
-
-                if(!$fullname)
-                    $fullname = $report->last_update_by;
-
-                $form->AddField(new Cms\Form\Field\Text(
-                    t('Last update by'), 'last_update_by', 
-                    $fullname, '', '', false, true
-                ));
-            }
-        }
-        
         $types = array_flip(Deficiencies\Types::getAll());
         
         $form->AddField(new \Cms\Form\Field\Select(
@@ -112,9 +87,13 @@ row: 0
                 Cms\Enumerations\MessageType::ERROR
             );
         
-        $form->AddField(new \Cms\Form\Field\Select(
-            t('Assigned to'), 'assigned_to', $city_attendants, $report->assigned_to
-        ));
+        if(Cms\Authentication::GetGroup()->HasPermission(Deficiencies\Permissions::ASSIGN))
+        {
+            $form->AddField(new \Cms\Form\Field\Select(
+                t('Assigned to'), 'assigned_to', 
+                $city_attendants, $report->assigned_to
+            ));
+        }
         
         $status = array_flip(Deficiencies\Status::getAll());
         
@@ -139,33 +118,102 @@ row: 0
         $cities = Deficiencies\Towns::GetAll();
         $cities = array(t('All')=>'') + $cities;
         
-        $form->AddField(new Cms\Form\Field\Select(
+        $address_group = new \Cms\Form\FieldsGroup(t('Address'));
+        
+        $address_group->AddField(new Cms\Form\Field\Select(
             t('City'), 'city', $cities, $report->address->city
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $address_group->AddField(new Cms\Form\Field\Text(
             t('Address line 1'), 'line1', $report->address->line1
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $address_group->AddField(new Cms\Form\Field\Text(
             t('Address line 2'), 'line2', $report->address->line2
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $address_group->AddField(new Cms\Form\Field\Text(
             t('Zipcode'), 'zipcode', $report->address->zipcode
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $address_group->AddField(new Cms\Form\Field\Text(
             t('Country'), 'country', $report->address->country
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $form->AddGroup($address_group);
+        
+        $coordinates_group = new Cms\Form\FieldsGroup(t('Coordinates'));
+        
+        $coordinates_group->AddField(new Cms\Form\Field\Text(
             t('Latitude'), 'latitude', $report->latitude
         ));
         
-        $form->AddField(new Cms\Form\Field\Text(
+        $coordinates_group->AddField(new Cms\Form\Field\Text(
             t('Longitude'), 'longitude', $report->longitude
         ));
+        
+        $form->AddGroup($coordinates_group);
+        
+        $other_details_group = new Cms\Form\FieldsGroup(t('Other details'));
+        
+        
+        $reporter = t('Anonymous');
+        $reporter_link = '';
+        
+        if(trim($report->username) != '')
+        {
+            try
+            {
+                $reporter = Cms\Users::GetData($report->username)->fullname;
+            }
+            catch(Exception $e){}
+            
+            if(trim($reporter) == '')
+                $reporter = $report->username;
+            
+            $reporter_link = Cms\Uri::GetUrl(
+                'account/profile', array('username'=>$report->username)
+            );
+        }
+        
+        if($report->last_update)
+        {
+            $other_details_group->AddField(new Cms\Form\Field\Custom(
+                '<h3>'.t('Last update').'</h3>'.
+                date('j/n/Y', $report->last_update)
+            ));
+            
+            if(trim($report->last_update_by) != '')
+            {
+                $updated_fullname = Cms\Users::GetData($report->last_update_by)->fullname;
+
+                if(!$updated_fullname)
+                    $updated_fullname = $report->last_update_by;
+                
+                $updater_link = Cms\Uri::GetUrl(
+                    'account/reports/assigned', array('username'=>$report->last_update_by)
+                );
+
+                $other_details_group->AddField(new Cms\Form\Field\Custom(
+                    '<h3>'.t('Last update by').'</h3>'.
+                    '<a href="'.$updater_link.'">' . $updated_fullname . '</a>'
+                ));
+            }
+        }
+        
+        $other_details_group->AddField(new Cms\Form\Field\Custom(
+            '<h3 style="margin-top: 10px;">Report made By</h3>' .
+            '<a href="'.$reporter_link.'">' . $reporter . '</a>' .
+            '<h3 style="margin-top: 10px;">Report Date</h3>' .
+            date('j/n/Y', $report->report_timestamp). 
+            ' (' . Cms\Utilities\Date::GetTimeElapsed($report->report_timestamp) . ')' .
+            '<h3 style="margin-top: 10px;">Reports count</h3>' .
+            $report->reports_count.
+            '<h3 style="margin-top: 10px;">Re-opened count</h3>' .
+            $report->reopened_count
+        ));
+        
+        $form->AddGroup($other_details_group);
         
         $form->AddField(new Cms\Form\Field\TextArea(
             t('Work comments'), 'work_comments', $report->work_comments, 
