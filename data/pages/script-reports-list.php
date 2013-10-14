@@ -104,6 +104,7 @@ row: 0
             {
                 html += '<div class="list-container">';
                 html += '<table class="list">';
+                html += '<tbody>';
                 for(prop in data.reports)
                 {
                     var report = data.reports[prop];
@@ -192,6 +193,7 @@ row: 0
                 }    
                 html += '</td>';
                 html += '</tr>';
+                html += '</tbody>';
                 html += '</table>';
                 
                 $('#reports').html(html);

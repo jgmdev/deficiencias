@@ -76,6 +76,12 @@ class User
      */
     public $picture;
     
+    /**
+     * Preferred languange of user.
+     * @var string
+     */
+    public $language;
+    
     
     public function GetPicturePath()
     {

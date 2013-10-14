@@ -127,7 +127,8 @@ row: 0
         print '</div>';
 
         print Cms\Utilities::GenerateNavigation(
-            $reports_total, $page, 'account/reports', "", 30
+            $reports_total, $page, 'account/reports', "", 30, 
+            array('username'=>$username)
         );
         
     ?>

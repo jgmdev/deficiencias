@@ -45,6 +45,8 @@ row: 0
 
                     $user = new Cms\Data\User();
                     $user->username = $_REQUEST['username'];
+                    $user->fullname = $_REQUEST['fullname'];
+                    $user->language = $_REQUEST['language'];
                     $user->password = $_REQUEST['password'];
                     $user->email = $_REQUEST['email'];
                     $user->personal_text = $_REQUEST['personal_text'];
@@ -82,6 +84,11 @@ row: 0
         $form->AddField(new Cms\Form\Field\Text(
             t('Fullname'), 'fullname', '',
             t('A name that others can see.'), '', true, false
+        ));
+        
+        $form->AddField(new Cms\Form\Field\Select(
+            t('Preferred language'), 'language', 
+            array(t('Default')=>'') + array_flip(Cms\Enumerations\LanguageCode::GetAll())
         ));
 
         $form->AddField(new Cms\Form\Field\TextArea(

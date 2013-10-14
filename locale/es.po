@@ -1,199 +1,1338 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Deficiencies\n"
-"POT-Creation-Date: 2013-06-06 15:58-0400\n"
-"PO-Revision-Date: 2013-10-09 23:13-0400\n"
+"POT-Creation-Date: 2013-10-13 23:54-0400\n"
+"PO-Revision-Date: 2013-10-14 03:08-0400\n"
 "Last-Translator: Jefferson González <jgonzalez@jegoyalu.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;t\n"
-"X-Poedit-Basepath: C:\\AppServ\\www\\deficiencias\n"
-"X-Poedit-SearchPath-0: C:\\AppServ\\www\\deficiencias\n"
+"X-Poedit-KeywordsList: t\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: lib\n"
+"X-Poedit-SearchPath-1: data\n"
+"X-Poedit-SearchPath-2: system\n"
 
-#: C:\AppServ\www\deficiencias/data/pages/home.php:36
-msgid "All"
-msgstr "Todos"
+#: lib/cms/users.php:413
+msgid "Your password has been reset."
+msgstr "Tu contraseña a sido reiniciada."
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:5
-msgid "Problem Report"
-msgstr "Reporte de Problema"
+#: lib/cms/users.php:417
+msgid "Hi"
+msgstr "Hola"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:57
-#, php-format
-msgid "The report has been submitted. Thanks for your collaboration. (ID: %s)"
-msgstr "El reporte se ha sometido. Gracias por su colaboración. (ID: %s)"
+#: lib/cms/users.php:418
+msgid "Your current username is:"
+msgstr "Tu nombre de usuario actual es:"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:59
-msgid "A valid file is an image with max file size of 2MB."
-msgstr "Un archivo válido es una imagen con un tamaño máximo de 2MB. "
+#: lib/cms/users.php:419
+msgid "The new password for your account is:"
+msgstr "La nueva contraseña para tu cuenta es:"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:66
-msgid "Type"
-msgstr "Tipo"
+#: lib/cms/users.php:420
+msgid ""
+"Is recommended that you log in and change the password as soon as possible."
+msgstr ""
+"Es recomendado que inicies y cambies tu contraseña lo más pronto posible."
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:77
-msgid "Latitude"
-msgstr "Latitud"
+#: lib/cms/users.php:421
+msgid "To log in access the following url:"
+msgstr "Para iniciar puede accesar el siguiente enlace:"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:80
-msgid "Longitude"
-msgstr "Longitud"
+#: lib/cms/users.php:432
+msgid "Edit My Account"
+msgstr "Editar Mi Cuenta"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:85
-msgid "Physical Address"
-msgstr "Dirección física"
+#: lib/cms/users.php:438
+msgid "View My Profile"
+msgstr "Ver Mi Perfíl"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:88
-msgid "Zipcode"
-msgstr "Código postal"
+#: lib/cms/users.php:445
+msgid "My Content"
+msgstr "Mi Contenido"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:92
-msgid "City"
-msgstr "Ciudad"
+#: lib/cms/users.php:452 system/admin.php:11
+msgid "Control Center"
+msgstr "Centro de Control"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:102
-msgid "Photo"
-msgstr "Foto"
+#: lib/cms/users.php:457
+msgid "Welcome Administrator!"
+msgstr "Bienvenido Administrador"
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:105
-msgid "Comments"
-msgstr "Comentarios"
+#: lib/cms/users.php:458
+msgid ""
+"Now that you are logged in you can start modifying the website as you need."
+msgstr ""
+"Ahora que iniciaste puedes empezar a modicar el sitio como sea necesario."
 
-#: C:\AppServ\www\deficiencias/data/pages/reports-add.php:108
-msgid "Send"
-msgstr "Enviar"
+#: lib/cms/users.php:463
+msgid "Welcome"
+msgstr "Bienvenido"
 
-#: C:\AppServ\www\deficiencias/lib/cms/pages.php:45
-msgid "Page not found"
-msgstr "Página no encontrada"
+#: lib/cms/users.php:465
+msgid ""
+"Now that you are logged in you can enjoy the privileges of registered users "
+"on"
+msgstr ""
+"Ahora que iniciaste puedes disfrutal de los privilegios de usuarios "
+"registrados en"
 
-#: C:\AppServ\www\deficiencias/lib/cms/pages.php:46
-msgid "The page you are visiting does not exists."
-msgstr "La página que estás intentando acceder no existe. "
+#: lib/cms/users.php:490
+msgid "Logout"
+msgstr "Salir"
 
-#: C:\AppServ\www\deficiencias/lib/cms/system.php:312
+#: lib/cms/system.php:356
 msgid "You have to set the data source before getting the database."
 msgstr ""
 "Tienes que configurar la fuente de datos ('data source') antes de entrar a "
 "la base de datos. "
 
-#: C:\AppServ\www\deficiencias/lib/cms/theme.php:258
+#: lib/cms/system.php:507
+msgid "You can not use this function without initializing the System class."
+msgstr "No puedes utilizar esta function sin inicializar la clase System."
+
+#: lib/cms/form.php:351
+msgid "Please provide the {field} field."
+msgstr "Por favor provea el campo {field}"
+
+#: lib/cms/form.php:399
+msgid "The lenght of {field} exceeds the maximum allowed of {size}."
+msgstr "El largo de {field} excede el máximo permitido de {size}"
+
+#: lib/cms/form.php:417
+msgid ""
+"{field} is read only and you injected a different value than its original."
+msgstr ""
+"{field} es de solo lectura e inyectastes un valor diferente al original."
+
+#: lib/cms/theme.php:334
 msgid "error:"
 msgstr "error:"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:48
-msgid "0 seconds"
-msgstr "0 segundos"
+#: lib/cms/language.php:45
+msgid "Languages directory not found."
+msgstr "Directorio de lenguajes no encontrado."
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:52
-msgid "year"
-msgstr "año"
+#: lib/cms/utilities.php:82
+msgid "Previous"
+msgstr "Anterior"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:52
-msgid "years"
-msgstr "años"
+#: lib/cms/utilities.php:109
+msgid "Next"
+msgstr "Siguiente"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:53
-msgid "month"
-msgstr "mes"
+#: lib/cms/pages.php:57
+msgid "Page not found"
+msgstr "Página no encontrada"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:53
-msgid "months"
-msgstr "meses"
+#: lib/cms/pages.php:58
+msgid "The page you are visiting does not exists."
+msgstr "La página que estás intentando acceder no existe. "
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:54
-msgid "day"
-msgstr "día"
+#: lib/cms/pages.php:107 lib/cms/pages.php:122 lib/cms/permissions/user.php:24
+#: lib/cms/permissions/group.php:24 lib/deficiencies/permissionslist.php:34
+#: lib/deficiencies/setup.php:102 system/admin/users.php:133
+msgid "View"
+msgstr "Ver"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:54
-msgid "days"
-msgstr "días"
+#: lib/cms/pages.php:108
+msgid "View the existing users on the system."
+msgstr "Ver los usuarios existentes en el sistema."
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:55
-msgid "hour"
-msgstr "hora"
+#: lib/cms/pages.php:112 lib/cms/pages.php:127
+#: data/pages/admin-deficiencies-attendants-cities.php:91
+msgid "Add"
+msgstr "Agregar"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:55
-msgid "hours"
-msgstr "horas"
+#: lib/cms/pages.php:113 lib/cms/pages.php:128
+msgid "Create new user account."
+msgstr "Crear nueva cuenta de usuario."
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:56
-msgid "minute"
-msgstr "minuto"
+#: lib/cms/pages.php:116 lib/cms/permissions/user.php:20
+#: lib/deficiencies/setup.php:123 system/admin/users.php:12
+#: system/admin/groups.php:20
+msgid "Users"
+msgstr "Usuarios"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:56
-msgid "minutes"
-msgstr "minutos"
+#: lib/cms/pages.php:123
+msgid "View the existing groups on the system."
+msgstr "Ver los grupos existentes en el sistema."
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:57
-msgid "second"
-msgstr "segundo"
+#: lib/cms/pages.php:131 lib/cms/permissions/group.php:20
+#: system/admin/users.php:22 system/admin/groups.php:11
+#: system/admin/groups/permissions.php:18
+msgid "Groups"
+msgstr "Grupos"
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:57
-msgid "seconds"
-msgstr "segundos"
+#: lib/cms/exceptions/users/usernotexistsexception.php:18
+msgid "The given user account does not exists."
+msgstr "La cuenta de usuario proveida no existe."
 
-#: C:\AppServ\www\deficiencias/lib/cms/utilities.php:72
-msgid "{time} {period} ago"
-msgstr "Hace {time} {period}"
+#: lib/cms/exceptions/users/useraddexception.php:17
+msgid "Could not add the user account."
+msgstr "No se pudo añadir la cuenta de usuario."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/database.php:81
-msgid "Invalid data source."
-msgstr "Fuente de datos invalida."
+#: lib/cms/exceptions/users/awaitingapprovalexception.php:17
+msgid "The account is awaiting approval."
+msgstr "La cuenta esta esperando aprobación."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/database.php:195
-msgid "No connection establised to carry out this operation."
-msgstr "No hay una conexión establecida para ejecutar ésta operación."
+#: lib/cms/exceptions/users/userexistsexception.php:18
+msgid "A user account with the given username already exists."
+msgstr "Una cuenta con el nombre de usuario suplido ya existe."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/datasource.php:25
+#: lib/cms/exceptions/users/invalidpasswordexception.php:18
+msgid "Incorrect password."
+msgstr "Contraseña incorrecta."
+
+#: lib/cms/exceptions/group/groupnotexistsexception.php:18
+msgid "The group does not exists."
+msgstr "El grupo no existe."
+
+#: lib/cms/exceptions/group/systemgroupexception.php:18
+msgid "Could not modify system group."
+msgstr "No se pudo modificar el grupo de sistema."
+
+#: lib/cms/exceptions/group/groupexistsexception.php:18
+msgid "The group already exists."
+msgstr "El grupo ya existe."
+
+#: lib/cms/exceptions/form/emptyfieldsgroupexception.php:17
+msgid "Trying to add an empty fields group."
+msgstr "Estas tratando de añadir un grupo de campos vacío."
+
+#: lib/cms/exceptions/filesystem/writefileexception.php:17
+msgid "Could not write to file."
+msgstr "No se pudo escribir al archivo."
+
+#: lib/cms/exceptions/filesystem/invaliddirectoryexception.php:17
+msgid "Invalid directory path."
+msgstr "Ruta de directorio inválida."
+
+#: lib/cms/exceptions/filesystem/deletefileexception.php:17
+msgid "Could not delete the file."
+msgstr "No se pudo borrar el archivo."
+
+#: lib/cms/exceptions/filesystem/movefileexception.php:17
+msgid "Could not move the file."
+msgstr "No se pudo mover el archivo."
+
+#: lib/cms/exceptions/filesystem/invalidfileexception.php:17
+msgid "Invalid or non existant file."
+msgstr "Archivo inválido o no existente."
+
+#: lib/cms/dbal/datasource.php:49
 msgid "Data source hasn't been initialized."
 msgstr "La fuente de datos no ha sido inicializada."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/query/select.php:36
+#: lib/cms/dbal/database.php:97
+msgid "Invalid data source."
+msgstr "Fuente de datos invalida."
+
+#: lib/cms/dbal/database.php:158 lib/cms/dbal/database.php:163
+#: lib/cms/dbal/database.php:167
+msgid "Not implemented"
+msgstr "No implementado"
+
+#: lib/cms/dbal/database.php:368
+msgid "No connection establised to carry out this operation."
+msgstr "No hay una conexión establecida para ejecutar ésta operación."
+
+#: lib/cms/dbal/query/select.php:35 lib/cms/dbal/query/select.php:55
 msgid "All columns already selected."
 msgstr "Todas las columnas han sido seleccionadas."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/query/select.php:46
+#: lib/cms/dbal/query/select.php:45
 msgid "Select all not allowed if columns where previously selected."
 msgstr ""
 "No está permitido seleccionar todos si las columnas fueron seleccionadas "
 "previamente."
 
-#: C:\AppServ\www\deficiencias/lib/cms/dbal/query/table.php:58
+#: lib/cms/dbal/query/update.php:75
+msgid "The column was already assigned."
+msgstr "La columna fue ya anteriormente asignada."
+
+#: lib/cms/dbal/query/table.php:60
 msgid "Field is not defined."
 msgstr "El campo no está definido."
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:21
-msgid "Unfixed"
-msgstr "Sin solucionar"
+#: lib/cms/permissions/user.php:25
+msgid "View all available user accounts from the users administrative page."
+msgstr "Ver todas las cuentas desde el sistema de administración de usuarios."
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:22
-msgid "Fixed"
-msgstr "Solucionado"
+#: lib/cms/permissions/user.php:30 lib/cms/permissions/group.php:30
+msgid "Create"
+msgstr "Crear"
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencystatus.php:23
-msgid "In process"
-msgstr "En proceso"
+#: lib/cms/permissions/user.php:31 lib/cms/permissions/group.php:31
+msgid "Add new user accounts."
+msgstr "Añadir nueva cuenta de usuario."
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:23
+#: lib/cms/permissions/user.php:36 lib/cms/permissions/group.php:36
+#: lib/deficiencies/permissionslist.php:40 system/admin/users.php:190
+#: system/admin/groups.php:63 system/admin/users/delete.php:18
+#: system/admin/groups/delete.php:18
+msgid "Edit"
+msgstr "Editar"
+
+#: lib/cms/permissions/user.php:37 lib/cms/permissions/group.php:37
+msgid "Modify existing user accounts."
+msgstr "Modificar cuenta existente de usuario."
+
+#: lib/cms/permissions/user.php:42 lib/cms/permissions/group.php:42
+#: lib/deficiencies/permissionslist.php:52 system/account/profile.php:165
+#: system/admin/users.php:191 system/admin/groups.php:65
+msgid "Delete"
+msgstr "Borrar"
+
+#: lib/cms/permissions/user.php:43 lib/cms/permissions/group.php:43
+msgid "Delete existing user accounts."
+msgstr "Borrar cuentas existentes de usuarios."
+
+#: lib/cms/permissions/group.php:25
+msgid "View all available groups from the groups administrative page."
+msgstr ""
+"Ver todos los grupos disponibles desde el sistema administrativo de grupos."
+
+#: lib/cms/enumerations/userstatus.php:38
+msgid "Pending Approval"
+msgstr "Esperando Aprobación"
+
+#: lib/cms/enumerations/userstatus.php:40
+msgid "Active"
+msgstr "Activo"
+
+#: lib/cms/enumerations/userstatus.php:42
+msgid "Blocked"
+msgstr "Bloqueado"
+
+#: lib/cms/enumerations/userstatus.php:45
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: lib/cms/form/field/text.php:85 lib/cms/form/field/text.php:141
+msgid "characters left"
+msgstr "caracteres restantes"
+
+#: lib/cms/utilities/date.php:41
+msgid "January"
+msgstr "Enero"
+
+#: lib/cms/utilities/date.php:42
+msgid "February"
+msgstr "Febrero"
+
+#: lib/cms/utilities/date.php:43
+msgid "March"
+msgstr "Marzo"
+
+#: lib/cms/utilities/date.php:44
+msgid "April"
+msgstr "Abril"
+
+#: lib/cms/utilities/date.php:45
+msgid "May"
+msgstr "Mayo"
+
+#: lib/cms/utilities/date.php:46
+msgid "June"
+msgstr "Junio"
+
+#: lib/cms/utilities/date.php:47
+msgid "July"
+msgstr "Julio"
+
+#: lib/cms/utilities/date.php:48
+msgid "August"
+msgstr "Agosto"
+
+#: lib/cms/utilities/date.php:49
+msgid "September"
+msgstr "Septiembre"
+
+#: lib/cms/utilities/date.php:50
+msgid "October"
+msgstr "Octubre"
+
+#: lib/cms/utilities/date.php:51
+msgid "November"
+msgstr "Noviembre"
+
+#: lib/cms/utilities/date.php:52
+msgid "December"
+msgstr "Diciembre"
+
+#: lib/cms/utilities/date.php:88
+msgid "0 seconds"
+msgstr "0 segundos"
+
+#: lib/cms/utilities/date.php:92
+msgid "year"
+msgstr "año"
+
+#: lib/cms/utilities/date.php:92
+msgid "years"
+msgstr "años"
+
+#: lib/cms/utilities/date.php:93
+msgid "month"
+msgstr "mes"
+
+#: lib/cms/utilities/date.php:93
+msgid "months"
+msgstr "meses"
+
+#: lib/cms/utilities/date.php:94
+msgid "day"
+msgstr "día"
+
+#: lib/cms/utilities/date.php:94
+msgid "days"
+msgstr "días"
+
+#: lib/cms/utilities/date.php:95
+msgid "hour"
+msgstr "hora"
+
+#: lib/cms/utilities/date.php:95
+msgid "hours"
+msgstr "horas"
+
+#: lib/cms/utilities/date.php:96
+msgid "minute"
+msgstr "minuto"
+
+#: lib/cms/utilities/date.php:96
+msgid "minutes"
+msgstr "minutos"
+
+#: lib/cms/utilities/date.php:97
+msgid "second"
+msgstr "segundo"
+
+#: lib/cms/utilities/date.php:97
+msgid "seconds"
+msgstr "segundos"
+
+#: lib/cms/utilities/date.php:115
+msgid "{time} {period} ago"
+msgstr "Hace {time} {period}"
+
+#: lib/deficiencies/permissionslist.php:18 lib/deficiencies/setup.php:117
+msgid "Deficiencies"
+msgstr "Deficiencias"
+
+#: lib/deficiencies/permissionslist.php:22
+msgid "Administrator"
+msgstr "Administrador"
+
+#: lib/deficiencies/permissionslist.php:23
+msgid "Has administrative permissions like selecting attendant cities..."
+msgstr ""
+"Tiene permisos administrativos como seleccionar ciudades para los encargados."
+
+#: lib/deficiencies/permissionslist.php:28
+msgid "Attendant"
+msgstr "Encargado"
+
+#: lib/deficiencies/permissionslist.php:29
+msgid "Has rights to work with reported deficiencies that has been assigned."
+msgstr ""
+"Tiene los permisos para trabajar con las deficiencias reportadas que le han "
+"sido asignadas."
+
+#: lib/deficiencies/permissionslist.php:35
+msgid "View all available reported deficiencies."
+msgstr "Ver todas las deficiencias reportadas."
+
+#: lib/deficiencies/permissionslist.php:41
+msgid "Modify a deficiency."
+msgstr "Modificar deficiencia."
+
+#: lib/deficiencies/permissionslist.php:46
+msgid "Assign"
+msgstr "Asignar"
+
+#: lib/deficiencies/permissionslist.php:47
+msgid "Can assign a deficiency report to a user for follow ups."
+msgstr "Puede asignar deficiencias a un usuario para que le de seguimiento."
+
+#: lib/deficiencies/permissionslist.php:53
+msgid "Delete deficiencies from the database."
+msgstr "Borrar deficiencias de la base de datos."
+
+#: lib/deficiencies/types.php:26
 msgid "Hole"
 msgstr "Hoyo"
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:24
+#: lib/deficiencies/types.php:27
 msgid "Water tube"
 msgstr "Tubo de agua"
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:25
+#: lib/deficiencies/types.php:28
 msgid "Signal light"
 msgstr "Semáforo"
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:26
+#: lib/deficiencies/types.php:29
 msgid "Collapse"
 msgstr "Derrumbe"
 
-#: C:\AppServ\www\deficiencias/lib/deficiencies/deficiencytypes.php:27
+#: lib/deficiencies/types.php:30
 msgid "Power line"
 msgstr "Tendido eléctrico"
+
+#: lib/deficiencies/types.php:31
+msgid "Sewers"
+msgstr "Alcantarillas"
+
+#: lib/deficiencies/types.php:32
+msgid "Lighting"
+msgstr "Iluminación"
+
+#: lib/deficiencies/types.php:33
+msgid "Water leaks"
+msgstr "Salideros de Agua"
+
+#: lib/deficiencies/resolutionstatus.php:24
+msgid "Unfixed"
+msgstr "Sin solucionar"
+
+#: lib/deficiencies/resolutionstatus.php:25
+msgid "Fixed"
+msgstr "Solucionado"
+
+#: lib/deficiencies/resolutionstatus.php:26
+msgid "In process"
+msgstr "En proceso"
+
+#: lib/deficiencies/resolutionstatus.php:27
+msgid "Duplicate"
+msgstr "Duplica"
+
+#: lib/deficiencies/resolutionstatus.php:28
+msgid "Invalid"
+msgstr "Inválido"
+
+#: lib/deficiencies/setup.php:34
+msgid "Assigned Cities"
+msgstr "Ciudades Asignadas"
+
+#: lib/deficiencies/setup.php:49
+msgid "Reports"
+msgstr "Reportes"
+
+#: lib/deficiencies/setup.php:59 lib/deficiencies/setup.php:74
+#: data/pages/account-reports-assigned.php:12
+msgid "Assigned Reports"
+msgstr "Reportes Asignados"
+
+#: lib/deficiencies/setup.php:70 data/pages/account-reports.php:8
+msgid "My Reports"
+msgstr "Mis Reportes"
+
+#: lib/deficiencies/setup.php:103
+msgid "All deficiencies reported."
+msgstr "Todas las deficiencias reportadas."
+
+#: lib/deficiencies/setup.php:107
+msgid "Attendants"
+msgstr "Encargados."
+
+#: lib/deficiencies/setup.php:108
+msgid "Manage the attendant cities."
+msgstr "Manejar los encargados de una ciudad."
+
+#: lib/deficiencies/setup.php:112
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#: lib/deficiencies/setup.php:113
+msgid "View overall reports data."
+msgstr "Ver data resumida de todos los reportes."
+
+#: lib/deficiencies/status.php:25
+msgid "New"
+msgstr "Nuevo"
+
+#: lib/deficiencies/status.php:26
+msgid "Assigned"
+msgstr "Asignado"
+
+#: lib/deficiencies/status.php:27
+msgid "Pending"
+msgstr "Pendiente"
+
+#: lib/deficiencies/status.php:28
+msgid "Closed"
+msgstr "Cerrado"
+
+#: lib/deficiencies/status.php:29
+msgid "Rejected"
+msgstr "Rechazado"
+
+#: lib/deficiencies/status.php:30
+msgid "Re-opened"
+msgstr "Re-abierto"
+
+#: lib/deficiencies/priority.php:23
+msgid "Low"
+msgstr "Bajo"
+
+#: lib/deficiencies/priority.php:24
+msgid "Medium"
+msgstr "Media"
+
+#: lib/deficiencies/priority.php:25
+msgid "High"
+msgstr "Alto"
+
+#: lib/deficiencies/priority.php:26
+msgid "Urgent"
+msgstr "Urgente"
+
+#: data/pages/admin-deficiencies-edit.php:12
+msgid "Edit Report"
+msgstr "Editar Reporte"
+
+#: data/pages/admin-deficiencies-edit.php:51
+#: data/pages/admin-deficiencies-attendants-cities.php:40
+#: data/pages/admin-deficiencies-attendants-cities.php:70
+msgid "Changes successfully saved."
+msgstr "Cambios exitosamente guardados."
+
+#: data/pages/admin-deficiencies-edit.php:68
+msgid "Id"
+msgstr "Id"
+
+#: data/pages/admin-deficiencies-edit.php:74
+#: data/pages/account-reports-assigned.php:55
+#: data/pages/admin-deficiencies.php:45 data/pages/reports-add.php:98
+#: data/pages/home.php:43
+msgid "Type"
+msgstr "Tipo"
+
+#: data/pages/admin-deficiencies-edit.php:78
+msgid "Not Assigned"
+msgstr "No Asignado"
+
+#: data/pages/admin-deficiencies-edit.php:85
+msgid "No group of attendants have been assigned to this group."
+msgstr "Ningun grupo de encargados a sido asignado a esta ciudad."
+
+#: data/pages/admin-deficiencies-edit.php:86
+msgid "You can not assign until this issue is solved."
+msgstr "No puedes asignar hasta que este problema este resuelto."
+
+#: data/pages/admin-deficiencies-edit.php:93
+msgid "Assigned to"
+msgstr "Asignado a"
+
+#: data/pages/admin-deficiencies-edit.php:101
+#: data/pages/account-reports-assigned.php:62
+#: data/pages/account-reports-assigned.php:231
+#: data/pages/admin-deficiencies.php:52 data/pages/admin-deficiencies.php:211
+#: system/account/profile.php:286 system/admin/users.php:163
+#: system/admin/users/add.php:159
+msgid "Status"
+msgstr "Estado"
+
+#: data/pages/admin-deficiencies-edit.php:107
+#: data/pages/account-reports-assigned.php:69
+#: data/pages/admin-deficiencies.php:59
+msgid "Resolution Status"
+msgstr "Estado de Resolución"
+
+#: data/pages/admin-deficiencies-edit.php:114
+#: data/pages/account-reports-assigned.php:76
+#: data/pages/account-reports-assigned.php:233
+#: data/pages/admin-deficiencies.php:66 data/pages/admin-deficiencies.php:213
+msgid "Priority"
+msgstr "Prioridad"
+
+#: data/pages/admin-deficiencies-edit.php:119
+#: data/pages/account-reports-assigned.php:45
+#: data/pages/account-reports-assigned.php:52
+#: data/pages/account-reports-assigned.php:59
+#: data/pages/account-reports-assigned.php:66
+#: data/pages/account-reports-assigned.php:73
+#: data/pages/admin-deficiencies.php:35 data/pages/admin-deficiencies.php:42
+#: data/pages/admin-deficiencies.php:49 data/pages/admin-deficiencies.php:56
+#: data/pages/admin-deficiencies.php:63 data/pages/home.php:45
+#: data/pages/admin-deficiencies-stats.php:29 system/admin/users.php:102
+#: system/admin/users.php:117
+msgid "All"
+msgstr "Todos"
+
+#: data/pages/admin-deficiencies-edit.php:121
+#: data/pages/account-reports-assigned.php:230
+#: data/pages/admin-deficiencies.php:210
+msgid "Address"
+msgstr "Dirección"
+
+#: data/pages/admin-deficiencies-edit.php:124
+#: data/pages/account-reports-assigned.php:48
+#: data/pages/admin-deficiencies.php:38 data/pages/reports-add.php:124
+#: data/pages/admin-deficiencies-attendants-cities.php:110
+#: data/pages/home.php:30 data/pages/admin-deficiencies-stats.php:32
+msgid "City"
+msgstr "Ciudad"
+
+#: data/pages/admin-deficiencies-edit.php:128
+msgid "Address line 1"
+msgstr "Linea de dirección 1"
+
+#: data/pages/admin-deficiencies-edit.php:132
+msgid "Address line 2"
+msgstr "Linea de dirección 2"
+
+#: data/pages/admin-deficiencies-edit.php:136 data/pages/reports-add.php:120
+msgid "Zipcode"
+msgstr "Código postal"
+
+#: data/pages/admin-deficiencies-edit.php:140
+msgid "Country"
+msgstr "País"
+
+#: data/pages/admin-deficiencies-edit.php:145
+msgid "Coordinates"
+msgstr "Coordenadas"
+
+#: data/pages/admin-deficiencies-edit.php:148 data/pages/reports-add.php:109
+#: data/pages/reports-view.php:67
+msgid "Latitude"
+msgstr "Latitud"
+
+#: data/pages/admin-deficiencies-edit.php:152 data/pages/reports-add.php:112
+#: data/pages/reports-view.php:71
+msgid "Longitude"
+msgstr "Longitud"
+
+#: data/pages/admin-deficiencies-edit.php:157
+msgid "Other details"
+msgstr "Otros detalles"
+
+#: data/pages/admin-deficiencies-edit.php:160
+msgid "Anonymous"
+msgstr "Anónimo"
+
+#: data/pages/admin-deficiencies-edit.php:182
+msgid "Last update"
+msgstr "Ultima actualización"
+
+#: data/pages/admin-deficiencies-edit.php:198
+msgid "Last update by"
+msgstr "Ultima actualización por"
+
+#: data/pages/admin-deficiencies-edit.php:219
+msgid "Work comments"
+msgstr "Comentarios de Trabajo"
+
+#: data/pages/admin-deficiencies-edit.php:220
+msgid "Comments you can add to keep track of things."
+msgstr "Comentarios que puedes añadir para mantener un record de los eventos."
+
+#: data/pages/admin-deficiencies-edit.php:224 data/pages/reports-add.php:137
+#: data/pages/reports-view.php:77
+msgid "Comments"
+msgstr "Comentarios"
+
+#: data/pages/admin-deficiencies-edit.php:225
+msgid "Comments made by main reporting user."
+msgstr "Comentarios hechos por el usuario que reporte la deficiencia."
+
+#: data/pages/admin-deficiencies-edit.php:228 system/account/profile.php:291
+#: system/admin/users/add.php:163 system/admin/groups/permissions.php:92
+#: system/admin/groups/edit.php:94 system/admin/groups/add.php:98
+msgid "Save"
+msgstr "Guardar"
+
+#: data/pages/admin-deficiencies-edit.php:230 system/forgot-password.php:88
+#: system/account/profile.php:293 system/admin/users/add.php:165
+#: system/admin/groups/permissions.php:94 system/admin/groups/edit.php:96
+#: system/admin/groups/add.php:100
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: data/pages/account-reports-assigned.php:36
+msgid "Reports assigned to:"
+msgstr "Reportes asignados a:"
+
+#: data/pages/account-reports-assigned.php:42
+#: data/pages/admin-deficiencies.php:32
+#: data/pages/admin-deficiencies-stats.php:26
+msgid "Filters"
+msgstr "Filtros"
+
+#: data/pages/account-reports-assigned.php:80
+#: data/pages/admin-deficiencies.php:70
+msgid "None"
+msgstr "Ninguno"
+
+#: data/pages/account-reports-assigned.php:81
+#: data/pages/admin-deficiencies.php:71
+msgid "Reports count ascending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:82
+#: data/pages/admin-deficiencies.php:72
+msgid "Reports count descending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:83
+#: data/pages/admin-deficiencies.php:73
+msgid "Date ascending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:84
+#: data/pages/admin-deficiencies.php:74
+msgid "Date descending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:85
+#: data/pages/admin-deficiencies.php:75
+msgid "Re-open count ascending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:86
+#: data/pages/admin-deficiencies.php:76
+msgid "Re-open count descending"
+msgstr ""
+
+#: data/pages/account-reports-assigned.php:90
+#: data/pages/admin-deficiencies.php:80
+msgid "Order by"
+msgstr "Ordernar por"
+
+#: data/pages/account-reports-assigned.php:222
+#: data/pages/admin-deficiencies.php:202 data/pages/account-reports.php:61
+msgid "Total reports:"
+msgstr "Total de reportes:"
+
+#: data/pages/account-reports-assigned.php:232
+#: data/pages/admin-deficiencies.php:212
+msgid "Resolution"
+msgstr "Resolución"
+
+#: data/pages/account-reports-assigned.php:234
+#: data/pages/admin-deficiencies.php:214
+msgid "Date"
+msgstr "Fecha"
+
+#: data/pages/admin-deficiencies.php:12
+msgid "Reported Deficiencies"
+msgstr "Deficiencias Reportadas"
+
+#: data/pages/reports-confirm.php:12
+msgid "Confirmation added."
+msgstr "Confirmación añadida"
+
+#: data/pages/reports-add.php:5 data/pages/home.php:18
+msgid "Add Report"
+msgstr "Añadir Reporte"
+
+#: data/pages/reports-add.php:24
+msgid ""
+"Please login or create an account in order to finish the submission of the "
+"report"
+msgstr ""
+"Por favor inicia o crea una cuenta para poder terminar el envio del reporte."
+
+#: data/pages/reports-add.php:60
+msgid "This deficiency has already been report."
+msgstr "La deficiencia ya ha sido reportada anteriormente."
+
+#: data/pages/reports-add.php:77
+#, php-format
+msgid "The report has been submitted. Thanks for your collaboration. (ID: %s)"
+msgstr "El reporte se ha sometido. Gracias por su colaboración. (ID: %s)"
+
+#: data/pages/reports-add.php:82
+msgid "A valid file is an image with max file size of 2MB."
+msgstr "Un archivo válido es una imagen con un tamaño máximo de 2MB. "
+
+#: data/pages/reports-add.php:117
+msgid "Physical Address"
+msgstr "Dirección física"
+
+#: data/pages/reports-add.php:134
+msgid "Photo"
+msgstr "Foto"
+
+#: data/pages/reports-add.php:140
+msgid "Send"
+msgstr "Enviar"
+
+#: data/pages/reports-view.php:5
+msgid "Report"
+msgstr "Reporte"
+
+#: data/pages/reports-view.php:52
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:11
+msgid "Group Cities"
+msgstr "Grupos de Ciudades"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:20
+msgid "All Attendants"
+msgstr "Todos los Encargados"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:86
+msgid "Cities"
+msgstr "Ciudades"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:87
+msgid "Select the cities this attendants group will have access to."
+msgstr ""
+"Selecciona las ciudades a las que el grupo de encargados tendrá acceso."
+
+#: data/pages/admin-deficiencies-attendants-cities.php:95
+msgid "Cities assigned to:"
+msgstr "Ciudades asignadas a:"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:111
+#: data/pages/admin-deficiencies-attendants.php:32 system/admin/users.php:165
+#: system/admin/groups.php:35
+msgid "Operation"
+msgstr "Operación"
+
+#: data/pages/admin-deficiencies-attendants-cities.php:134
+msgid "Remove"
+msgstr "Remover"
+
+#: data/pages/admin-deficiencies-attendants.php:11
+msgid "Deficiency Attendants"
+msgstr "Encargados de Deficiencias"
+
+#: data/pages/admin-deficiencies-attendants.php:30 system/admin/groups.php:33
+#: system/admin/groups/edit.php:83 system/admin/groups/add.php:87
+msgid "Name"
+msgstr "Nombre"
+
+#: data/pages/admin-deficiencies-attendants.php:31 system/admin/groups.php:34
+#: system/admin/groups/edit.php:89 system/admin/groups/add.php:93
+msgid "Description"
+msgstr "Descripción"
+
+#: data/pages/admin-deficiencies-attendants.php:52
+msgid "Assign Cities"
+msgstr "Asignar Ciudades"
+
+#: data/pages/admin-deficiencies-stats.php:12
+msgid "Reports Statistics"
+msgstr "Estadísticas de Reportes"
+
+#: system/forgot-password.php:11
+msgid "Forgot your password?"
+msgstr "Olvido su contraseña?"
+
+#: system/forgot-password.php:49
+msgid ""
+"Your password has been reset successfully. Check your e-mail inbox for "
+"details."
+msgstr ""
+"La contraseña fue reiniciada exitosamente. Verifíca tu correo electrónico "
+"para mas detalles."
+
+#: system/forgot-password.php:55
+msgid "The specified username or e-mail is invalid"
+msgstr "El nombre de usuario específicado o corre electrónico es invalido"
+
+#: system/forgot-password.php:71 system/account/profile.php:176
+#: system/admin/users.php:161 system/admin/users/add.php:78
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: system/forgot-password.php:74
+msgid "If you remember your username write it down."
+msgstr "Si recuerdas tu nombre de usuario escribelo"
+
+#: system/forgot-password.php:77
+msgid "OR"
+msgstr "Ó"
+
+#: system/forgot-password.php:80 system/account/profile.php:199
+#: system/account/profile.php:209 system/admin/users.php:162
+#: system/admin/users/add.php:93
+msgid "E-mail"
+msgstr "Correo Electrónico"
+
+#: system/forgot-password.php:83
+msgid ""
+"If you remember the e-mail that you used to register the account write it "
+"down."
+msgstr ""
+"Si recuerdas el correo electrónico que usaste para registrate escríbelo."
+
+#: system/forgot-password.php:86
+msgid "Reset Password"
+msgstr "Reiniciar Contraseña"
+
+#: system/logout.php:12
+msgid "Logged Out"
+msgstr "Desconectado"
+
+#: system/logout.php:19
+msgid "You have successfully logged out from your account."
+msgstr "Te has desconectar exitosamente"
+
+#: system/login.php:12 system/account.php:11
+msgid "My Account"
+msgstr "Mi Cuenta"
+
+#: system/login.php:50
+msgid "Your account is waiting for approval."
+msgstr "Tu cuenta esta esperando por aprobación."
+
+#: system/login.php:54
+msgid "Invalid username, email or password."
+msgstr "Nombre de usuario, correo electrónico o contraseña inválidos."
+
+#: system/login.php:62
+msgid "Login"
+msgstr "Iniciar"
+
+#: system/login.php:69
+msgid "Forgot Password?"
+msgstr "Olvidaste la Contraseña?"
+
+#: system/login.php:77 system/register.php:12
+msgid "Create Account"
+msgstr "Crear Cuenta"
+
+#: system/access-denied.php:12
+msgid "Access Denied"
+msgstr "Acceso Denegado"
+
+#: system/access-denied.php:16
+msgid "You dont have sufficient permissions to access the page."
+msgstr "No tienes permisos suficientes para accesar esta página."
+
+#: system/register.php:40
+msgid "The username you provided has already been taken."
+msgstr "El nombre de usuario que proveiste ya fue tomado."
+
+#: system/register.php:49
+msgid "The e-mail you provided has already been taken."
+msgstr "El correo electrónico que proveiste ya fue tomado."
+
+#: system/register.php:71 system/admin/users/add.php:66
+msgid "Password and Confirm Password doesn't match."
+msgstr "La contraseña y la confirmación de contraseña no son iguales."
+
+#: system/register.php:86
+msgid "The username should be at least 3 characters long"
+msgstr "El nombre de usuario debe ser almenos 3 caracteres de largo."
+
+#: system/register.php:93
+msgid "The username can only contain characters from a-z, 0-9, - and ."
+msgstr "El nombre de usuario debe contener caracteres de a-z, - y ."
+
+#: system/register.php:116 system/account/profile.php:207
+msgid "Please provide a valid e-mail address."
+msgstr "Por favor provea un correo electrónico válido."
+
+#: system/register.php:122
+msgid "Register"
+msgstr "Registrar"
+
+#: system/admin.php:24
+msgid "No task assigned to you on the control center."
+msgstr "No hay tareas asignadas para ti en el centro de control."
+
+#: system/account/profile.php:20
+msgid "Edit User"
+msgstr "Editar Usuario"
+
+#: system/account/profile.php:24
+msgid "My Details"
+msgstr "Mis Detalles"
+
+#: system/account/profile.php:83
+msgid "The New password and Verify password doesn't match."
+msgstr "La nueva contraseña y confirmación de contraseña no son iguales."
+
+#: system/account/profile.php:99
+msgid "Your changes have been successfully saved."
+msgstr "Los cambios fueron guardados exitosamente."
+
+#: system/account/profile.php:119
+msgid "Your account has been activated."
+msgstr "Tu cuenta fue activada."
+
+#: system/account/profile.php:120 system/admin/users/delete.php:59
+msgid "Username:"
+msgstr "Nombre de usuario:"
+
+#: system/account/profile.php:121
+msgid "Login by visiting:"
+msgstr "Inicia visitando:"
+
+#: system/account/profile.php:125
+msgid "Account Activated"
+msgstr "Cuenta Activada"
+
+#: system/account/profile.php:181 system/admin/users/add.php:83
+msgid "Fullname"
+msgstr "Nombre completo"
+
+#: system/account/profile.php:182 system/admin/users/add.php:84
+msgid "A name that others can see."
+msgstr "Un nombre que otros pueden ver."
+
+#: system/account/profile.php:186
+msgid "Preferred language"
+msgstr "Lenguaje preferido"
+
+#: system/account/profile.php:192 system/admin/users/add.php:88
+msgid "Personal text"
+msgstr "Texto personal"
+
+#: system/account/profile.php:193
+msgid "Writing displayed on your profile page."
+msgstr "Escrito mostrado en tu perfíl de usuario."
+
+#: system/account/profile.php:200 system/account/profile.php:210
+msgid "The email used in case you forgot your password or to contact you."
+msgstr ""
+"El correo electrónico utilizado en caso de que olvides tu contraseña o para "
+"contactarte."
+
+#: system/account/profile.php:219
+msgid "New password"
+msgstr "Nueva contraseña"
+
+#: system/account/profile.php:220
+msgid "You can enter a new optional password to change actual one."
+msgstr "Puedes entrar una nueva contraseña para cambiar la actual (opcional)."
+
+#: system/account/profile.php:224
+msgid "Confirm new password"
+msgstr "Confirmar nueva contraseña"
+
+#: system/account/profile.php:225
+msgid "Re-enter the new password to verify it."
+msgstr "Re-escriba la nueva contraseña para verificarla."
+
+#: system/account/profile.php:229 system/admin/users/add.php:109
+msgid "Website"
+msgstr "Sitio web"
+
+#: system/account/profile.php:230 system/admin/users/add.php:110
+msgid "Corporate or personal website."
+msgstr "Tu espacio en la web sea corporativo o personal."
+
+#: system/account/profile.php:233 system/admin/users/add.php:113
+msgid "Gender"
+msgstr "Género"
+
+#: system/account/profile.php:235 system/admin/users/add.php:115
+msgid "Male"
+msgstr "Masculino"
+
+#: system/account/profile.php:235 system/admin/users/add.php:115
+msgid "Female"
+msgstr "Femenino"
+
+#: system/account/profile.php:245 system/admin/users/add.php:121
+msgid "Birthdate"
+msgstr "Fecha de nacimiento"
+
+#: system/account/profile.php:248 system/admin/users/add.php:124
+msgid "Day"
+msgstr "Día"
+
+#: system/account/profile.php:253 system/admin/users/add.php:129
+msgid "Month"
+msgstr "Mes"
+
+#: system/account/profile.php:258 system/admin/users/add.php:134
+msgid "Year"
+msgstr "Año"
+
+#: system/account/profile.php:281 system/admin/users/add.php:154
+msgid "Group"
+msgstr "Grupo"
+
+#: system/account/profile.php:282 system/admin/users/add.php:155
+msgid "The group where the user belongs."
+msgstr "El grupo al que el usuario pertenece."
+
+#: system/account/profile.php:287 system/admin/users/add.php:160
+msgid "The account status of this user."
+msgstr "El estado de la cuenta."
+
+#: system/account/profile.php:297
+msgid "Last login from ip:"
+msgstr "Ultimá conexión desde el ip:"
+
+#: system/admin/users.php:19
+msgid "List View"
+msgstr "Vista en Listado"
+
+#: system/admin/users.php:20
+msgid "Navigation View"
+msgstr "Vista en Navegación"
+
+#: system/admin/users.php:21
+msgid "Create User"
+msgstr "Crear Usuario"
+
+#: system/admin/users.php:23
+msgid "Export"
+msgstr "Exportar"
+
+#: system/admin/users.php:101
+msgid "Filter view by group:"
+msgstr "Filtrar vista por grupos"
+
+#: system/admin/users.php:116
+msgid " status:"
+msgstr "estado:"
+
+#: system/admin/users.php:144
+msgid "Total users:"
+msgstr "Total de usuarios:"
+
+#: system/admin/users.php:164
+msgid "Register date"
+msgstr "Fecha de regístro"
+
+#: system/admin/groups.php:21
+msgid "Create Group"
+msgstr "Crear Grupo"
+
+#: system/admin/groups.php:64
+msgid "Permissions"
+msgstr "Permisos"
+
+#: system/admin/users/delete.php:11
+msgid "Delete User"
+msgstr "Borrar Usuario"
+
+#: system/admin/users/delete.php:32
+msgid "User successfully deleted."
+msgstr "Usuario borrado exitosamente."
+
+#: system/admin/users/delete.php:56
+msgid "This action will also delete all users content."
+msgstr "La acción borrar todo el contenido del usuario."
+
+#: system/admin/users/delete.php:57
+msgid "Are you sure you want to delete the user?"
+msgstr "Estas seguro que deseas borrar la cuenta del usuario?"
+
+#: system/admin/users/delete.php:67 system/admin/groups/delete.php:67
+msgid "Yes"
+msgstr "Si"
+
+#: system/admin/users/delete.php:69 system/admin/groups/delete.php:69
+msgid "No"
+msgstr "No"
+
+#: system/admin/users/add.php:11
+msgid "Add User"
+msgstr "Añadir Usuario"
+
+#: system/admin/users/add.php:31
+msgid "The username you provided is already in use by other user account."
+msgstr "El nombre de usuario que proveiste ya fue asigando a otro usuario."
+
+#: system/admin/users/add.php:40
+msgid "The e-mail you provided is already in use by other user account."
+msgstr "El correo electrónico que proveiste ya fue asignado a otro usuario."
+
+#: system/admin/users/add.php:59
+msgid "The user account was successfully created."
+msgstr "La cuenta de usuario fue creada exitosamente."
+
+#: system/admin/users/add.php:89
+msgid "Writing displayed on the user profile page."
+msgstr "Escrito mostrado en la página de perfíl del usuario."
+
+#: system/admin/users/add.php:94
+msgid "The email used in case the user forgots its password."
+msgstr ""
+"El correo electrónico utlizado en caso que el usuario olvide su contraseña."
+
+#: system/admin/users/add.php:99
+msgid "Password"
+msgstr "Contraseña"
+
+#: system/admin/users/add.php:104
+msgid "Confirm password"
+msgstr "Confirmar Contraseña"
+
+#: system/admin/users/add.php:105
+msgid "Re-enter the password to verify it."
+msgstr "Re-escriba la contraseña para verificarla."
+
+#: system/admin/groups/permissions.php:11
+msgid "Group Permissions"
+msgstr "Permisos de Grupo"
+
+#: system/admin/groups/permissions.php:45
+msgid "Permissions successfully set."
+msgstr "Permisos exitosamente guardados."
+
+#: system/admin/groups/edit.php:11
+msgid "Edit Group"
+msgstr "Editar Grupo"
+
+#: system/admin/groups/edit.php:33 system/admin/groups/add.php:33
+msgid "The group was successfully created."
+msgstr "El grupo fue creado exitosamente."
+
+#: system/admin/groups/edit.php:60 system/admin/groups/add.php:60
+msgid "The machine name should be at least 3 characters long"
+msgstr "El nombre máquina debe ser almenos 3 caracteres de largo."
+
+#: system/admin/groups/edit.php:67 system/admin/groups/add.php:67
+msgid ""
+"The machine name can only contain lowercase characters from a-z, and "
+"underscores."
+msgstr ""
+"El nombre máquina solo puede contener letras minusculas de la a-z y líneas "
+"de subrayado."
+
+#: system/admin/groups/edit.php:77 system/admin/groups/add.php:77
+msgid "Machine name"
+msgstr "Nombre Máquina"
+
+#: system/admin/groups/edit.php:78 system/admin/groups/add.php:78
+msgid "A readable machine name, like for example: my-group."
+msgstr "Un nombre máquina como por ejemplo: mi_grupo"
+
+#: system/admin/groups/edit.php:84 system/admin/groups/add.php:88
+msgid "A human readable name like for example: My Group."
+msgstr "Un nombre legíble como por ejemplo: Mi Grupo"
+
+#: system/admin/groups/edit.php:90 system/admin/groups/add.php:94
+msgid "A brief description of the group."
+msgstr "Una breve descripción del grupo."
+
+#: system/admin/groups/delete.php:11
+msgid "Delete Group"
+msgstr "Borrar Grupo"
+
+#: system/admin/groups/delete.php:32
+msgid "Group successfully deleted."
+msgstr "Grupo exitosamente borrado."
+
+#: system/admin/groups/delete.php:56
+msgid "This action will also delete all group settings."
+msgstr "Esta acción también borrar todas las configuraciones del grupo."
+
+#: system/admin/groups/delete.php:57
+msgid "Are you sure you want to delete the group?"
+msgstr "Estas seguro que deseas borrar el grupo?"
+
+#: system/admin/groups/delete.php:59
+msgid "Group:"
+msgstr "Grupo:"
+
+#: system/admin/groups/add.php:11
+msgid "Add Group"
+msgstr "Añadir Grupo"

@@ -29,7 +29,7 @@ row: 0
                 <td class="town">
                     <label for="city"><?=t('City')?></label>
                     <select id="city">
-                        <option value="">Todos</option>
+                        <option value=""><?=t('All')?></option>
                     <?php
                         foreach(\Deficiencies\Towns::GetAll() as $label=>$value)
                         {

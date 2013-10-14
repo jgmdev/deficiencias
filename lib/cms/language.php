@@ -83,8 +83,7 @@ class Language
 		
 		if(!$language)
 		{
-			//$this->language = $this->GetSystemLanguage();
-			$this->language = 'es';
+			$this->language = $this->GetSystemLanguage();
 		}
 		else
 		{
@@ -224,12 +223,12 @@ class Language
                     $glue = implode('-', $language_code);
                     if($this->LanguageFileExists($glue) || $glue == 'en')
                     {
-                        $ths->language = $glue;
+                        $this->language = $glue;
                         return;
                     }
                     elseif($this->LanguageFileExists($language_code[0]) || $language_code[0] == 'en')
                     {
-                        $ths->language = $language_code[0];
+                        $this->language = $language_code[0];
                         return;
                     }
                 }
@@ -255,6 +254,37 @@ class Language
             return true;
         
         return false;
+    }
+    
+    /**
+     * Get array of available language files on the given path.
+     * @param string $path Directory that contains po files.
+     * @return array In format array('Language Label' => 'language_code')
+     */
+    public static function GetAvailable($path)
+    {
+        $path = rtrim($path, '/\\');
+        
+        $dir_handle = opendir($path);
+        $languages = array();
+
+        while (($language_file = readdir($dir_handle)) !== false)
+        {
+            if(!is_file($path . '/' . $language_file))
+                continue;
+            
+            if($language_file == 'default.po')
+                continue;
+
+            $language = explode('.po', $language_file);
+            
+            if($language[0] != 'README')
+                $languages[
+                    Enumerations\LanguageCode::GetLabel($language[0])
+                ] = $language[0];
+        }
+
+        return $languages;
     }
 }
 

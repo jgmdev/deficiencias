@@ -74,12 +74,18 @@ class Setup
                     t('Assigned Reports'), 
                     'account/reports/assigned'
                 );
+        });
+        
+        Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\User::DELETE, function($signal_data)
+        {
+            $delete = new Cms\DBAL\Query\Delete('deficiencies');
+            $delete->WhereEqual(
+                'username', $signal_data->username, 
+                Cms\Enumerations\FieldType::TEXT
+            );
             
-            if(
-                Cms\Authentication::GetGroup()->HasPermission(Permissions::ADMINISTRATOR) &&
-                !Cms\Authentication::IsAdminLogged()
-            )
-                Cms\Theme::AddTab (t('Control Center'), 'admin');
+            $db = Cms\System::GetRelationalDatabase();
+            $db->Delete($delete);
         });
         
         Cms\Signals\SignalHandler::Listen(Cms\Enumerations\Signals\Group::GET_PERMISSIONS, function($signal_data)

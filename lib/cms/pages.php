@@ -6,6 +6,8 @@
 
 namespace Cms;
 
+use Cms\Enumerations\Permissions;
+
 /**
  * Functions to handle pages
  */
@@ -89,6 +91,57 @@ class Pages
             return true;
         
         return false;
+    }
+    
+    /**
+     * Generate a list of page groups useful for creating a control center
+     * administration page.
+     * @return array
+     */
+    public static function GetAdminPageGroups()
+    {
+        $page_groups = new Data\PagesGroupList;
+        
+        // Users
+        $users_view = new Data\Page('admin/users');
+        $users_view->title = t('View');
+        $users_view->description = t('View the existing users on the system.');
+        $users_view->AddPermission(Permissions\Users::VIEW);
+                
+        $users_add = new Data\Page('admin/users/add');
+        $users_add->title = t('Add');
+        $users_add->description = t('Create new user account.');
+        $users_add->AddPermission(Permissions\Users::CREATE);
+        
+        $page_groups->AddGroup(t('Users'), array(
+           $users_view, $users_add 
+        ));
+        
+        // Groups
+        $groups_view = new Data\Page('admin/groups');
+        $groups_view->title = t('View');
+        $groups_view->description = t('View the existing groups on the system.');
+        $groups_view->AddPermission(Permissions\Groups::VIEW);
+                
+        $groups_add = new Data\Page('admin/groups/add');
+        $groups_add->title = t('Add');
+        $groups_add->description = t('Create new user account.');
+        $groups_add->AddPermission(Permissions\Groups::CREATE);
+        
+        $page_groups->AddGroup(t('Groups'), array(
+           $groups_view, $groups_add 
+        ));
+        
+        // Send Control Center page generation signal
+        $signal_data = new Signals\SignalData;
+        $signal_data->Add('page_groups', $page_groups);
+        
+        Signals\SignalHandler::Send(
+            Enumerations\Signals\Gui::GENERATE_CONTROL_CENTER, 
+            $signal_data
+        );
+        
+        return $page_groups->GetPermittedGroups();
     }
 
     /**

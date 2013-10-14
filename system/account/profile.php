@@ -55,6 +55,7 @@ row: 0
                 $user_data = Cms\Users::GetData($_REQUEST['username']);
 
                 $user_data->fullname = $_REQUEST['fullname'];
+                $user_data->language = $_REQUEST['language'];
                 $user_data->email = $_REQUEST['email'];
                 $user_data->website = $_REQUEST['website'];
                 $user_data->gender = $_REQUEST['gender'];
@@ -179,6 +180,12 @@ row: 0
         $form->AddField(new Cms\Form\Field\Text(
             t('Fullname'), 'fullname', $user_data->fullname,
             t('A name that others can see.'), '', true, false
+        ));
+        
+        $form->AddField(new Cms\Form\Field\Select(
+            t('Preferred language'), 'language', 
+            array(t('Default')=>'') + array_flip(Cms\Enumerations\LanguageCode::GetAll()),
+            $user_data->language
         ));
 
         $form->AddField(new Cms\Form\Field\TextArea(

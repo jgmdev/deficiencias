@@ -39,6 +39,10 @@ row: 0
         
         $form = new Cms\Form('admin-deficiencies', null, Cms\Enumerations\FormMethod::GET);
         
+        $form->AddField(new Cms\Form\Field\Hidden(
+            'username', $_REQUEST['username']
+        ));
+        
         $filter_group = new Cms\Form\FieldsGroup(t('Filters'), '', true);
         
         $cities = Deficiencies\Towns::GetAll();
@@ -315,7 +319,8 @@ row: 0
                 'status'=>$_REQUEST['status'],
                 'resolution_status'=>$_REQUEST['resolution_status'],
                 'priority'=>$_REQUEST['priority'],
-                'order_by'=>$_REQUEST['order_by']
+                'order_by'=>$_REQUEST['order_by'],
+                'username'=>$_REQUEST['username']
             )
         );
         

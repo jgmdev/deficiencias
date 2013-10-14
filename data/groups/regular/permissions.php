@@ -4,11 +4,11 @@
 row: 0
 
 	field: view_users
-		1
+		
 	field;
 
 	field: add_users
-		1
+		
 	field;
 
 	field: edit_users
@@ -16,7 +16,7 @@ row: 0
 	field;
 
 	field: delete_users
-		1
+		
 	field;
 
 	field: view_groups
@@ -32,6 +32,30 @@ row: 0
 	field;
 
 	field: delete_groups
+		
+	field;
+
+	field: deficiencies_administrator
+		
+	field;
+
+	field: deficiencies_attendant
+		
+	field;
+
+	field: deficiencies_view
+		
+	field;
+
+	field: deficiencies_edit
+		
+	field;
+
+	field: deficiencies_assign
+		
+	field;
+
+	field: deficiencies_delete
 		
 	field;
 

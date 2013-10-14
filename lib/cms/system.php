@@ -520,10 +520,22 @@ namespace
     function t($text)
     {
         static $language_object;
+        
+        if(isset($_REQUEST['language']))
+            $_SESSION['language'] = $_REQUEST['language'];
 
         if(!$language_object)
         {
             $language_object = new Cms\Language(Cms\System::GetTranslationsPath());
+            
+            if(isset($_SESSION['language']))
+                $language_object->SetLanguage($_SESSION['language']);
+            
+            elseif(trim(Cms\Authentication::GetUser()->language) != '')
+                $language_object->SetLanguage(Cms\Authentication::GetUser()->language);
+            
+            else
+                $language_object->SetLanguageAsBrowser();
         }
 
         return $language_object->Translate($text);

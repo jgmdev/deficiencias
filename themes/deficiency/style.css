@@ -154,7 +154,7 @@ table, td
     min-height: 300px;
 }
 
-#reports .list tr
+#reports .list tbody tr
 {
     border-top: dashed 1px #d3d3d3;
 }
@@ -164,7 +164,7 @@ table, td
     border-top: none;
 }
 
-#reports .list tr:hover, #reports .list tr:active
+#reports .list tbody tr:hover, #reports .list tr:active
 {
     background-color: #e8e8e8;
 }
@@ -572,6 +572,29 @@ fieldset legend a
 .cmsgui .list tbody tr:hover
 {
     background-color: #d3d3d3;
+}
+
+.cmsgui .admin-deficiencies-stats h2
+{
+    border-bottom: solid 2px #000;
+}
+
+.cmsgui .admin-deficiencies-stats h2
+{
+    border-bottom: solid 2px #000;
+    font-size: 28px;
+}
+
+.cmsgui .admin-deficiencies-stats h3
+{
+    margin: 10px 0 10px 0;
+    font-size: 22px;
+}
+
+.cmsgui .admin-deficiencies-stats .data
+{
+    border-bottom: dotted 1px #d3d3d3;
+    padding: 3px 0 3px 0;
 }
 
 @media (max-width: 600px) {
